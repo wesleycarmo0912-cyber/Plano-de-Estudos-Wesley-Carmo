@@ -166,14 +166,20 @@ header h1 span{color:var(--accent);}
 /* ── STAT CARDS — efeito 3D ── */
 .stats{display:none;} /* replaced by stats-strip */
 .stats-strip{display:flex;align-items:center;gap:0;background:var(--card);border-radius:var(--r-md);box-shadow:var(--shadow-card);margin-bottom:16px;padding:10px 16px;flex-wrap:wrap;gap:4px;}
-.sschip{display:flex;align-items:center;gap:8px;padding:4px 10px;}
-.sschip-val{font-family:'Barlow Condensed',sans-serif;font-size:23px;font-weight:900;color:var(--text);line-height:1;flex-shrink:0;}
+.sschip{display:flex;align-items:center;gap:8px;padding:4px 10px;border-left:3px solid transparent;border-radius:var(--r-sm);transition:background var(--t-med),border-color var(--t-med),padding var(--t-med),box-shadow var(--t-med);}
+.sschip-val{font-family:'Barlow Condensed',sans-serif;font-size:23px;font-weight:900;color:var(--text);line-height:1;flex-shrink:0;transition:color var(--t-med),font-size var(--t-med);}
 .sschip-info{display:flex;flex-direction:column;gap:1px;}
-.sschip-lbl{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700;white-space:nowrap;}
+.sschip-lbl{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700;white-space:nowrap;transition:font-size var(--t-med);}
 .sschip-sub{font-size:11px;color:var(--muted);white-space:nowrap;}
-.sschip-sub.warn{color:var(--red);font-weight:700;cursor:pointer;}
+.sschip-sub.warn{color:var(--red);font-weight:700;cursor:pointer;animation:warnPulse 2.2s ease-in-out infinite;}
 .sschip-sub.ok{color:var(--green);font-weight:600;}
-.ssdiv{width:1px;height:32px;background:var(--border);margin:0 4px;flex-shrink:0;}
+@keyframes warnPulse{0%,100%{opacity:1;}50%{opacity:.55;}}
+.ssdiv{width:1px;height:32px;background:var(--border);margin:0 4px;flex-shrink:0;transition:height var(--t-med);}
+.sschip.chip-alert{background:rgba(192,57,43,.08);border-left-color:var(--red);border-radius:var(--r-md);padding:10px 14px;box-shadow:0 0 0 1px rgba(192,57,43,.18);}
+.sschip.chip-alert .sschip-val{font-size:32px;color:var(--red);}
+.sschip.chip-alert .sschip-lbl{font-size:12px;}
+.sschip.chip-ok{background:rgba(21,122,66,.06);border-left-color:var(--green);}
+.sschip.chip-ok .sschip-val{color:var(--green);}
 .sschip.rd .sschip-val{color:var(--red);}
 .sschip.gr .sschip-val{color:var(--green);}
 .sschip.or .sschip-val{color:var(--orange);}
@@ -260,8 +266,53 @@ header h1 span{color:var(--accent);}
   transition:transform .3s cubic-bezier(.4,0,.2,1);
 }
 #floatPanel.aberto{display:flex;}
-#sidebarOverlay{display:none;position:fixed;inset:0;z-index:199;cursor:pointer;}
-#sidebarOverlay.on{display:block;}
+#revPanel{
+  position:fixed;
+  top:0; right:0; bottom:0;
+  width:360px;
+  background:var(--card);
+  border-left:2px solid #7F77DD;
+  box-shadow:-4px 0 24px rgba(0,0,0,.18);
+  display:none;
+  flex-direction:column;
+  z-index:202;
+  overflow:hidden;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+#revPanel.aberto{display:flex;}
+#revPanelOverlay{display:none;position:fixed;inset:0;z-index:201;cursor:pointer;}
+#revPanelOverlay.on{display:block;}
+.rev-panel-hdr{background:var(--navy);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;flex-shrink:0;border-bottom:2px solid #7F77DD;}
+.rev-panel-body{flex:1;overflow-y:auto;}
+.rev-panel-sec{padding:12px 14px;border-bottom:1px solid var(--border);}
+.rev-panel-sec-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:8px;}
+.rev-panel-aval{border-bottom:none;}
+.rev-aval-btn{border:1px solid var(--border);background:var(--bg2);border-radius:var(--r-md);padding:10px 6px;cursor:pointer;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all var(--t-fast);font-family:'Barlow',sans-serif;}
+.rev-aval-btn span{font-weight:700;font-size:12px;}
+.rev-aval-btn small{font-size:10px;color:var(--muted);}
+.rev-aval-btn:hover{transform:translateY(-1px);}
+.rev-aval-facil{border-color:var(--green);background:var(--green-bg);color:var(--green-text);}
+.rev-aval-facil small{color:var(--green);}
+.rev-aval-medio{border-color:var(--orange);background:var(--yellow-bg);color:var(--yellow-text);}
+.rev-aval-medio small{color:var(--orange);}
+.rev-aval-dificil{border-color:var(--red);background:var(--red-bg);color:var(--red-text);}
+.rev-aval-dificil small{color:var(--red);}
+/* Blocos de revisão no cronograma */
+.rev-blk{display:flex;align-items:center;gap:0;border-radius:6px;border:1px solid rgba(127,119,221,.35);background:rgba(127,119,221,.07);margin-bottom:4px;overflow:hidden;cursor:pointer;transition:background var(--t-fast);}
+.rev-blk:hover{background:rgba(127,119,221,.14);}
+.rev-blk.atrasada{border-color:rgba(226,75,74,.4);background:rgba(226,75,74,.07);}
+.rev-blk-bar{width:4px;align-self:stretch;background:#7F77DD;flex-shrink:0;}
+.rev-blk.atrasada .rev-blk-bar{background:var(--red);}
+.rev-blk-body{flex:1;min-width:0;padding:5px 7px;}
+.rev-blk-top{font-size:11px;font-weight:700;color:#534AB7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+[data-theme="dark"] .rev-blk-top{color:#AFA9EC;}
+.rev-blk.atrasada .rev-blk-top{color:var(--red);}
+.rev-blk-meta{font-size:10px;color:var(--muted);}
+.rev-blk-btn{font-size:10px;font-weight:700;padding:3px 7px;border:none;background:#7F77DD;color:#fff;cursor:pointer;flex-shrink:0;margin:4px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;}
+.rev-blk.atrasada .rev-blk-btn{background:var(--red);}
+/* Toggle button */
+.btn-toggle-revs{font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.5px;transition:all var(--t-fast);}
+.btn-toggle-revs.on{border-color:#7F77DD;background:rgba(127,119,221,.12);color:#7F77DD;}
 body.sidebar-open #pg0 .wrap,
 body.sidebar-open #pg0 .wk-box{margin-right:360px;transition:margin-right .3s cubic-bezier(.4,0,.2,1);}
 .fp-sidebar-hdr{background:var(--navy);padding:11px 14px;display:flex;align-items:center;gap:9px;flex-shrink:0;border-bottom:2px solid var(--accent);}
@@ -450,10 +501,11 @@ body.sidebar-open #pg0 .wk-box{margin-right:360px;transition:margin-right .3s cu
 .subj-badges{display:flex;gap:6px;align-items:center;}
 .subj-badge{font-family:'Space Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;background:var(--bg);border:1px solid var(--border);color:var(--muted);}
 .subj-badge.gr{background:#d1fae5;border-color:#86efac;color:#065f46;}
+.subj-badge.pend{background:var(--yellow-bg);border-color:rgba(234,179,8,.3);color:var(--yellow-text);}
 .subj-prog{display:flex;align-items:center;gap:8px;}
-.subj-pbar{width:70px;height:4px;background:var(--border);border-radius:3px;overflow:hidden;}
-.subj-pfill{height:100%;border-radius:3px;transition:width .4s;}
-.subj-ppct{font-size:11px;color:var(--muted);white-space:nowrap;min-width:30px;text-align:right;}
+.subj-pbar{width:80px;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.subj-pfill{height:100%;border-radius:4px;transition:width .4s;}
+.subj-ppct{font-size:12px;font-weight:700;white-space:nowrap;min-width:30px;text-align:right;}
 .subj-chev{color:var(--muted);font-size:11px;transition:transform .2s;flex-shrink:0;}
 .subj-order-btns{display:flex;flex-direction:column;gap:1px;flex-shrink:0;}
 .subj-order-btn{background:none;border:none;padding:0 3px;cursor:pointer;font-size:10px;color:var(--muted);line-height:1;transition:color .15s;}
@@ -478,12 +530,12 @@ body.sidebar-open #pg0 .wk-box{margin-right:360px;transition:margin-right .3s cu
 .top-chk{width:14px;height:14px;accent-color:var(--teal);cursor:pointer;flex-shrink:0;}
 .top-nm{font-size:14px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 /* sem tachado ao estudar */
-.top-hdr.est .top-nm{opacity:.55;}
+.top-hdr.est .top-nm{opacity:1;}
 .top-indicators{display:flex;gap:5px;align-items:center;font-size:11px;flex-shrink:0;}
 .top-sched{background:transparent;border:1px solid var(--blue);border-radius:4px;color:var(--blue);padding:2px 8px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;}
 .top-sched:hover{background:var(--blue);color:#fff;}
-.top-sched.ag{border-color:var(--green);color:var(--green);}
-.top-sched.ag:hover{background:var(--green);color:#fff;}
+.top-sched.ag{border-color:var(--green);color:var(--green-text);background:var(--green-bg);}
+.top-sched.ag:hover{background:var(--green);color:#fff;border-color:var(--green);}
 .top-sel{border:none;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:700;cursor:pointer;outline:none;-webkit-appearance:none;appearance:none;text-align:center;flex-shrink:0;}
 .ts-p{background:var(--yellow-bg);color:var(--yellow-text);}
 .ts-e{background:var(--blue-bg);color:var(--blue-text);}
@@ -606,7 +658,35 @@ body.sidebar-open #pg0 .wk-box{margin-right:360px;transition:margin-right .3s cu
 [data-theme="dark"] .mbadge.mb-man{background:#1e1b4b;color:#a5b4fc;}
 .mfin-footer{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:4px;}
 
-/* ══ ANÁLISES ══ */
+/* ══ MÉTODOS DE ESTUDO ══ */
+.blk-metodo-grid{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0 5px;}
+.blk-metodo-pill{border:1px solid var(--border);background:var(--bg2);color:var(--muted);border-radius:20px;padding:3px 10px;font-size:11px;cursor:pointer;transition:all .15s;font-family:'Barlow',sans-serif;white-space:nowrap;line-height:1.6;}
+.blk-metodo-pill:hover{border-color:var(--teal);color:var(--teal);}
+.blk-metodo-pill.on{border-color:var(--teal);background:rgba(14,116,144,.12);color:var(--teal);font-weight:700;}
+.blk-metodo-obs{width:100%;border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;font-family:'Barlow',sans-serif;color:var(--text);background:transparent;resize:none;min-height:36px;max-height:72px;outline:none;margin-top:4px;line-height:1.5;transition:border-color .15s;}
+.blk-metodo-obs:focus{border-color:var(--teal);}
+.blk-ultima-sessao{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:8px 10px;margin-bottom:8px;}
+.blk-ult-hdr{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;}
+.blk-ult-body{display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
+.blk-ult-mets{font-size:15px;letter-spacing:3px;}
+.blk-ult-tempo{font-size:11px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1px 7px;flex-shrink:0;}
+.blk-ult-obs{width:100%;font-size:11px;color:var(--muted);font-style:italic;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* ══ HISTÓRICO DE SESSÕES ══ */
+.hist-dia-hdr{display:flex;align-items:center;gap:8px;padding:8px 0 5px;margin-top:10px;border-bottom:1px solid var(--border);}
+.hist-dia-hdr:first-child{margin-top:0;}
+.hist-dia-dt{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--text);letter-spacing:.5px;}
+.hist-dia-sub{font-size:11px;color:var(--muted);}
+.hist-dia-tot{margin-left:auto;font-size:12px;font-weight:700;color:var(--muted);background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1px 8px;}
+.hist-row{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:var(--r-sm);transition:background var(--t-fast);cursor:default;}
+.hist-row:hover{background:var(--bg2);}
+.hist-dot{width:4px;height:28px;border-radius:2px;flex-shrink:0;}
+.hist-mat{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:120px;max-width:160px;}
+.hist-top{font-size:12px;color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hist-tempo{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+.hist-status-fin{font-size:10px;font-weight:700;background:var(--green-bg);color:var(--green-text);padding:1px 7px;border-radius:10px;flex-shrink:0;}
+.hist-status-pend{font-size:10px;font-weight:700;background:var(--yellow-bg);color:var(--yellow-text);padding:1px 7px;border-radius:10px;flex-shrink:0;}
+.hist-empty{padding:24px;text-align:center;color:var(--muted);font-size:13px;}
 .an-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:22px;}
 .an-card{background:var(--card);border-radius:10px;padding:15px 17px;box-shadow:var(--shadow-card);border-top:3px solid var(--blue);position:relative;overflow:hidden;transition:var(--transition-theme);}
 .an-card::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle at top right,rgba(28,79,130,.06),transparent 70%);pointer-events:none;}
@@ -1701,8 +1781,8 @@ footer{
     <span style="font-size:11px;color:rgba(255,255,255,.3);">⚙ editar</span>
   </div>
   <div style="display:flex;gap:6px;flex-shrink:0;">
-    <button onclick="exportar()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;">💾 Exportar</button>
-    <button onclick="document.getElementById('importFileInp').click()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;">📂 Importar</button>
+    <button onclick="if(window.fbSave)window.fbSave();else toast('Firebase ainda carregando...')" style="background:var(--teal);border:none;color:#fff;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.5px;">☁ Enviar p/ Nuvem</button>
+    <button onclick="if(window.fbLoad)window.fbLoad();else toast('Firebase ainda carregando...')" style="background:var(--blue);border:none;color:#fff;border-radius:6px;padding:4px 12px;font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.5px;">⬇ Receber da Nuvem</button>
     <button onclick="abrirReset()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:'Barlow',sans-serif;">⚙️ Dados</button>
   </div>
 </div>
@@ -1843,7 +1923,7 @@ footer{
     <div class="home-card">
       <div class="home-card-hdr">
         <span class="home-card-ttl">Progresso por matéria</span>
-        <span class="home-card-act" onclick="ir(2,null)">ver tudo →</span>
+        <span class="home-card-act" onclick="ir(2,document.getElementById('tab2'))">ver tudo →</span>
       </div>
       <div id="homeProgresso"></div>
     </div>
@@ -1903,7 +1983,7 @@ footer{
       <div class="sschip-info"><div class="sschip-lbl">blocos feitos</div><div class="sschip-sub" id="stAtraso">✓ sem atrasos</div></div>
     </div>
     <div class="ssdiv"></div>
-    <div class="sschip">
+    <div class="sschip" id="scRevCard">
       <div class="sschip-val" id="stRP">0</div>
       <div class="sschip-info"><div class="sschip-lbl">revisões</div><div class="sschip-sub" id="stRevAtraso">✓ em dia</div></div>
     </div>
@@ -1927,6 +2007,7 @@ footer{
   <div class="wk-hdr">
     <div class="sec-ttl">Cronograma Semanal</div>
     <div style="display:flex;align-items:center;gap:8px;">
+      <button id="btnToggleRevs" class="btn-toggle-revs" onclick="toggleRevsCrono()" title="Mostrar/ocultar revisões no cronograma">🔁 Revisões</button>
       <div class="wk-nav">
         <button onclick="mudaSem(-1)">‹</button>
         <div class="wk-lbl" id="wkLbl">Semana 1</div>
@@ -2192,6 +2273,10 @@ footer{
 .mat-filter-inp::placeholder{color:var(--muted);}
 .mat-filter-inp:focus{border-color:var(--blue);}
 .top-acc{font-size:10px;border-radius:10px;padding:1px 7px;font-weight:700;white-space:nowrap;cursor:default;}
+/* Tooltip genérico para badges de tópico */
+.top-tip{position:relative;display:inline-flex;flex-shrink:0;}
+.top-tip-lbl{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#0d1b2a;color:#fff;font-size:10px;font-family:'Barlow',sans-serif;padding:3px 8px;border-radius:5px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:999;}
+.top-tip:hover .top-tip-lbl{opacity:1;}
 .top-acc.gr{background:var(--green-bg);color:var(--green-text);}
 .top-acc.or{background:var(--yellow-bg);color:var(--yellow-text);}
 .top-acc.rd{background:var(--red-bg);color:var(--red-text);}
@@ -2528,6 +2613,44 @@ footer{
           <tbody id="anQuestTbl"></tbody>
         </table>
       </div>
+    </div>
+  </div>
+
+  <!-- HISTÓRICO DE SESSÕES -->
+  <div class="an-section">
+    <div class="an-sec-hdr">
+      <h3>📋 Histórico de Sessões Estudadas</h3>
+      <span style="font-size:12px;color:rgba(255,255,255,.5)" id="anHistTotal"></span>
+    </div>
+    <div class="an-sec-body">
+      <!-- Filtros -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:flex-end;">
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:4px;">Matéria</label>
+          <select id="histFiltMat" onchange="renderAnHistorico()" style="min-width:150px;">
+            <option value="">Todas</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:4px;">Período</label>
+          <select id="histFiltPer" onchange="renderAnHistorico()">
+            <option value="30">Últimos 30 dias</option>
+            <option value="60">Últimos 60 dias</option>
+            <option value="90">Últimos 90 dias</option>
+            <option value="0">Tudo</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:4px;">Status</label>
+          <select id="histFiltStatus" onchange="renderAnHistorico()">
+            <option value="all">Todos</option>
+            <option value="fin">✓ Concluídos</option>
+            <option value="pend">⏳ Pendentes</option>
+          </select>
+        </div>
+      </div>
+      <!-- Lista -->
+      <div id="anHistorico"></div>
     </div>
   </div>
 
@@ -3157,42 +3280,193 @@ function getIni(){ const v=getCfg().ini||''; return v?new Date(v+'T00:00:00'):ne
 function verificarAtrasos(){
   const el=document.getElementById('stAtraso');
   if(!el) return;
-  const num=el; // num now same as el in new layout
-
-  const ini=getIni();
-  const hoje=new Date(); hoje.setHours(0,0,0,0);
-
-  const msPerWeek=7*24*60*60*1000;
-  const semHoje=Math.max(0,Math.floor((hoje-ini)/msPerWeek));
-
-  let totalAtrasados=0, primeiraSemAtrasada=-1;
-
-  for(let s=0; s<=semHoje; s++){
-    const ws=new Date(ini); ws.setDate(ini.getDate()+s*7);
-    for(let dia=0; dia<7; dia++){
-      const d=new Date(ws); d.setDate(ws.getDate()+dia);
-      d.setHours(0,0,0,0);
-      if(d>=hoje) continue;
-      const dk=`${s}_${dia}`;
-      (blocos[dk]||[]).forEach(b=>{
-        if(!b.fin && !b.transferido){
-          totalAtrasados++;
-          if(primeiraSemAtrasada===-1) primeiraSemAtrasada=s;
-        }
-      });
-    }
-  }
-
-  el._semAtrasada=primeiraSemAtrasada;
-  if(totalAtrasados>0){
-    el.textContent='⚠ '+totalAtrasados+' em atraso · ver';
+  const atrasados = _getBlcocosAtrasados();
+  const total = atrasados.length;
+  el._semAtrasada = atrasados[0]?.sem ?? -1;
+  const chip=document.getElementById('scBlocosFei');
+  if(total>0){
+    el.textContent='⚠ '+total+' em atraso · ver';
     el.className='sschip-sub warn';
-    el.onclick=irParaAtrasados;
+    el.onclick=abrirTriagemAtrasados;
+    if(chip) chip.className='sschip chip-alert';
   } else {
     el.textContent='✓ sem atrasos';
     el.className='sschip-sub ok';
     el.onclick=null;
+    if(chip) chip.className='sschip chip-ok';
   }
+}
+
+// Retorna todos os blocos atrasados ordenados por dias de atraso
+function _getBlcocosAtrasados(){
+  const ini=getIni();
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  const resultado=[];
+  Object.keys(blocos).forEach(dk=>{
+    const [semStr,diaStr]=dk.split('_');
+    const sem=parseInt(semStr), dia=parseInt(diaStr);
+    const ws=new Date(ini); ws.setDate(ini.getDate()+sem*7);
+    let dkDate=new Date(ws);
+    for(let i=0;i<7;i++){
+      const d=new Date(ws); d.setDate(ws.getDate()+i);
+      if(d.getDay()===dia){ dkDate=new Date(d); break; }
+    }
+    dkDate.setHours(0,0,0,0);
+    if(dkDate>=hoje) return;
+    (blocos[dk]||[]).forEach((b,idx)=>{
+      if(!b.fin&&!b.transferido){
+        const m=mats.find(x=>x.id===b.matId)||{nome:'?',cor:'#999'};
+        const diasAtraso=Math.round((hoje-dkDate)/86400000);
+        resultado.push({dk,idx,b,m,data:dkDate,diasAtraso,sem,dia});
+      }
+    });
+  });
+  return resultado.sort((a,b)=>b.diasAtraso-a.diasAtraso);
+}
+
+function abrirTriagemAtrasados(){
+  renderTriagemAtrasados();
+  abrirModal('mAtrasados');
+}
+
+function renderTriagemAtrasados(){
+  const lista=_getBlcocosAtrasados();
+  const badge=document.getElementById('mAtrBadge');
+  if(badge) badge.textContent=lista.length+' pendente'+(lista.length!==1?'s':'');
+  const el=document.getElementById('mAtrList');
+  if(!el) return;
+  if(lista.length===0){
+    el.innerHTML='<div style="padding:32px;text-align:center;color:var(--muted);font-size:14px;">Nenhuma sessão atrasada! 🎉</div>';
+    return;
+  }
+  el.innerHTML=lista.map(({dk,idx,b,m,data,diasAtraso,sem,dia})=>{
+    const badgeCor = diasAtraso>=3 ? 'background:var(--red-bg);color:var(--red-text)' : 'background:var(--yellow-bg);color:var(--yellow-text)';
+    const dateFmt=`${String(data.getDate()).padStart(2,'0')}/${String(data.getMonth()+1).padStart(2,'0')}`;
+    return `<div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;">
+      <div style="width:4px;align-self:stretch;border-radius:2px;background:${m.cor};flex-shrink:0;margin-top:2px;"></div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;flex-wrap:wrap;">
+          <span style="font-size:13px;font-weight:700;color:var(--text);">${m.nome}</span>
+          <span style="font-size:11px;color:var(--muted);">· Sem. ${sem+1} · ${DPT[dia]} ${dateFmt}</span>
+        </div>
+        ${b.topico?`<div style="font-size:12px;color:var(--text2);margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${b.topico}</div>`:''}
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:11px;padding:1px 7px;border-radius:4px;${badgeCor};">${diasAtraso} dia${diasAtraso!==1?'s':''} atraso</span>
+          <span style="font-size:11px;color:var(--muted);">· ${b.horas}h previstas</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:4px;flex-shrink:0;margin-top:2px;flex-wrap:wrap;justify-content:flex-end;">
+        <button onclick="marcarBlocoFeitoTriagem('${dk}',${idx})" style="font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--green);color:var(--green);background:var(--green-bg);cursor:pointer;font-family:'Barlow',sans-serif;">✓ Feita</button>
+        <button onclick="reagendarBlocoTriagem('${dk}',${idx})" style="font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);color:var(--text);background:transparent;cursor:pointer;font-family:'Barlow',sans-serif;">📅 Reagendar</button>
+        <button onclick="descartarBlocoTriagem('${dk}',${idx})" style="font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--red);color:var(--red);background:transparent;cursor:pointer;font-family:'Barlow',sans-serif;">✕ Descartar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Encontra próximo dia ativo disponível com vaga
+function _proximoDiaDisponivel(dkOrigem){
+  const ini=getIni();
+  const ativos=diasAtivos();
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  const maxB=Math.max(2,Math.floor((getCfg().h||5)/2));
+  for(let offset=0;offset<=28;offset++){
+    const d=new Date(hoje); d.setDate(hoje.getDate()+offset);
+    if(!ativos.includes(d.getDay())) continue;
+    const diffDays=Math.floor((d-ini)/86400000);
+    const sem=Math.floor(diffDays/7);
+    const dia=d.getDay();
+    const dkNovo=`${sem}_${dia}`;
+    if(dkNovo===dkOrigem) continue;
+    if((blocos[dkNovo]||[]).length<maxB) return {dk:dkNovo,sem,dia,date:d};
+  }
+  return null;
+}
+
+function marcarBlocoFeitoTriagem(dk,idx){
+  const b=blocos[dk]&&blocos[dk][idx]; if(!b) return;
+  b.fin=true;
+  const top=b.topico?topicos.find(t=>t.matId===b.matId&&t.nome===b.topico):null;
+  if(top&&top.status!=='estudado'){ top.status='estudado'; top.revisaoAgendada=false; }
+  marcarDiaEstudado();
+  save(); renderTriagemAtrasados(); verificarAtrasos(); renderSem(); renderMatTab(); updateStats(); renderHome();
+  toast('✓ Sessão marcada como feita!');
+}
+
+function reagendarBlocoTriagem(dk,idx){
+  const b=blocos[dk]&&blocos[dk][idx]; if(!b) return;
+  const destino=_proximoDiaDisponivel(dk);
+  if(!destino){ toast('⚠ Nenhum dia disponível nas próximas 4 semanas.'); return; }
+  // Marcar original como transferido
+  blocos[dk][idx].transferido=true;
+  // Criar bloco continuação
+  if(!blocos[destino.dk]) blocos[destino.dk]=[];
+  const [semO,diaO]=dk.split('_').map(Number);
+  const wsO=new Date(getIni()); wsO.setDate(getIni().getDate()+semO*7);
+  let dOrigem=new Date(wsO);
+  for(let i=0;i<7;i++){const d=new Date(wsO);d.setDate(wsO.getDate()+i);if(d.getDay()===diaO){dOrigem=d;break;}}
+  const origemInfo=`${DPT[diaO]} ${dOrigem.getDate()}/${dOrigem.getMonth()+1}`;
+  const bid=`${dk}_${idx}`;
+  const tempoFeito=blocoTempos[bid]||0, ciclosFeitos=blocoCiclos[bid]||0;
+  const novoIdx=blocos[destino.dk].length;
+  blocos[destino.dk].push({matId:b.matId,horas:b.horas,topico:b.topico,fin:false,continuacao:true,origemDk:dk,origemIdx:idx,origemInfo,tempoHerdado:tempoFeito});
+  const bidNovo=`${destino.dk}_${novoIdx}`;
+  blocoTempos[bidNovo]=tempoFeito; blocoCiclos[bidNovo]=ciclosFeitos;
+  save(); renderTriagemAtrasados(); verificarAtrasos(); renderSem(); updateStats(); renderHome();
+  const diaNome=DPT[destino.dia];
+  const dataFmt=`${String(destino.date.getDate()).padStart(2,'0')}/${String(destino.date.getMonth()+1).padStart(2,'0')}`;
+  toast(`📅 Reagendado para ${diaNome} ${dataFmt} (Sem. ${destino.sem+1})`);
+}
+
+function descartarBlocoTriagem(dk,idx){
+  const b=blocos[dk]&&blocos[dk][idx]; if(!b) return;
+  if(!confirm(`Descartar "${b.topico||'este bloco'}"? O bloco será removido permanentemente.`)) return;
+  blocos[dk].splice(idx,1);
+  if(blocos[dk].length===0) delete blocos[dk];
+  save(); renderTriagemAtrasados(); verificarAtrasos(); renderSem(); updateStats(); renderHome();
+  toast('🗑 Bloco descartado.');
+}
+
+function reagendarTodasTriagem(){
+  const lista=_getBlcocosAtrasados();
+  if(lista.length===0) return;
+  let reagendados=0;
+  lista.forEach(({dk,idx})=>{
+    const b=blocos[dk]&&blocos[dk][idx];
+    if(!b||b.transferido||b.fin) return;
+    const destino=_proximoDiaDisponivel(dk);
+    if(!destino) return;
+    blocos[dk][idx].transferido=true;
+    if(!blocos[destino.dk]) blocos[destino.dk]=[];
+    const [semO,diaO]=dk.split('_').map(Number);
+    const wsO=new Date(getIni()); wsO.setDate(getIni().getDate()+semO*7);
+    let dOrigem=new Date(wsO);
+    for(let i=0;i<7;i++){const d=new Date(wsO);d.setDate(wsO.getDate()+i);if(d.getDay()===diaO){dOrigem=d;break;}}
+    const origemInfo=`${DPT[diaO]} ${dOrigem.getDate()}/${dOrigem.getMonth()+1}`;
+    const bid=`${dk}_${idx}`;
+    const tempoFeito=blocoTempos[bid]||0, ciclosFeitos=blocoCiclos[bid]||0;
+    const novoIdx=blocos[destino.dk].length;
+    blocos[destino.dk].push({matId:b.matId,horas:b.horas,topico:b.topico,fin:false,continuacao:true,origemDk:dk,origemIdx:idx,origemInfo,tempoHerdado:tempoFeito});
+    const bidNovo=`${destino.dk}_${novoIdx}`;
+    blocoTempos[bidNovo]=tempoFeito; blocoCiclos[bidNovo]=ciclosFeitos;
+    reagendados++;
+  });
+  save(); renderTriagemAtrasados(); verificarAtrasos(); renderSem(); updateStats(); renderHome();
+  toast(`📅 ${reagendados} sessão(ões) reagendada(s)!`);
+}
+
+function marcarTodasFeitasTriagem(){
+  const lista=_getBlcocosAtrasados();
+  if(lista.length===0) return;
+  lista.forEach(({dk,idx,b})=>{
+    if(!blocos[dk]||!blocos[dk][idx]) return;
+    blocos[dk][idx].fin=true;
+    const top=b.topico?topicos.find(t=>t.matId===b.matId&&t.nome===b.topico):null;
+    if(top&&top.status!=='estudado'){ top.status='estudado'; top.revisaoAgendada=false; }
+  });
+  marcarDiaEstudado();
+  save(); renderTriagemAtrasados(); verificarAtrasos(); renderSem(); renderMatTab(); updateStats(); renderHome();
+  toast(`✓ ${lista.length} sessão(ões) marcada(s) como feita(s)!`);
 }
 
 function irParaAtrasados(){
@@ -3202,9 +3476,252 @@ function irParaAtrasados(){
     semAtual=s;
     document.getElementById('wkLbl').textContent='Semana '+(semAtual+1);
     renderSem(); loadNota(); renderHome();
-    // Rolar até o cronograma
     document.getElementById('wkBox').scrollIntoView({behavior:'smooth',block:'start'});
   }
+}
+
+// ══ PAINEL DE REVISÃO ══
+let _revPanelId = null;
+let _showRevsCrono = false;
+
+function toggleRevsCrono(){
+  _showRevsCrono = !_showRevsCrono;
+  const btn = document.getElementById('btnToggleRevs');
+  if(btn) btn.className = 'btn-toggle-revs' + (_showRevsCrono?' on':'');
+  renderSem();
+}
+
+function abrirPainelRevisao(revId){
+  const r = revisoes.find(x=>x.id===revId); if(!r) return;
+  const m = mats.find(x=>x.id==r.matId)||{nome:'?',cor:'#999'};
+  const top = topicos.find(t=>t.matId==r.matId&&t.nome===r.topico)||null;
+  _revPanelId = revId;
+  _renderRevPanel();
+}
+
+function _renderRevPanel(){
+  const revId=_revPanelId; if(!revId) return;
+  const r = revisoes.find(x=>x.id===revId); if(!r) return;
+  const m = mats.find(x=>x.id==r.matId)||{nome:'?',cor:'#999'};
+  const top = topicos.find(t=>t.matId==r.matId&&t.nome===r.topico)||null;
+
+  const metMap={espacada:'⏱ Espaçada',semanal:'📅 Semanal',erros:'❌ Por Erros',manual:'✏️ Manual',manutencao:'🔄 Manutenção'};
+  const tipoIco={video:'🎬',pdf:'📄',quest:'📝',resumo:'🟣',html:'🌐',outro:'🔗'};
+
+  // ── Última sessão ──
+  const ult = _ultimaSessaoTopico(r.matId, r.topico, null);
+  let ultHtml='';
+  if(ult){
+    const metIcons=(ult.b.metodos||[]).map(id=>_METS_DEF.find(x=>x.id===id)?.icon||'').filter(Boolean).join(' ');
+    const dataStr=`${ult.data.getDate()}/${String(ult.data.getMonth()+1).padStart(2,'0')}/${ult.data.getFullYear()}`;
+    const tempoStr=ult.tempo>0?fmtMin(ult.tempo):'';
+    ultHtml=`<div class="rev-panel-sec">
+      <div class="rev-panel-sec-lbl">📅 Última sessão de estudo</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:8px 10px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:${ult.b.sessaoObs?'5':'0'}px">
+          <span style="font-size:12px;color:var(--muted)">${dataStr}</span>
+          ${metIcons?`<span style="font-size:14px;letter-spacing:2px">${metIcons}</span>`:'<span style="font-size:11px;color:var(--muted)">sem métodos</span>'}
+          ${tempoStr?`<span style="font-size:11px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1px 7px;margin-left:auto">⏱ ${tempoStr}</span>`:''}
+        </div>
+        ${ult.b.sessaoObs?`<div style="font-size:11px;color:var(--muted);font-style:italic">"${esc(ult.b.sessaoObs.substring(0,100))}${ult.b.sessaoObs.length>100?'…':''}"</div>`:''}
+      </div>
+    </div>`;
+  }
+
+  // ── Links ──
+  const links = top?.links||[];
+  const linksHtml=`<div class="rev-panel-sec">
+    <div class="rev-panel-sec-lbl" style="display:flex;align-items:center;justify-content:space-between">
+      <span>🔗 Links ${links.length>0?`<span style="background:var(--blue-bg);color:var(--blue-text);padding:1px 6px;border-radius:8px;font-size:9px;font-weight:700;margin-left:3px">${links.length}</span>`:''}</span>
+    </div>
+    ${links.length>0?`<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:8px">
+      ${links.map((l,li)=>`<div style="display:flex;align-items:center;gap:0">
+        <a href="${esc(l.url)}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:7px;flex:1;padding:6px 9px;background:var(--bg2);border:1px solid var(--border);border-right:none;border-radius:8px 0 0 8px;text-decoration:none;color:var(--text);overflow:hidden">
+          <span style="font-size:13px;flex-shrink:0">${tipoIco[l.tipo]||'🔗'}</span>
+          <span style="font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.label||l.url)}</span>
+          <span style="font-size:11px;color:var(--muted);flex-shrink:0">↗</span>
+        </a>
+        <button onclick="${top?`revLkDel('${top.id}',${li})`:'void 0'}" style="padding:0 8px;height:100%;border:1px solid var(--border);border-left:none;background:var(--bg2);border-radius:0 8px 8px 0;color:var(--muted);cursor:pointer;font-size:11px;align-self:stretch;display:flex;align-items:center" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'">✕</button>
+      </div>`).join('')}
+    </div>`:'<div style="font-size:12px;color:var(--muted);font-style:italic;margin-bottom:8px;padding:4px 0">Nenhum link adicionado.</div>'}
+    <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center">
+      <input type="url" id="revLkUrl" placeholder="https://..." style="flex:1;min-width:100px;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);outline:none;font-family:'Barlow',sans-serif">
+      <input type="text" id="revLkLbl" placeholder="Rótulo" style="width:80px;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);outline:none;font-family:'Barlow',sans-serif">
+      <select id="revLkTipo" style="font-size:12px;padding:5px 6px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text);outline:none">
+        <option value="video">🎬 Vídeo</option>
+        <option value="pdf">📄 PDF</option>
+        <option value="quest">📝 Questões</option>
+        <option value="resumo">🟣 Resumo</option>
+        <option value="outro">🔗 Outro</option>
+      </select>
+      <button onclick="${top?`revLkAdd('${top.id}')`:'void 0'}" style="padding:5px 10px;border:1px solid var(--teal);border-radius:6px;background:rgba(14,116,144,.1);color:var(--teal);cursor:pointer;font-size:12px;font-weight:700;font-family:'Barlow Condensed',sans-serif;white-space:nowrap">+ Add</button>
+    </div>
+    ${!top?'<div style="font-size:11px;color:var(--muted);margin-top:5px">Tópico não encontrado — cadastre na aba Matérias para adicionar links.</div>':''}
+  </div>`;
+
+  // ── Resumo ──
+  const rv=(top?.resumo||'').trim();
+  const rvPrev=rv?rv.replace(/\*\*(.+?)\*\*/g,'$1').replace(/\*(.+?)\*/g,'$1').replace(/`(.+?)`/g,'$1').substring(0,160)+(rv.length>160?'…':''):'';
+  const resumoHtml=`<div class="rev-panel-sec">
+    <div class="rev-panel-sec-lbl" style="display:flex;align-items:center;justify-content:space-between">
+      <span>📝 Resumo</span>
+      ${top?`<button onclick="abrirResumo('${top.id}')" style="font-size:11px;padding:2px 9px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--muted);cursor:pointer;font-family:'Barlow',sans-serif">👁 ${rv?'Ver / Editar':'Criar'}</button>`:''}
+    </div>
+    ${rv?`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-size:12px;color:var(--text2);line-height:1.6;max-height:80px;overflow:hidden;margin-top:5px">${esc(rvPrev)}</div>`
+    :`<div style="font-size:12px;color:var(--muted);font-style:italic;padding:4px 0">Nenhum resumo criado.${top?' Clique em Criar para adicionar.':''}</div>`}
+  </div>`;
+
+  // ── Lembrete ──
+  const lem=(top?.lembrete||'').trim();
+  const lemHtml=`<div class="rev-panel-sec">
+    <div class="rev-panel-sec-lbl" style="display:flex;align-items:center;justify-content:space-between">
+      <span>🔔 Lembrete</span>
+      ${lem&&top?`<button onclick="revLimparLembrete('${top.id}')" style="font-size:10px;padding:1px 7px;border:none;background:none;color:var(--muted);cursor:pointer">✕ limpar</button>`:''}
+    </div>
+    <textarea id="revLemInp" placeholder="Ex: rever artigos 3 a 10, refazer questões difíceis..." style="width:100%;border:1px solid rgba(245,158,11,.35);border-radius:6px;padding:6px 8px;font-size:12px;font-family:'Barlow',sans-serif;color:var(--text);background:rgba(245,158,11,.05);resize:none;min-height:44px;max-height:80px;outline:none;margin-top:5px;line-height:1.5">${esc(lem)}</textarea>
+    <button onclick="${top?`revSalvarLembrete('${top.id}')`:'void 0'}" style="margin-top:4px;width:100%;background:#f59e0b;color:#fff;border:none;border-radius:5px;padding:5px 0;font-size:12px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif">💾 Salvar lembrete</button>
+  </div>`;
+
+  // ── Avaliação ──
+  const avalHtml=`<div class="rev-panel-sec rev-panel-aval">
+    <div class="rev-panel-sec-lbl">Como foi esta revisão?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px">
+      <button onclick="confirmarRevPainel('facil')" class="rev-aval-btn rev-aval-facil"><span style="font-size:20px">😊</span><span>Fácil</span><small>+7 dias</small></button>
+      <button onclick="confirmarRevPainel('medio')" class="rev-aval-btn rev-aval-medio"><span style="font-size:20px">🤔</span><span>Médio</span><small>+3 dias</small></button>
+      <button onclick="confirmarRevPainel('dificil')" class="rev-aval-btn rev-aval-dificil"><span style="font-size:20px">😓</span><span>Difícil</span><small>+1 dia</small></button>
+    </div>
+    <button onclick="confirmarRevPainel(null)" class="btn btn-green" style="width:100%;margin-bottom:6px">✓ Marcar como feita</button>
+    <button onclick="fecharPainelRevisao()" class="btn-cancel" style="width:100%;text-align:center">Cancelar</button>
+  </div>`;
+
+  const html=`
+    <div class="rev-panel-hdr">
+      <div style="width:4px;height:44px;border-radius:2px;background:${m.cor};flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px">${metMap[r.metodo]||r.metodo} · revisão nº ${r.num}</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.nome}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.topico||'—'}</div>
+      </div>
+      <button onclick="fecharPainelRevisao()" style="background:none;border:none;color:rgba(255,255,255,.45);font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0;line-height:1">✕</button>
+    </div>
+    <div class="rev-panel-body">${ultHtml}${linksHtml}${resumoHtml}${lemHtml}${avalHtml}</div>`;
+
+  const panel=document.getElementById('revPanel');
+  const overlay=document.getElementById('revPanelOverlay');
+  if(!panel) return;
+  panel.innerHTML=html;
+  panel.classList.add('aberto');
+  if(overlay) overlay.classList.add('on');
+}
+
+// Funções auxiliares do revPanel
+function revLkAdd(topId){
+  const panel=document.getElementById('revPanel');
+  const urlEl=panel?panel.querySelector('#revLkUrl'):document.getElementById('revLkUrl');
+  const lblEl=panel?panel.querySelector('#revLkLbl'):document.getElementById('revLkLbl');
+  const tipEl=panel?panel.querySelector('#revLkTipo'):document.getElementById('revLkTipo');
+  let url=urlEl?urlEl.value.trim():''; if(!url){toast('Digite a URL.');return;}
+  if(!/^https?:\/\//.test(url)) url='https://'+url;
+  const label=lblEl?lblEl.value.trim():'';
+  const tipo=tipEl?tipEl.value:'outro';
+  const t=topicos.find(x=>String(x.id)===String(topId)); if(!t) return;
+  if(!t.links) t.links=[];
+  t.links.push({url,label,tipo});
+  save(); renderMatTab(); _renderRevPanel(); toast('🔗 Link adicionado!');
+}
+function revLkDel(topId, idx){
+  const t=topicos.find(x=>String(x.id)===String(topId)); if(!t||!t.links) return;
+  t.links.splice(idx,1); save(); renderMatTab(); _renderRevPanel(); toast('Link removido.');
+}
+function revSalvarLembrete(topId){
+  const panel=document.getElementById('revPanel');
+  const inp=panel?panel.querySelector('#revLemInp'):document.getElementById('revLemInp');
+  if(!inp) return;
+  const t=topicos.find(x=>String(x.id)===String(topId)); if(!t) return;
+  t.lembrete=inp.value.trim(); save();
+  _atualizarBadgeLembretes();
+  renderMatTab();
+  _renderRevPanel();
+  toast('🔔 Lembrete salvo!');
+}
+function revLimparLembrete(topId){
+  const t=topicos.find(x=>String(x.id)===String(topId)); if(!t) return;
+  t.lembrete=''; save(); _renderRevPanel(); _atualizarBadgeLembretes();
+}
+
+function fecharPainelRevisao(){
+  const panel=document.getElementById('revPanel');
+  const overlay=document.getElementById('revPanelOverlay');
+  if(panel){ panel.classList.remove('aberto'); panel.innerHTML=''; }
+  if(overlay) overlay.classList.remove('on');
+  _revPanelId=null;
+}
+
+function confirmarRevPainel(dificuldade){
+  if(!_revPanelId) return;
+  _concluirRev(_revPanelId, dificuldade);
+  fecharPainelRevisao();
+}
+const _METS_DEF=[
+  {id:'video',icon:'🎬',label:'Vídeo'},
+  {id:'pdf',icon:'📄',label:'PDF'},
+  {id:'questoes',icon:'📝',label:'Questões'},
+  {id:'flashcard',icon:'🃏',label:'Flashcard'},
+  {id:'resumo',icon:'🟣',label:'Resumo'},
+  {id:'mapa',icon:'🗺️',label:'Mapa Mental'},
+  {id:'anotacoes',icon:'✏️',label:'Anotações'},
+  {id:'aula',icon:'👥',label:'Aula ao vivo'},
+];
+
+function toggleMetodoBloco(bid, metodo){
+  const parts=bid.split('_');
+  const dk=parts.slice(0,-1).join('_');
+  const idx=parseInt(parts[parts.length-1]);
+  const b=blocos[dk]&&blocos[dk][idx]; if(!b) return;
+  if(!b.metodos) b.metodos=[];
+  const i=b.metodos.indexOf(metodo);
+  if(i>=0) b.metodos.splice(i,1);
+  else b.metodos.push(metodo);
+  save();
+  renderSem();
+  _refreshFloatPanel();
+}
+
+function salvarObsBlocoSessao(bid, value){
+  const parts=bid.split('_');
+  const dk=parts.slice(0,-1).join('_');
+  const idx=parseInt(parts[parts.length-1]);
+  const b=blocos[dk]&&blocos[dk][idx]; if(!b) return;
+  b.sessaoObs=value.trim();
+  save();
+  toast('📝 Observação salva!');
+}
+
+// Retorna a sessão mais recente do mesmo tópico/matéria (excluindo o bloco atual)
+function _ultimaSessaoTopico(matId, topico, excludeBid){
+  const ini=getIni();
+  let melhor=null, melhorData=null;
+  Object.keys(blocos).forEach(dk=>{
+    const [semStr,diaStr]=dk.split('_');
+    const sem=parseInt(semStr), dia=parseInt(diaStr);
+    const ws=new Date(ini); ws.setDate(ini.getDate()+sem*7);
+    let dkDate=null;
+    for(let i=0;i<7;i++){
+      const d=new Date(ws); d.setDate(ws.getDate()+i);
+      if(d.getDay()===dia){ dkDate=new Date(d); break; }
+    }
+    if(!dkDate) return;
+    (blocos[dk]||[]).forEach((b,idx)=>{
+      const bid=`${dk}_${idx}`;
+      if(bid===excludeBid) return;
+      if(b.matId!==matId) return;
+      if(topico&&b.topico!==topico) return; // mesmo tópico
+      const temDados=(b.metodos&&b.metodos.length>0)||(blocoTempos[bid]||0)>0||b.sessaoObs;
+      if(!temDados) return;
+      if(!melhorData||dkDate>melhorData){ melhorData=new Date(dkDate); melhor={dk,idx,b,bid,data:dkDate,tempo:blocoTempos[bid]||0}; }
+    });
+  });
+  return melhor;
 }
 
 function mudaSem(d){ semAtual=Math.max(0,semAtual+d); document.getElementById('wkLbl').textContent='Semana '+(semAtual+1); renderSem(); loadNota(); renderHome(); }
@@ -3222,7 +3739,7 @@ function renderSem(){
     const totalRev=revsNoDia.length+(hj?revAtrasadas.length:0);
     const temAtrasado=hj&&revAtrasadas.length>0;
     const revBadge=totalRev>0
-      ?`<div class="dhdr-rev-badge${temAtrasado?' atrasado':''}" onclick="ir(2,null)" title="${temAtrasado?revAtrasadas.length+' atrasada(s) · ':''} ${revsNoDia.length} revisão(ões) hoje">📌 ${totalRev} rev${totalRev!==1?'s':''}</div>`
+      ?`<div class="dhdr-rev-badge${temAtrasado?' atrasado':''}" onclick="ir(3,document.getElementById('tab3'))" title="${temAtrasado?revAtrasadas.length+' atrasada(s) · ':''} ${revsNoDia.length} revisão(ões) hoje">📌 ${totalRev} rev${totalRev!==1?'s':''}</div>`
       :'';
     h+=`<th style="padding:0"><div class="dhdr${hj?' hj':''}"><span class="dn" style="${!at?'opacity:.3':''}">${d.getDate()}</span><span class="dw">${DPT[d.getDay()]}${hj?' · hoje':''}${!at?' · folga':''}</span>${revBadge}</div></th>`;
   });
@@ -3424,17 +3941,84 @@ function renderSem(){
                   ${lem ? `<button class="blk-lembrete-clear" onclick="limparLembrete('${top.id}')">✕ limpar</button>` : ''}
                 </div>
                 <textarea class="blk-lembrete-inp" id="lem_${top.id}" placeholder="Ex: procurar vídeo resumo, preparar resumo para revisão...">${lem}</textarea>
-                <button class="blk-lembrete-save" onclick="salvarLembrete('${top.id}',document.getElementById('lem_${top.id}').value)">💾 Salvar</button>
+                <button class="blk-lembrete-save" onclick="salvarLembrete('${top.id}', this.closest('.blk-lembrete-wrap').querySelector('textarea').value)">💾 Salvar</button>
               </div>`;
             })() : ''}
 
-            
+            <!-- ⑤ MÉTODOS DE ESTUDO + ÚLTIMA SESSÃO -->
+            ${(()=>{
+              const _METS=[
+                {id:'video',icon:'🎬',label:'Vídeo'},
+                {id:'pdf',icon:'📄',label:'PDF'},
+                {id:'questoes',icon:'📝',label:'Questões'},
+                {id:'flashcard',icon:'🃏',label:'Flashcard'},
+                {id:'resumo',icon:'🟣',label:'Resumo'},
+                {id:'mapa',icon:'🗺️',label:'Mapa Mental'},
+                {id:'anotacoes',icon:'✏️',label:'Anotações'},
+                {id:'aula',icon:'👥',label:'Aula ao vivo'},
+              ];
+              const metAtivos=b.metodos||[];
+              const pills=_METS.map(mt=>{
+                const on=metAtivos.includes(mt.id);
+                return `<button class="blk-metodo-pill${on?' on':''}" onclick="toggleMetodoBloco('${bid}','${mt.id}')">${mt.icon} ${mt.label}</button>`;
+              }).join('');
+              const ult=_ultimaSessaoTopico(b.matId,b.topico,bid);
+              let ultHtml='';
+              if(ult){
+                const metIcons=(ult.b.metodos||[]).map(id=>_METS.find(x=>x.id===id)?.icon||'').filter(Boolean).join(' ');
+                const tempoStr=ult.tempo>0?fmtMin(ult.tempo):'';
+                const dataStr=`${ult.data.getDate()}/${String(ult.data.getMonth()+1).padStart(2,'0')}/${ult.data.getFullYear()}`;
+                ultHtml=`<div class="blk-ultima-sessao">
+                  <div class="blk-ult-hdr">📅 Última sessão — ${dataStr}</div>
+                  <div class="blk-ult-body">
+                    ${metIcons?`<span class="blk-ult-mets" title="Métodos: ${(ult.b.metodos||[]).join(', ')}">${metIcons}</span>`:'<span style="color:var(--muted);font-size:11px">Sem métodos registrados</span>'}
+                    ${tempoStr?`<span class="blk-ult-tempo">⏱ ${tempoStr}</span>`:''}
+                    ${ult.b.sessaoObs?`<div class="blk-ult-obs">"${esc(ult.b.sessaoObs.substring(0,90))}${ult.b.sessaoObs.length>90?'…':''}"</div>`:''}
+                  </div>
+                </div>`;
+              }
+              return `<div class="blk-sec">
+                <div class="blk-sec-lbl">📚 Método utilizado nesta sessão</div>
+                ${ultHtml}
+                <div class="blk-metodo-grid">${pills}</div>
+                <textarea class="blk-metodo-obs" placeholder="Observações desta sessão (opcional)..." onchange="salvarObsBlocoSessao('${bid}', this.value)">${esc(b.sessaoObs||'')}</textarea>
+              </div>`;
+            })()}
 
           </div>
 
         </div>`;
       });
       h+=`<button class="add-blk" onclick="abrirAddBloco('${dk}')">+ sessão</button>`;
+      // Blocos de revisão (quando toggle ativo)
+      if(_showRevsCrono){
+        const dStr2=d.toISOString().split('T')[0];
+        const isHjCell=d.toDateString()===hoje;
+        const revsExibir=revisoes.filter(r=>{
+          if(r.status==='concluido') return false;
+          if(r.data===dStr2) return true;
+          if(isHjCell&&r.data<dStr2) return true; // atrasadas só no dia de hoje
+          return false;
+        });
+        if(revsExibir.length>0){
+          h+=`<div style="border-top:1px dashed rgba(127,119,221,.3);margin-top:3px;padding-top:3px;">`;
+          revsExibir.forEach(r=>{
+            const mRev=mats.find(x=>x.id==r.matId)||{nome:'?',cor:'#999'};
+            const hoje2=new Date().toISOString().split('T')[0];
+            const atrasada=r.data<hoje2;
+            const metLbl={espacada:'Espaç.',semanal:'Sem.',erros:'Erros',manual:'Manual',manutencao:'Manu.'}[r.metodo]||r.metodo;
+            h+=`<div class="rev-blk${atrasada?' atrasada':''}" onclick="abrirPainelRevisao('${r.id}')">
+              <div class="rev-blk-bar"></div>
+              <div class="rev-blk-body">
+                <div class="rev-blk-top">${r.topico||mRev.nome}</div>
+                <div class="rev-blk-meta">nº${r.num} · ${metLbl}${atrasada?' · ⚠':''}</div>
+              </div>
+              <button class="rev-blk-btn" onclick="event.stopPropagation();abrirPainelRevisao('${r.id}')">Revisar</button>
+            </div>`;
+          });
+          h+=`</div>`;
+        }
+      }
     } else { h+=`<div style="text-align:center;padding:16px 4px;color:var(--muted);font-size:12px;opacity:.5;letter-spacing:1px">FOLGA</div>`; }
     h+='</div></td>';
   });
@@ -3483,7 +4067,7 @@ function confirmarBloco(){
     if(blocos[dk]) blocos[dk].splice(idx,1);
     save(); renderSem();
   });
-  save(); fecharModal('mBloco'); renderSem();
+  save(); fecharModal('mBloco'); renderSem(); updateStats(); renderHome();
 }
 function delBloco(dk,idx){
   const snap=JSON.parse(JSON.stringify(blocos[dk][idx]));
@@ -3513,15 +4097,15 @@ function delBloco(dk,idx){
       const top=topicos.find(t=>t.matId===snap.matId&&t.nome===snap.topico);
       if(top){ top.agendado=true; if(top.status==='pendente') top.status='estudando'; }
     }
-    save(); renderSem(); renderMatTab();
+    save(); renderSem(); renderMatTab(); updateStats(); renderHome();
   });
-  save(); renderSem(); renderMatTab();
+  save(); renderSem(); renderMatTab(); updateStats(); renderHome();
 }
 function toggleFeito(dk,idx){
   const k=`${dk}_${idx}`, prev=!!feitos[k];
   feitos[k]=!prev;
-  pushUndo(prev?'Desmarcar feito':'Marcar feito', ()=>{ feitos[k]=prev; save(); renderSem(); updateStats(); renderHome(); });
-  save(); renderSem(); updateStats(); renderHome();
+  pushUndo(prev?'Desmarcar feito':'Marcar feito', ()=>{ feitos[k]=prev; save(); renderSem(); updateStats(); renderHome(); _refreshFloatPanel(); });
+  save(); renderSem(); updateStats(); renderHome(); _refreshFloatPanel();
 }
 
 // ══ FINALIZAR ══
@@ -3599,10 +4183,12 @@ function confirmarFin(){
   if(b.topico){
     const top=topicos.find(t=>t.matId===b.matId&&t.nome===b.topico);
     if(top){
+      const eraPendente = top.status !== 'estudado';
       top.status='estudado';
       top.revisaoAgendada=true;
       top.revisaoMetodo=metSel;
       top.revisaoEm=new Date().toISOString().split('T')[0];
+      if(eraPendente){ metas.topicos.atual=Math.max(0,(metas.topicos.atual||0)+1); svMetas(); }
     }
   }
 
@@ -3610,11 +4196,11 @@ function confirmarFin(){
   blocos[dk][idx].revIds=revisoes.slice(n0).map(r=>r.id);
   marcarDiaEstudado();
   pushUndo(`Finalizar "${b.topico||m.nome}"`, ()=>{ desfazerFin(dk,idx); });
-  save(); fecharModal('mFin'); renderSem(); renderRevs(); renderMatTab(); updateRevBadge(); renderCalendario(); renderHome(); renderAnalises();
+  save(); fecharModal('mFin'); renderSem(); renderRevs(); renderMatTab(); updateRevBadge(); renderCalendario(); renderHome(); renderAnalises(); _refreshFloatPanel();
   // Flash verde no card do bloco
   const _bwFin=document.getElementById('bw_'+dk+'_'+idx);
   if(_bwFin){ _bwFin.classList.add('blk-fin-flash'); setTimeout(()=>_bwFin.classList.remove('blk-fin-flash'),2000); }
-  toast(`✅ Tópico marcado como estudado · 📌 ${add} revisão(ões) agendada(s)`,()=>ir(2,null));
+  toast(`✅ Tópico marcado como estudado · 📌 ${add} revisão(ões) agendada(s)`,()=>ir(3,document.getElementById('tab3')));
 }
 function desfazerFin(dk,idx){
   const b=blocos[dk]&&blocos[dk][idx]; if(!b||!b.fin) return;
@@ -3634,7 +4220,11 @@ function confirmarFinSemRevisao(){
   blocos[dk][idx].fin=true;
   if(b.topico){
     const top=topicos.find(t=>t.matId===b.matId&&t.nome===b.topico);
-    if(top){ top.status='estudado'; top.revisaoAgendada=false; }
+    if(top){
+      const eraPendente = top.status !== 'estudado';
+      top.status='estudado'; top.revisaoAgendada=false;
+      if(eraPendente){ metas.topicos.atual=Math.max(0,(metas.topicos.atual||0)+1); svMetas(); }
+    }
   }
   marcarDiaEstudado();
   save(); fecharModal('mFin'); renderSem(); renderRevs(); renderMatTab(); updateRevBadge(); renderCalendario(); renderHome(); renderAnalises();
@@ -3665,6 +4255,8 @@ function _finalizarRevTop(comRevisao){
   t.status='estudado';
   t.revisaoAgendada=comRevisao;
   t.dataEstudo=new Date().toISOString().split('T')[0];
+  // Atualizar meta de tópicos
+  if(prev!=='estudado'){ metas.topicos.atual = Math.max(0,(metas.topicos.atual||0)+1); svMetas(); }
   // Atualizar UI do tópico
   const hdr=document.getElementById('thdr_'+id);
   if(hdr){
@@ -3727,6 +4319,14 @@ function fecharFloatPanel(){
 }
 
 function posicionarFloat(fp, triggerEl){ /* sidebar — posicionamento não necessário */ }
+
+// Reconstrói o painel flutuante após renderSem() para refletir mudanças
+function _refreshFloatPanel(){
+  if(!_floatBid) return;
+  const fp=document.getElementById('floatPanel');
+  if(!fp||!fp.classList.contains('aberto')) return;
+  fp.innerHTML=_buildSidebarHeader(_floatBid)+_buildSidebarBody(_floatBid);
+}
 
 function _buildSidebarHeader(bid){
   const panelEl=document.getElementById('bp_'+bid);
@@ -3807,10 +4407,10 @@ const _modalFechadores = {
 };
 document.addEventListener('keydown', function(e){
   if(e.key !== 'Escape') return;
-  // Drawer aberto? fecha primeiro
   const drawerEl=document.getElementById('drawerHelp');
   if(drawerEl&&drawerEl.classList.contains('on')){ fecharDrawer(); return; }
-  // Depois verifica modais overlay
+  // Fecha revPanel se aberto
+  if(_revPanelId){ fecharPainelRevisao(); return; }
   const modalAberto = document.querySelector('.overlay.on');
   if(modalAberto){
     const fn = _modalFechadores[modalAberto.id];
@@ -3866,6 +4466,7 @@ function registrarTempoManual(bid){
   });
   save();
   _atualizarSessionBar(bid);
+  incrementarMetaHoras(mins);
   if(inp) inp.value=25;
   toast(`⏱ ${fmtMin(mins)} registrado!`);
   renderCalendario(); renderSem(); renderHome(); renderAnalises();
@@ -4006,16 +4607,7 @@ function agendarRevErroQuestao(matId, topico, matNome){
 }
 function fmtD(s){if(!s)return'—';const[y,mo,d]=s.split('-');return`${d}/${mo}/${y}`;}
 function marcarRev(id){
-  const r=revisoes.find(x=>x.id===id); if(!r) return;
-  // Abrir modal de avaliação antes de marcar — exceto para Por Erros
-  if(r.metodo!=='erros'){
-    _avalRevId=id;
-    document.getElementById('mAvalRevTitulo').textContent=r.topico||'Revisão';
-    document.getElementById('mAvalRevSub').textContent=(mats.find(x=>x.id==r.matId)||{nome:''}).nome;
-    abrirModal('mAvalRev');
-    return;
-  }
-  _concluirRev(id);
+  abrirPainelRevisao(id);
 }
 
 function _concluirRev(id, dificuldade){
@@ -4047,7 +4639,7 @@ function _concluirRev(id, dificuldade){
       toast('⚠️ Dificuldade detectada — reforço agendado para +2 dias');
     }
   }
-  save(); renderRevs(); renderHome(); renderCalendario(); renderAnalises();
+  save(); renderRevs(); updateRevBadge(); verificarAtrasos(); renderSem(); renderHome(); renderCalendario(); renderAnalises();
 }
 
 let _avalRevId=null;
@@ -4061,7 +4653,7 @@ function erroRev(id){
   r.status='concluido';
   const am=new Date(); am.setDate(am.getDate()+1);
   revisoes.push({id:Date.now()+'_err',matId:r.matId,topico:r.topico,metodo:'erros',data:am.toISOString().split('T')[0],num:r.num+1,status:'pendente',criado:hj()});
-  save(); renderRevs(); updateRevBadge(); renderHome(); renderAnalises();
+  save(); renderRevs(); updateRevBadge(); renderSem(); renderMatTab(); renderHome(); renderAnalises();
   // Alerta de dificuldade persistente
   if(r.num>=3){
     toast(`⚠️ "${r.topico}" já errou ${r.num} vezes — considere rever o material base`,()=>{});
@@ -4084,17 +4676,20 @@ function updateRevBadge(){
   document.getElementById('cntRev').textContent=n;
   document.getElementById('stRP').textContent=n;
   if(document.getElementById('hRevNum')) document.getElementById('hRevNum').textContent=n;
+  const chipRev=document.getElementById('scRevCard');
   const elRevAt=document.getElementById('stRevAtraso');
   if(elRevAt){
     const atrasadas=revisoes.filter(r=>r.status!=='concluido'&&r.data<hj()).length;
     if(atrasadas>0){
       elRevAt.className='sschip-sub warn';
       elRevAt.textContent='⚠ '+atrasadas+' atrasada'+(atrasadas!==1?'s':'');
-      elRevAt.onclick=()=>ir(2,null);
+      elRevAt.onclick=()=>ir(3,document.getElementById('tab3'));
+      if(chipRev) chipRev.className='sschip chip-alert';
     } else {
       elRevAt.className='sschip-sub ok';
       elRevAt.textContent='✓ em dia';
       elRevAt.onclick=null;
+      if(chipRev) chipRev.className='sschip chip-ok';
     }
   }
 }
@@ -4269,7 +4864,14 @@ function delMat(id){
   if(!confirm(`Excluir "${m.nome}" e todos os seus tópicos?`)) return;
   mats=mats.filter(x=>x.id!==id);
   topicos=topicos.filter(t=>t.matId!==id);
-  save(); renderMatsGrid(); renderMatTab();
+  // Limpar blocos, revisões e questões desta matéria
+  Object.keys(blocos).forEach(dk=>{
+    blocos[dk]=(blocos[dk]||[]).filter(b=>b.matId!==id);
+    if(!blocos[dk].length) delete blocos[dk];
+  });
+  revisoes=revisoes.filter(r=>r.matId!=id);
+  questoes=questoes.filter(q=>q.matId!=id);
+  save(); renderMatsGrid(); renderMatTab(); renderSem(); updateStats(); updateRevBadge(); renderHome();
   toast('Matéria removida.');
 }
 
@@ -4389,10 +4991,20 @@ function salvarTopicosModal(){
     // Modo original: salvar direto na matéria
     if(!mtMatId) return;
     const m = mats.find(x=>x.id===mtMatId); if(!m) return;
-    topicos = topicos.filter(t=>t.matId!==mtMatId);
+    const topsExistentes = topicos.filter(t=>t.matId===mtMatId);
+    const nomesExistentes = topsExistentes.map(t=>t.nome);
+    // Remover tópicos que foram deletados
+    topicos = topicos.filter(t=>t.matId!==mtMatId || novasLinhas.includes(t.nome));
+    // Adicionar tópicos novos
     novasLinhas.forEach(nome=>{
-      topicos.push({id:edId(),matId:mtMatId,matNome:m.nome,nome,status:'pendente',dif:0,agendado:false,links:[],resumo:'',revisaoAgendada:false});
+      if(!nomesExistentes.includes(nome)){
+        topicos.push({id:edId(),matId:mtMatId,matNome:m.nome,nome,status:'pendente',dif:0,agendado:false,links:[],resumo:'',revisaoAgendada:false});
+      }
     });
+    // Reordenar
+    const outros = topicos.filter(t=>t.matId!==mtMatId);
+    const desta = novasLinhas.map(n=>topicos.find(t=>t.matId===mtMatId&&t.nome===n)).filter(Boolean);
+    topicos = [...outros, ...desta];
     save();
     fecharModal('mTopicos');
     renderMatTab(); renderMatsGrid();
@@ -4427,11 +5039,25 @@ function salvarMatCrono(){
     const m = mats.find(x=>x.id===_matEditandoId);
     if(m){
       m.nome=nome; m.cor=cor; m.bg=hexToRgba(cor,0.13); m.meta=meta;
-      // Sincronizar tópicos: remover os antigos, adicionar os novos
-      topicos = topicos.filter(t=>t.matId!==_matEditandoId);
+      // Sincronizar tópicos: preservar dados dos existentes, remover os deletados, adicionar novos
+      const topsExist = topicos.filter(t=>t.matId===_matEditandoId);
+      const nomesExist = topsExist.map(t=>t.nome);
+      // Remover os que não estão mais na lista
+      topicos = topicos.filter(t=>t.matId!==_matEditandoId || _matTopicosTemp.includes(t.nome));
+      // Adicionar os novos que não existiam antes
       _matTopicosTemp.forEach(tn=>{
-        topicos.push({id:edId(),matId:_matEditandoId,matNome:nome,nome:tn,status:'pendente',dif:0,agendado:false,links:[],resumo:'',revisaoAgendada:false});
+        if(!nomesExist.includes(tn)){
+          topicos.push({id:edId(),matId:_matEditandoId,matNome:nome,nome:tn,status:'pendente',dif:0,agendado:false,links:[],resumo:'',revisaoAgendada:false});
+        } else {
+          // Atualizar matNome nos existentes
+          const t=topicos.find(x=>x.matId===_matEditandoId&&x.nome===tn);
+          if(t) t.matNome=nome;
+        }
       });
+      // Reordenar para seguir a ordem de _matTopicosTemp
+      const outrosTopicos = topicos.filter(t=>t.matId!==_matEditandoId);
+      const estesMat = _matTopicosTemp.map(tn=>topicos.find(t=>t.matId===_matEditandoId&&t.nome===tn)).filter(Boolean);
+      topicos = [...outrosTopicos, ...estesMat];
     }
     toast(`Matéria "${nome}" atualizada!`);
   } else {
@@ -4452,9 +5078,17 @@ function removerMatCrono(){
   if(_matEditandoId===null) return;
   const m=mats.find(x=>x.id===_matEditandoId); if(!m) return;
   if(!confirm(`Remover "${m.nome}" e todos os seus tópicos?`)) return;
-  mats=mats.filter(x=>x.id!==_matEditandoId);
-  topicos=topicos.filter(t=>t.matId!==_matEditandoId);
+  const id=_matEditandoId;
+  mats=mats.filter(x=>x.id!==id);
+  topicos=topicos.filter(t=>t.matId!==id);
+  Object.keys(blocos).forEach(dk=>{
+    blocos[dk]=(blocos[dk]||[]).filter(b=>b.matId!==id);
+    if(!blocos[dk].length) delete blocos[dk];
+  });
+  revisoes=revisoes.filter(r=>r.matId!=id);
+  questoes=questoes.filter(q=>q.matId!=id);
   save(); renderMatsGrid(); renderMatTab(); fecharModal('mMat');
+  renderSem(); updateStats(); updateRevBadge(); renderHome();
   toast(`Matéria "${m.nome}" removida.`);
 }
 
@@ -4529,20 +5163,19 @@ function renderMatTab(){
         <span class="subj-nm">${m.nome}</span>${matchLbl}
         <div class="subj-badges">
           <span class="subj-badge">${mTopsAll.length} tópico${mTopsAll.length!==1?'s':''}</span>
-          <span class="subj-badge gr">${mEst2} finalizado${mEst2!==1?'s':''}</span>
+          ${(mTopsAll.length-mEst2)>0?`<span class="subj-badge pend">${mTopsAll.length-mEst2} pendente${(mTopsAll.length-mEst2)!==1?'s':''}</span>`:`<span class="subj-badge gr">✓ concluída</span>`}
         </div>
         <div class="subj-prog">
           <div class="subj-pbar"><div class="subj-pfill" style="width:${mPct}%;background:${m.cor}"></div></div>
-          <span class="subj-ppct">${mPct}%</span>
+          <span class="subj-ppct" style="color:${m.cor}">${mPct}%</span>
         </div>
-        <div style="display:flex;gap:5px;margin-left:6px;align-items:center" onclick="event.stopPropagation()">
-          <button class="sj-act" style="background:var(--teal);color:#fff;border-color:var(--teal)" onclick="abrirModalTopicos(${m.id})" title="Adicionar/editar tópicos">+ Tópicos</button>
-          <button class="sj-act" onclick="abrirEditMat(${m.id})">✏️</button>
-          <button class="sj-act del" onclick="delMat(${m.id})">✕</button>
-          <div class="subj-order-btns">
-            <button class="subj-order-btn" onclick="moverMat(${mi},-1)" ${mi===0?'disabled':''} title="Subir">▲</button>
-            <button class="subj-order-btn" onclick="moverMat(${mi},1)" ${mi===mats.length-1?'disabled':''} title="Descer">▼</button>
-          </div>
+        <div style="display:flex;gap:4px;margin-left:8px;align-items:center;flex-shrink:0" onclick="event.stopPropagation()">
+          <button class="sj-act" style="background:var(--teal);color:#fff;border-color:var(--teal);font-weight:700" onclick="abrirModalTopicos(${m.id})" title="Adicionar/editar tópicos">+ Tópicos</button>
+          <button class="sj-act" onclick="abrirEditMat(${m.id})" title="Editar matéria">✏️ Editar</button>
+          <button class="sj-act del" onclick="delMat(${m.id})" title="Excluir matéria">✕</button>
+          <div style="width:1px;height:16px;background:var(--border);margin:0 2px;flex-shrink:0"></div>
+          <button class="subj-order-btn" onclick="moverMat(${mi},-1)" ${mi===0?'disabled':''} title="Subir matéria">▲</button>
+          <button class="subj-order-btn" onclick="moverMat(${mi},1)" ${mi===mats.length-1?'disabled':''} title="Descer matéria">▼</button>
         </div>
         <span class="subj-chev">▼</span>
       </div>
@@ -4585,10 +5218,10 @@ function htmlTop(t){
     const mAbr=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
     const datFmt=`${d}/${mAbr[mo-1]}`;
     const cls=proxRev.data<hoje?'atrasado':proxRev.data===hoje?'hoje':'';
-    const title=proxRev.data<hoje?`Revisão ATRASADA (${datFmt})`:proxRev.data===hoje?`Revisar HOJE (${datFmt})`:`Próxima revisão: ${datFmt}`;
-    revBadge=`<span class="top-next-rev ${cls}" title="${title}">📅 ${datFmt}</span>`;
+    const tipTxt=proxRev.data<hoje?`Revisão ATRASADA — clique para revisar`:proxRev.data===hoje?`Revisar HOJE — clique para abrir`:`Próxima revisão: ${datFmt}`;
+    revBadge=`<div class="top-tip"><span class="top-next-rev ${cls}" style="cursor:pointer" onclick="abrirPainelRevisao('${proxRev.id}')">📅 ${datFmt}</span><span class="top-tip-lbl">${tipTxt}</span></div>`;
   } else if(t.revisaoAgendada){
-    revBadge=`<span class="top-next-rev" title="Revisão agendada">📌 Revisão</span>`;
+    revBadge=`<div class="top-tip"><span class="top-next-rev">📌 Revisão</span><span class="top-tip-lbl">Revisão agendada</span></div>`;
   }
 
   // ── Acurácia de questões ──
@@ -4597,8 +5230,8 @@ function htmlTop(t){
   const acQ=topQs.reduce((s,q)=>s+(q.acertos||0),0);
   const pctQ=totQ>0?Math.round((acQ/totQ)*100):null;
   const accBadge=pctQ!==null
-    ?`<span class="top-acc ${pctQ>=70?'gr':pctQ>=50?'or':'rd'}" title="✏️ ${acQ}/${totQ} questões · ${pctQ}% de acerto">✏️ ${pctQ}%</span>`
-    :`<span class="top-acc" style="background:var(--bg2);color:var(--muted);border:1px dashed var(--border2)" title="Nenhuma questão registrada ainda">✏️ —</span>`;
+    ?`<div class="top-tip"><span class="top-acc ${pctQ>=70?'gr':pctQ>=50?'or':'rd'}">✏️ ${pctQ}%</span><span class="top-tip-lbl">Questões: ${acQ}/${totQ} · ${pctQ}% de acerto</span></div>`
+    :`<div class="top-tip"><span class="top-acc" style="background:var(--bg2);color:var(--muted);border:1px dashed var(--border2)">✏️ —</span><span class="top-tip-lbl">Nenhuma questão registrada</span></div>`;
 
   return `<div class="top-wrap">
     <div class="top-hdr${t.status==='estudado'?' est':''}" id="thdr_${t.id}">
@@ -4606,13 +5239,15 @@ function htmlTop(t){
       <input type="checkbox" class="top-chk" ${t.status==='estudado'?'checked':''} onchange="toggleEst('${t.id}',this.checked)">
       <span class="top-nm" title="${t.nome}">${t.nome}</span>
       <span class="top-indicators">
-        ${hasResumo?`<span style="color:var(--teal)" title="Tem resumo">📝</span>`:''}
-        ${links.length>0?`<span style="color:var(--blue)" title="${links.length} link(s)">🔗${links.length}</span>`:''}
-        
+        ${hasResumo?`<div class="top-tip"><span style="color:var(--teal)">📝</span><span class="top-tip-lbl">Tem resumo</span></div>`:''}
+        ${links.length>0?`<div class="top-tip"><span style="color:var(--blue)">🔗${links.length}</span><span class="top-tip-lbl">${links.length} link(s) cadastrado(s)</span></div>`:''}
         ${accBadge}
-        <span id="tdif_${t.id}">${t.dif>0?`<span class="dif-sel dif-${t.dif}" style="font-size:10px;padding:1px 6px;pointer-events:none" title="Dificuldade">${{1:'🟢 Baixo',2:'🟡 Médio',3:'🔴 Difícil'}[t.dif]}</span>`:''}</span>
+        <span id="tdif_${t.id}">${t.dif>0?`<div class="top-tip" style="display:inline-flex"><span class="dif-sel dif-${t.dif}" style="font-size:10px;padding:1px 6px;pointer-events:none">${{1:'🟢 Baixo',2:'🟡 Médio',3:'🔴 Difícil'}[t.dif]}</span><span class="top-tip-lbl">Nível de dificuldade</span></div>`:''}</span>
       </span>
-      <button class="top-sched${t.agendado?' ag':''}" onclick="abrirAg('${t.id}')" title="${t.agendado?'Clique para remover do cronograma':'Adicionar ao cronograma'}">${t.agendado?'★ Crono':' + Crono'}</button>
+      <div class="top-tip">
+        <button class="top-sched${t.agendado?' ag':''}" onclick="abrirAg('${t.id}')">${t.agendado?'★ Crono':'+ Crono'}</button>
+        <span class="top-tip-lbl">${t.agendado?'No cronograma — clique para remover':'Adicionar ao cronograma'}</span>
+      </div>
       ${revBadge}
       <select class="top-sel ${stCls}" onchange="setTopStatus('${t.id}',this)">
         <option value="pendente" ${t.status==='pendente'?'selected':''}>⏳ Pendente</option>
@@ -4623,10 +5258,11 @@ function htmlTop(t){
     </div>
     <div class="top-body${isOpen?' op':'' }" id="tbody_${t.id}">
       <div class="top-actions">
-        ${difSel}
         <button class="tact${hasResumo?' has':''}" onclick="abrirResumo('${t.id}')">📝 ${hasResumo?'Ver Resumo':'Resumo'}</button>
-        <button class="tact${(t.lembrete||'').trim()?' lembrete-ativo':''}" onclick="abrirLembreteModal('${t.id}')">🔔 ${(t.lembrete||'').trim()?'Ver Lembrete':'Lembrete'}</button>
         <button class="tact${links.length>0?' has':''}" onclick="lkToggle('${t.id}')">🔗 ${links.length>0?links.length+' link(s)':'Links'}</button>
+        <button class="tact${(t.lembrete||'').trim()?' lembrete-ativo':''}" onclick="abrirLembreteModal('${t.id}')">🔔 ${(t.lembrete||'').trim()?'Ver Lembrete':'Lembrete'}</button>
+        ${difSel}
+        <span style="display:inline-block;width:1px;height:16px;background:var(--border);margin:0 4px;vertical-align:middle;flex-shrink:0"></span>
         <button class="tact" onclick="abrirEditTop('${t.id}')">✏️ Editar</button>
         <button class="tact del" onclick="delTop('${t.id}')">✕ Excluir</button>
       </div>
@@ -4716,9 +5352,9 @@ function setTopStatus(id,sel){
       if(s){s.value=prev;s.className='top-sel '+({pendente:'ts-p',estudando:'ts-e',estudado:'ts-d',revisar:'ts-r'}[prev]||'ts-p');}
       const c=h.querySelector('.top-chk'); if(c) c.checked=(prev==='estudado');
     }
-    save();
+    save(); renderSem(); renderHome();
   });
-  save();
+  save(); renderSem(); renderHome();
 }
 function setDif(id,val){
   const t=topicos.find(x=>x.id===id);if(!t)return;
@@ -4735,16 +5371,24 @@ function setDif(id,val){
   save();
 }
 function delTop(id){
-  const snap=JSON.parse(JSON.stringify(topicos.find(t=>t.id===id)||{}));
-  const snapIdx=topicos.findIndex(t=>t.id===id);
-  topicos=topicos.filter(t=>t.id!==id);
+  const t=topicos.find(x=>x.id===id); if(!t) return;
+  const snap=JSON.parse(JSON.stringify(t));
+  const snapIdx=topicos.findIndex(x=>x.id===id);
+  topicos=topicos.filter(x=>x.id!==id);
+  // Limpar blocos, revisões e questões deste tópico
+  Object.keys(blocos).forEach(dk=>{
+    blocos[dk]=(blocos[dk]||[]).filter(b=>!(b.matId===t.matId&&b.topico===t.nome));
+    if(!blocos[dk].length) delete blocos[dk];
+  });
+  revisoes=revisoes.filter(r=>!(r.matId==t.matId&&r.topico===t.nome));
+  questoes=questoes.filter(q=>!(q.matId==t.matId&&q.topico===t.nome));
   if(snap.id){
     pushUndo(`Excluir tópico "${snap.nome}"`, ()=>{
       topicos.splice(snapIdx,0,snap);
-      save(); renderMatTab();
+      save(); renderMatTab(); updateRevBadge(); renderSem();
     });
   }
-  save(); renderMatTab();
+  save(); renderMatTab(); updateRevBadge(); renderSem(); updateStats();
 }
 function addTop(matId){
   const inp=document.getElementById('tinp_'+matId); if(!inp) return;
@@ -4840,6 +5484,11 @@ function salvarResumo(){
   save(); renderMatTab();
   // Atualiza preview no floatPanel imediatamente (se estiver aberto)
   if(_floatBid) renderSem();
+  // Atualiza revPanel se estiver aberto no mesmo tópico
+  if(_revPanelId){
+    const r=revisoes.find(x=>x.id===_revPanelId);
+    if(r&&r.topico===t.nome&&r.matId==t.matId) _renderRevPanel();
+  }
 }
 function limparResumo(){
   if(!confirm('Apagar todo o conteúdo do resumo?')) return;
@@ -5023,23 +5672,6 @@ function updateStats(){
   document.getElementById('stF').textContent=fei;
   if(document.getElementById('stM')) document.getElementById('stM').textContent=mats.length;
   document.getElementById('hPct').textContent=pct+'%';
-  // Indicador de revisões atrasadas
-  const elRevAt=document.getElementById('stRevAtraso');
-  if(elRevAt){
-    const hoje=hj();
-    const atrasadas=revisoes.filter(r=>r.status!=='concluido'&&r.data<hoje).length;
-    if(atrasadas>0){
-      elRevAt.style.color='var(--red)';
-      elRevAt.style.cursor='pointer';
-      elRevAt.onclick=()=>ir(2,null);
-      elRevAt.innerHTML='⚠ '+atrasadas+' atrasada'+(atrasadas!==1?'s':'')+' · <span style="color:var(--blue);font-weight:600">ver</span>';
-    } else {
-      elRevAt.style.color='var(--muted)';
-      elRevAt.style.cursor='default';
-      elRevAt.onclick=null;
-      elRevAt.innerHTML='✓ nenhuma atrasada';
-    }
-  }
   renderMatsGrid(); updateRevBadge(); updateDias();
 }
 function updateDias(){
@@ -5075,10 +5707,10 @@ function updateDias(){
     _set('stSemSub','prova encerrada');
     _set('stRitmo','—');
     _set('stRitmoSub','prova encerrada');
-    semCard.className = 'sc rd';
-    // ritCard style
+    semCard.className = 'sschip rd';
+    ritCard.className = 'sschip';
     if(concCard){
-      // concCard neutral
+      concCard.className = 'sschip';
       _set('stConclusao','—');
       _set('stConclusaoSub','prova encerrada');
     }
@@ -5087,7 +5719,7 @@ function updateDias(){
 
   // ── Semanas restantes ──
   const semsRestantes = Math.ceil(diff / 7);
-  semCard.style.display = '';
+  semCard.className = semsRestantes <= 4 ? 'sschip rd' : semsRestantes <= 8 ? 'sschip or' : 'sschip';
   _set('stSem', semsRestantes);
   _set('stSemSub', diff + (diff === 1 ? ' dia restante' : ' dias restantes'));
 
@@ -5103,29 +5735,29 @@ function updateDias(){
 
   // Cor: verde = no ritmo, laranja = levemente abaixo, vermelho = crítico
   let cls = 'rd';
-  if(pendentes === 0)             cls = 'gr';
-  else if(ritmoAtual >= ritmoNec) cls = 'gr';
+  if(pendentes === 0)                    cls = 'gr';
+  else if(ritmoAtual >= ritmoNec)        cls = 'gr';
   else if(ritmoAtual >= ritmoNec * 0.65) cls = 'or';
 
-  // ritCard cls
+  ritCard.className = 'sschip ' + cls;
   _set('stRitmo', totTop === 0 ? '—' : ritmoNec);
   _set('stRitmoSub', totTop === 0 ? 'cadastre tópicos no edital' : `tópicos/sem · ${pendentes} pendentes de ${totTop}`);
 
   // ── Conclusão prevista ──
-  // concEl and concSub accessed via _set helper
   if(concCard && totTop === 0){
+    concCard.className = 'sschip';
     _set('stConclusao','—');
     _set('stConclusaoSub','cadastre tópicos no edital');
   } else if(concCard && totTop > 0 && ritmoAtual === 0){
+    concCard.className = 'sschip';
     _set('stConclusao','—');
     _set('stConclusaoSub','estude o 1º tópico para calcular');
   }
   if(concCard && totTop > 0 && ritmoAtual > 0){
     if(pendentes === 0){
+      concCard.className = 'sschip gr';
       _set('stConclusao','✓ Concluído');
-      
       _set('stConclusaoSub','edital finalizado!');
-      // concCard ok
     } else {
       const semsParaConcluir = Math.ceil(pendentes / ritmoAtual);
       const dataConclusao = new Date();
@@ -5135,22 +5767,15 @@ function updateDias(){
       const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
       const dStr = dataConclusao.getDate() + ' ' + meses[dataConclusao.getMonth()] + '/' + dataConclusao.getFullYear();
       _set('stConclusao', dStr);
-      
       const diasDif = Math.round((dataConclusao - provaDate) / 86400000);
       if(atrasado){
-        // concCard warn
+        concCard.className = 'sschip rd';
         _set('stConclusaoSub','⚠ '+diasDif+' dia'+(diasDif!==1?'s':'')+' após a prova');
       } else {
-        // concCard ok
+        concCard.className = 'sschip gr';
         _set('stConclusaoSub',Math.abs(diasDif)+' dia'+(Math.abs(diasDif)!==1?'s':'')+' antes da prova');
       }
     }
-  } else if(concCard && totTop === 0){
-    _set('stConclusao','—');
-    _set('stConclusaoSub','cadastre tópicos no edital');
-  } else if(concCard && ritmoAtual === 0){
-    _set('stConclusao','—');
-    _set('stConclusaoSub','estude o 1º tópico para calcular');
   }
 }
 function salvarNota(){notas[semAtual]=document.getElementById('txtNota').value;save();}
@@ -5322,6 +5947,18 @@ function registrarQuestoesDaSessao(bid, matId){
     save(); renderMatTab(); renderAnalises();
   });
   save();
+  // Auto-marcar método 'questoes' no bloco
+  const _bParts=bid.split('_');
+  const _bDk=_bParts.slice(0,-1).join('_');
+  const _bIdx=parseInt(_bParts[_bParts.length-1]);
+  const _bBlk=blocos[_bDk]&&blocos[_bDk][_bIdx];
+  if(_bBlk){ if(!_bBlk.metodos)_bBlk.metodos=[]; if(!_bBlk.metodos.includes('questoes'))_bBlk.metodos.push('questoes'); save(); }
+  // Atualizar metas
+  incrementarMetaQuestoes(total);
+  // Acertos: recalcula média geral
+  const totQAll=questoes.reduce((s,q)=>s+(q.total||0),0);
+  const acQAll=questoes.reduce((s,q)=>s+(q.acertos||0),0);
+  if(totQAll>0){ metas.acertos.atual=Math.round(acQAll/totQAll*100); svMetas(); }
   // Limpar campos
   totEl.value=''; acEl.value='';
   const pct=Math.round(acertos/total*100);
@@ -5425,11 +6062,125 @@ function renderAnalises(){
   renderAnQuestoes();
   renderAnDificuldade();
   renderAnStreak();
+  renderAnHistorico();
   // Preencher select de matérias do formulário de questões
   const sel=document.getElementById('qMat');
   if(sel){ sel.innerHTML=mats.map(m=>`<option value="${m.id}">${m.nome}</option>`).join(''); atualizarSelectTopico(); }
   const dEl=document.getElementById('qData');
   if(dEl&&!dEl.value) dEl.value=hj();
+}
+
+function renderAnHistorico(){
+  const el=document.getElementById('anHistorico'); if(!el) return;
+  const filtMat=document.getElementById('histFiltMat');
+  const filtPer=document.getElementById('histFiltPer');
+  const filtStatus=document.getElementById('histFiltStatus');
+
+  // Atualizar select de matérias
+  if(filtMat){
+    const prev=filtMat.value;
+    filtMat.innerHTML='<option value="">Todas</option>'+mats.map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');
+    filtMat.value=prev;
+  }
+
+  const filtMatVal  = filtMat?.value||'';
+  const filtPerVal  = parseInt(filtPer?.value||'30');
+  const filtStatVal = filtStatus?.value||'all';
+
+  const ini=getIni();
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  const corte = filtPerVal>0 ? new Date(hoje.getTime()-filtPerVal*86400000) : null;
+
+  // Construir lista de todas as sessões (blocos com data calculada)
+  const sessoes=[];
+  Object.keys(blocos).forEach(dk=>{
+    const [semStr,diaStr]=dk.split('_');
+    const sem=parseInt(semStr), dia=parseInt(diaStr);
+    const ws=new Date(ini); ws.setDate(ini.getDate()+sem*7);
+    let dkDate=null;
+    for(let i=0;i<7;i++){
+      const d=new Date(ws); d.setDate(ws.getDate()+i);
+      if(d.getDay()===dia){ dkDate=new Date(d); break; }
+    }
+    if(!dkDate) return;
+    dkDate.setHours(0,0,0,0);
+    if(corte && dkDate<corte) return; // fora do período
+
+    (blocos[dk]||[]).forEach((b,idx)=>{
+      if(b.transferido) return; // ignora transferidos
+      const m=mats.find(x=>x.id===b.matId)||{nome:'?',cor:'#999'};
+      if(filtMatVal && String(b.matId)!==filtMatVal) return;
+      if(filtStatVal==='fin' && !b.fin) return;
+      if(filtStatVal==='pend' && b.fin) return;
+      const bid=`${dk}_${idx}`;
+      const tempo=blocoTempos[bid]||0;
+      sessoes.push({dk,idx,b,m,data:dkDate,tempo,fin:!!b.fin,sem});
+    });
+  });
+
+  // Ordenar por data decrescente
+  sessoes.sort((a,b)=>b.data-a.data||a.m.nome.localeCompare(b.m.nome));
+
+  const totalEl=document.getElementById('anHistTotal');
+  if(totalEl) totalEl.textContent=`${sessoes.length} sessão${sessoes.length!==1?'ões':''} encontrada${sessoes.length!==1?'s':''}`;
+
+  if(sessoes.length===0){
+    el.innerHTML='<div class="hist-empty">Nenhuma sessão encontrada com os filtros selecionados.</div>';
+    return;
+  }
+
+  // Agrupar por data
+  const porData={};
+  sessoes.forEach(s=>{
+    const key=s.data.toISOString().split('T')[0];
+    if(!porData[key]) porData[key]={data:s.data, itens:[]};
+    porData[key].itens.push(s);
+  });
+
+  const DIAS_PT=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const MESES_PT=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+
+  let html=Object.keys(porData).sort((a,b)=>b.localeCompare(a)).map(key=>{
+    const g=porData[key];
+    const d=g.data;
+    const isHoje=key===hj();
+    const isOntem=new Date(d.getTime()+86400000).toISOString().split('T')[0]===hj();
+    const label=isHoje?'Hoje':isOntem?'Ontem':`${DIAS_PT[d.getDay()]}, ${d.getDate()} ${MESES_PT[d.getMonth()]}`;
+    const totalTempo=g.itens.reduce((a,s)=>a+s.tempo,0);
+    const tempoLabel=totalTempo>0?fmtMin(totalTempo):'';
+
+    const rows=g.itens.map(s=>{
+      const tempoStr=s.tempo>0?fmtMin(s.tempo):'—';
+      const statusHtml=s.fin
+        ?'<span class="hist-status-fin">✓ Feita</span>'
+        :'<span class="hist-status-pend">⏳ Pendente</span>';
+      const metIcons=(s.b.metodos||[]).map(id=>_METS_DEF.find(x=>x.id===id)?.icon||'').filter(Boolean).join(' ');
+      const obsHtml=s.b.sessaoObs?`<div class="blk-ult-obs" style="margin-top:3px;font-size:11px;color:var(--muted);font-style:italic;">"${s.b.sessaoObs.substring(0,80)}${s.b.sessaoObs.length>80?'…':''}"</div>`:'';
+      return `<div class="hist-row">
+        <div class="hist-dot" style="background:${s.m.cor}"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <div class="hist-mat" title="${s.m.nome}">${s.m.nome}</div>
+            <div class="hist-top" title="${s.b.topico||'Sem tópico'}">${s.b.topico||'<span style="color:var(--muted);font-style:italic">Sem tópico</span>'}</div>
+          </div>
+          ${metIcons?`<div style="font-size:13px;letter-spacing:2px;margin-top:2px;" title="Métodos: ${(s.b.metodos||[]).join(', ')}">${metIcons}</div>`:''}
+          ${obsHtml}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
+          <div class="hist-tempo">⏱ ${tempoStr}</div>
+          ${statusHtml}
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="hist-dia-hdr">
+      <span class="hist-dia-dt">${label}</span>
+      <span class="hist-dia-sub">${d.getDate()}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}</span>
+      ${tempoLabel?`<span class="hist-dia-tot">${tempoLabel} total</span>`:''}
+    </div>${rows}`;
+  }).join('');
+
+  el.innerHTML=html;
 }
 
 // Calcular total de minutos estudados por matéria
@@ -5676,6 +6427,11 @@ function registrarQuestoes(){
   if(acertos>total){ toast('Acertos não pode ser maior que total.'); return; }
   questoes.push({matId,topico,total,acertos,data});
   if(!diasStudied.includes(data)) diasStudied.push(data);
+  // Atualizar metas
+  incrementarMetaQuestoes(total);
+  const totQAll=questoes.reduce((s,q)=>s+(q.total||0),0);
+  const acQAll=questoes.reduce((s,q)=>s+(q.acertos||0),0);
+  if(totQAll>0){ metas.acertos.atual=Math.round(acQAll/totQAll*100); svMetas(); }
   save(); renderAnQuestoes(); renderAnCards(); renderAnStreak(); renderHome();
   document.getElementById('qTotal').value='';
   document.getElementById('qAcertos').value='';
@@ -5942,9 +6698,70 @@ function execReset(tipo){
 
 // ══ GERAR CICLO ══
 let _cicloMatsExcluidas = new Set();
-let _cicloDiasSelecionados = new Set(); // inicializado com dias ativos ao abrir
+let _cicloDiasSelecionados = new Set();
 let _cicloPlano = [];
+let _cicloModo = 'sequencial';
 const DIA_NOME = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+const _CICLO_MODOS = {
+  sequencial: { desc: 'Próximo tópico não estudado de cada matéria, em ordem.' },
+  reverso:    { desc: 'Último tópico não estudado de cada matéria, voltando ao início.' },
+  prioridade: { desc: 'Distribuição por prioridade: Alta 2x/sem · Média 1x/sem · Baixa 1x/2sem.' },
+  multisemana:{ desc: 'Planejamento para múltiplas semanas de uma vez.' },
+  revisoes:   { desc: 'Reserva automaticamente 1 slot por dia com revisões pendentes.' },
+};
+
+function setCicloModo(modo){
+  _cicloModo = modo;
+  // Atualizar visual dos botões
+  Object.keys(_CICLO_MODOS).forEach(m => {
+    const btn = document.getElementById('cicloModoBtn_'+m);
+    if(!btn) return;
+    const active = m === modo;
+    btn.style.background    = active ? 'var(--accent)' : 'transparent';
+    btn.style.color         = active ? '#fff' : 'var(--muted)';
+    btn.style.borderColor   = active ? 'var(--accent)' : 'var(--border)';
+    btn.style.fontWeight    = active ? '700' : '600';
+  });
+  // Atualizar descrição
+  const desc = document.getElementById('cicloModoDesc');
+  if(desc) desc.textContent = _CICLO_MODOS[modo]?.desc || '';
+  // Pré-configurar opções conforme modo
+  const nSem   = document.getElementById('cicloNSemanas');
+  const intRev = document.getElementById('cicloIntegrarRev');
+  const freqLeg= document.getElementById('cicloFreqLegenda');
+  if(modo==='sequencial'){
+    if(nSem)    nSem.value = '1';
+    if(intRev)  intRev.checked = false;
+    if(freqLeg) freqLeg.style.display = 'none';
+  } else if(modo==='reverso'){
+    if(nSem)    nSem.value = '1';
+    if(intRev)  intRev.checked = false;
+    if(freqLeg) freqLeg.style.display = 'none';
+  } else if(modo==='prioridade'){
+    if(nSem)    nSem.value = '1';
+    if(intRev)  intRev.checked = false;
+    if(freqLeg) freqLeg.style.display = 'flex';
+  } else if(modo==='multisemana'){
+    if(nSem)    nSem.value = '2';
+    if(intRev)  intRev.checked = false;
+    if(freqLeg) freqLeg.style.display = 'none';
+  } else if(modo==='revisoes'){
+    if(nSem)    nSem.value = '1';
+    if(intRev)  intRev.checked = true;
+    if(freqLeg) freqLeg.style.display = 'none';
+  }
+  _resetPreviewCiclo();
+}
+
+// Próximo tópico em ordem reversa (do último ao primeiro)
+function _proximoTopicoReverso(matId, forcar, topicsIgnorar=new Set()){
+  const planejados = forcar ? new Set() : _topicosJaPlanejados(matId);
+  const tops = topicos.filter(t=>t.matId===matId);
+  return [...tops].reverse().find(t=>
+    t.status!=='estudado' && !planejados.has(t.nome) && !topicsIgnorar.has(t.nome)
+  ) || null;
+}
 
 // Retorna tópicos planejados no cronograma (agendados mas não finalizados)
 function _topicosJaPlanejados(matId){
@@ -5959,10 +6776,10 @@ function _topicosJaPlanejados(matId){
 
 // Próximo tópico: não estudado E não planejado no cronograma
 // ignorarPlanejados=true: pega mesmo que já planejado (para forçar inclusão)
-function _proximoTopicoPendente(matId, ignorarPlanejados=false){
+function _proximoTopicoPendente(matId, ignorarPlanejados=false, topicsIgnorar=new Set()){
   const planejados = ignorarPlanejados ? new Set() : _topicosJaPlanejados(matId);
   const tops = topicos.filter(t => t.matId===matId);
-  return tops.find(t => t.status!=='estudado' && !planejados.has(t.nome)) || null;
+  return tops.find(t => t.status!=='estudado' && !planejados.has(t.nome) && !topicsIgnorar.has(t.nome)) || null;
 }
 
 // Status da matéria para o ciclo
@@ -5977,37 +6794,54 @@ function _statusMatCiclo(matId){
 }
 
 function _resetPreviewCiclo(){
-  document.getElementById('cicloPreview').style.display='none';
-  document.getElementById('cicloGerarBtn').style.display='none';
+  const prev = document.getElementById('cicloPreview');
+  const btn  = document.getElementById('cicloGerarBtn');
+  if(prev) prev.style.display='none';
+  if(btn)  btn.style.display='none';
   _cicloPlano=[];
 }
 
 function abrirGerarCiclo(){
   const ativos = diasAtivos();
 
-  // Renderizar lista de matérias
+  // Renderizar lista de matérias com seletor de frequência
   const lista = document.getElementById('cicloMatList');
   lista.innerHTML = mats.map(m => {
     const status = _statusMatCiclo(m.id);
     const excluida = _cicloMatsExcluidas.has(m.id);
-    const proximo = _proximoTopicoPendente(m.id);
-    const podeForcar = status==='todos_planejados';
+    const proximo = _cicloModo==='reverso'
+      ? _proximoTopicoReverso(m.id, false)
+      : _proximoTopicoPendente(m.id);
+    const subLabelBase = _cicloModo==='reverso' ? 'Último: ' : 'Próximo: ';
     const subLabel = {
       concluida: '✓ todos estudados — será pulada',
       todos_planejados: '📌 todos já no cronograma — marque para forçar inclusão',
       vazia: '— sem tópicos cadastrados',
-      elegivel: 'Próximo: ' + (proximo?.nome||'')
+      elegivel: subLabelBase + (proximo?.nome||'')
     }[status];
+    const podeForcar = status==='todos_planejados';
     const subCor = status==='elegivel' ? 'var(--muted)' : status==='concluida' ? 'var(--green)' : podeForcar ? 'var(--accent)' : 'var(--muted)';
     const disabled = status==='concluida' || status==='vazia';
-    const checked = !excluida && (status==='elegivel' || (podeForcar && !excluida));
-    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border);">
-      <input type="checkbox" ${checked&&!excluida?'checked':''} ${disabled?'disabled':''} onchange="toggleCicloMat(${m.id},this.checked)" style="accent-color:var(--teal);width:14px;height:14px;flex-shrink:0;">
+    const checked = !excluida && (status==='elegivel' || podeForcar);
+    const freq = m.cicloFreq || 'media';
+    const freqBtns = ['baixa','media','alta'].map(f => {
+      const icon = {baixa:'🟢',media:'🟡',alta:'🔴'}[f];
+      const title = {baixa:'Baixa — 1x a cada 2 semanas',media:'Média — 1x por semana',alta:'Alta — 2x por semana'}[f];
+      const active = freq === f;
+      return `<button onclick="event.stopPropagation();toggleCicloFreq(${m.id},'${f}')" title="${title}"
+        id="cicloFreqBtn_${m.id}_${f}"
+        style="border:1.5px solid ${active?'var(--accent)':'var(--border)'};background:${active?'var(--accent3)':'transparent'};
+        color:${active?'var(--accent)':'var(--muted)'};border-radius:4px;padding:1px 6px;font-size:12px;cursor:pointer;
+        transition:all .15s;line-height:1.6;">${icon}</button>`;
+    }).join('');
+    return `<div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);">
+      <input type="checkbox" ${checked?'checked':''} ${disabled?'disabled':''} onchange="toggleCicloMat(${m.id},this.checked)" style="accent-color:var(--teal);width:14px;height:14px;flex-shrink:0;">
       <div style="width:8px;height:8px;border-radius:2px;background:${m.cor};flex-shrink:0;"></div>
       <div style="flex:1;min-width:0;">
         <div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.nome}</div>
         <div style="font-size:11px;color:${subCor};">${subLabel}</div>
       </div>
+      ${!disabled?`<div style="display:flex;gap:2px;flex-shrink:0;">${freqBtns}</div>`:''}
     </div>`;
   }).join('') || '<div style="padding:16px;text-align:center;color:var(--muted);font-size:13px;">Nenhuma matéria cadastrada.</div>';
 
@@ -6027,6 +6861,8 @@ function abrirGerarCiclo(){
     }).join('');
   }
 
+  // Aplicar modo atual (atualiza visual e opções)
+  setCicloModo(_cicloModo);
   _resetPreviewCiclo();
   abrirModal('mCiclo');
 }
@@ -6037,6 +6873,22 @@ function toggleCicloMat(id, checked){
   _resetPreviewCiclo();
 }
 
+function toggleCicloFreq(matId, freq){
+  const m = mats.find(x=>x.id===matId); if(!m) return;
+  m.cicloFreq = freq;
+  sv('v12_mats', mats);
+  // Atualizar visual dos botões
+  ['baixa','media','alta'].forEach(f => {
+    const btn = document.getElementById(`cicloFreqBtn_${matId}_${f}`);
+    if(!btn) return;
+    const active = f === freq;
+    btn.style.borderColor = active ? 'var(--accent)' : 'var(--border)';
+    btn.style.background  = active ? 'var(--accent3)' : 'transparent';
+    btn.style.color       = active ? 'var(--accent)' : 'var(--muted)';
+  });
+  _resetPreviewCiclo();
+}
+
 function toggleCicloDia(dia, checked){
   if(checked) _cicloDiasSelecionados.add(dia);
   else _cicloDiasSelecionados.delete(dia);
@@ -6044,107 +6896,151 @@ function toggleCicloDia(dia, checked){
 }
 
 function previewCiclo(){
-  const qtdDia = parseInt(document.getElementById('cicloQtdDia').value)||3;
+  const qtdDia     = parseInt(document.getElementById('cicloQtdDia').value)||3;
+  const nSemanas   = parseInt(document.getElementById('cicloNSemanas')?.value)||1;
+  const integrarRev= document.getElementById('cicloIntegrarRev')?.checked||false;
+  const ini        = getIni();
 
-  // Matérias elegíveis: elegivel normal OU todos_planejados mas não excluídas
-  const matsValidas = mats.filter(m => {
-    if(_cicloMatsExcluidas.has(m.id)) return false;
-    const st = _statusMatCiclo(m.id);
-    return st==='elegivel' || st==='todos_planejados';
-  }).map(m => ({m, forcar: _statusMatCiclo(m.id)==='todos_planejados'}));
-
-  if(matsValidas.length===0){
-    toast('Nenhuma matéria elegível para o ciclo.');
-    return;
-  }
-
-  // Dias selecionados pelo usuário
-  const ini = getIni();
-  const ws = new Date(ini); ws.setDate(ini.getDate() + semAtual*7);
-  const diasDisp = [];
-  for(let d=0;d<7;d++){
-    const dt = new Date(ws); dt.setDate(ws.getDate()+d);
-    const diaSem = dt.getDay();
-    if(_cicloDiasSelecionados.has(diaSem)) diasDisp.push({dia:diaSem, dk:`${semAtual}_${diaSem}`, dt});
-  }
-
-  if(diasDisp.length===0){
-    toast('Nenhum dia selecionado. Marque ao menos um dia.');
-    return;
-  }
-
-  // Distribuir respeitando vagas e sem repetir matéria no mesmo dia
   _cicloPlano = [];
-  let mIdx = 0;
-  for(let d=0; d<diasDisp.length && mIdx<matsValidas.length; d++){
-    const dk = diasDisp[d].dk;
-    const jaOcupados = (blocos[dk]||[]).length;
-    const vagas = Math.max(0, qtdDia - jaOcupados);
-    // Matérias já presentes neste dia (manual + ciclo atual)
-    const matsNoDia = new Set([
-      ...(blocos[dk]||[]).map(b=>b.matId),
-      ..._cicloPlano.filter(p=>p.dk===dk).map(p=>p.m.id)
-    ]);
-    let vagasUsadas = 0;
-    let tentativa = 0;
-    while(vagasUsadas < vagas && tentativa < matsValidas.length){
-      const {m, forcar} = matsValidas[tentativa];
-      if(!matsNoDia.has(m.id)){
-        const top = _proximoTopicoPendente(m.id, forcar);
-        if(top){
-          _cicloPlano.push({dk, dia:diasDisp[d].dia, m, top, forcar});
-          matsNoDia.add(m.id);
-          vagasUsadas++;
-          matsValidas.splice(tentativa, 1);
-          continue;
-        }
+
+  // Rastrear tópicos já alocados no preview (evita duplicar o mesmo tópico para mat Alta)
+  const topicsUsados = {}; // {matId: Set<topicNome>}
+
+  function proximoTopCiclo(matId, forcar){
+    const jaNosCiclo = topicsUsados[matId] || new Set();
+    if(_cicloModo==='reverso'){
+      return _proximoTopicoReverso(matId, forcar, jaNosCiclo);
+    }
+    const planejados = forcar ? new Set() : _topicosJaPlanejados(matId);
+    return topicos.filter(t=>t.matId===matId)
+      .find(t=>t.status!=='estudado' && !planejados.has(t.nome) && !jaNosCiclo.has(t.nome)) || null;
+  }
+
+  for(let semOffset=0; semOffset<nSemanas; semOffset++){
+    const semIdx = semAtual + semOffset;
+    const ws = new Date(ini); ws.setDate(ini.getDate()+semIdx*7);
+
+    // Dias disponíveis desta semana
+    const diasDisp = [];
+    for(let d=0;d<7;d++){
+      const dt = new Date(ws); dt.setDate(ws.getDate()+d);
+      const diaSem = dt.getDay();
+      if(_cicloDiasSelecionados.has(diaSem)) diasDisp.push({dia:diaSem, dk:`${semIdx}_${diaSem}`, dt, sem:semIdx});
+    }
+    if(diasDisp.length===0) continue;
+
+    // Montar pool — freq só se aplica no modo prioridade
+    const usarFreq = _cicloModo === 'prioridade';
+    const matsPool = [];
+    mats.forEach(m => {
+      if(_cicloMatsExcluidas.has(m.id)) return;
+      const st = _statusMatCiclo(m.id);
+      if(st!=='elegivel' && st!=='todos_planejados') return;
+      const freq   = usarFreq ? (m.cicloFreq || 'media') : 'media';
+      const forcar = st==='todos_planejados';
+      // Baixa: só em semanas pares do offset (0, 2, 4...)
+      if(usarFreq && freq==='baixa' && semOffset%2!==0) return;
+      matsPool.push({m, forcar});
+      if(usarFreq && freq==='alta') matsPool.push({m, forcar}); // entra 2x no pool
+    });
+
+    if(matsPool.length===0) continue;
+
+    let poolCopy = [...matsPool];
+
+    for(let d=0; d<diasDisp.length && poolCopy.length>0; d++){
+      const {dia, dk, dt} = diasDisp[d];
+      const jaOcupados = (blocos[dk]||[]).length + _cicloPlano.filter(p=>p.dk===dk).length;
+
+      // Reservar slot para revisão se ativo
+      let revSlots = 0;
+      if(integrarRev){
+        const dStr = dt.toISOString().split('T')[0];
+        const revsNoDia = revisoes.filter(r=>r.data===dStr&&r.status!=='concluido').length;
+        if(revsNoDia>0) revSlots = 1; // reserva 1 slot por dia com revisão
       }
-      tentativa++;
+
+      const vagas = Math.max(0, qtdDia - jaOcupados - revSlots);
+      const matsNoDia = new Set([
+        ...(blocos[dk]||[]).map(b=>b.matId),
+        ..._cicloPlano.filter(p=>p.dk===dk).map(p=>p.m.id)
+      ]);
+
+      let vagasUsadas=0, tentativa=0;
+      while(vagasUsadas<vagas && tentativa<poolCopy.length){
+        const {m, forcar} = poolCopy[tentativa];
+        if(!matsNoDia.has(m.id)){
+          const top = proximoTopCiclo(m.id, forcar);
+          if(top){
+            _cicloPlano.push({dk, dia, m, top, forcar, sem:semIdx});
+            matsNoDia.add(m.id);
+            if(!topicsUsados[m.id]) topicsUsados[m.id]=new Set();
+            topicsUsados[m.id].add(top.nome);
+            vagasUsadas++;
+            poolCopy.splice(tentativa,1);
+            continue;
+          }
+        }
+        tentativa++;
+      }
     }
   }
-  const sobrou = matsValidas.length;
-
-  // Preview agrupado por dia
-  const porDia = {};
-  _cicloPlano.forEach(p => {
-    if(!porDia[p.dk]) porDia[p.dk]={dia:p.dia, itens:[]};
-    porDia[p.dk].itens.push(p);
-  });
-
-  let html = Object.keys(porDia).map(dk => {
-    const g = porDia[dk];
-    const jaOcup = (blocos[dk]||[]).length;
-    return `<div style="margin-bottom:8px;">
-      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;">
-        ${DIA_NOME[g.dia]}${jaOcup>0?` <span style="font-weight:400;text-transform:none;">(${jaOcup} existente(s))</span>`:''}
-      </div>
-      ${g.itens.map(p=>`<div style="display:flex;align-items:center;gap:6px;font-size:12px;padding:2px 0;">
-        <div style="width:6px;height:6px;border-radius:2px;background:${p.m.cor};flex-shrink:0;"></div>
-        <span style="font-weight:600;color:var(--text);">${p.m.nome}</span>
-        <span style="color:var(--muted);">→ ${p.top.nome}</span>
-        ${p.forcar?'<span style="font-size:10px;background:var(--accent);color:#fff;padding:1px 5px;border-radius:4px;">forçado</span>':''}
-      </div>`).join('')}
-    </div>`;
-  }).join('');
 
   if(_cicloPlano.length===0){
-    html = '<div style="color:var(--accent);font-size:12px;">Todos os dias selecionados já estão com o limite de blocos atingido.</div>';
+    document.getElementById('cicloPreviewBody').innerHTML=
+      '<div style="color:var(--accent);font-size:12px;">Nenhum bloco pôde ser gerado — verifique vagas, dias selecionados ou tópicos disponíveis.</div>';
+    document.getElementById('cicloPreview').style.display='block';
+    document.getElementById('cicloGerarBtn').style.display='none';
+    return;
   }
-  if(sobrou>0) html += `<div style="margin-top:6px;font-size:12px;color:var(--accent);font-weight:600;">⚠ ${sobrou} matéria(s) não couberam — sem vagas suficientes nesta semana.</div>`;
 
-  document.getElementById('cicloPreviewBody').innerHTML = html;
-  document.getElementById('cicloPreview').style.display = 'block';
-  document.getElementById('cicloGerarBtn').style.display = _cicloPlano.length>0 ? '' : 'none';
-  // Scroll até o preview
+  // Agrupar por semana → dia
+  const porSem={};
+  _cicloPlano.forEach(p=>{
+    if(!porSem[p.sem]) porSem[p.sem]={};
+    if(!porSem[p.sem][p.dk]) porSem[p.sem][p.dk]={dia:p.dia, itens:[]};
+    porSem[p.sem][p.dk].itens.push(p);
+  });
+
+  const FREQ_ICO = {alta:'🔴',media:'🟡',baixa:'🟢'};
+  const usarFreqIco = _cicloModo === 'prioridade';
+  const semKeys = Object.keys(porSem).sort((a,b)=>a-b);
+  let html = semKeys.map((sem,si)=>{
+    const semLabel = nSemanas>1
+      ? `<div style="font-size:12px;font-weight:800;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">📅 Semana ${parseInt(sem)+1}</div>`
+      : '';
+    const dkHtml = Object.keys(porSem[sem]).map(dk=>{
+      const g = porSem[sem][dk];
+      const jaOcup = (blocos[dk]||[]).length;
+      return `<div style="margin-bottom:7px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">
+          ${DIA_NOME[g.dia]}${jaOcup>0?` <span style="font-weight:400;text-transform:none;">(${jaOcup} existente(s))</span>`:''}
+        </div>
+        ${g.itens.map(p=>`<div style="display:flex;align-items:center;gap:5px;font-size:12px;padding:2px 0;">
+          <div style="width:6px;height:6px;border-radius:2px;background:${p.m.cor};flex-shrink:0;"></div>
+          <span style="font-weight:600;color:var(--text);">${p.m.nome}</span>
+          <span style="color:var(--muted);">→ ${p.top.nome}</span>
+          ${usarFreqIco?`<span title="Prioridade: ${p.m.cicloFreq||'media'}">${FREQ_ICO[p.m.cicloFreq||'media']}</span>`:''}
+          ${p.forcar?'<span style="font-size:10px;background:var(--accent);color:#fff;padding:1px 5px;border-radius:4px;">forçado</span>':''}
+        </div>`).join('')}
+      </div>`;
+    }).join('');
+    return semLabel + dkHtml;
+  }).join(nSemanas>1?'<hr style="border:none;border-top:1px solid var(--border);margin:6px 0;">':'');
+
+  document.getElementById('cicloPreviewBody').innerHTML=html;
+  document.getElementById('cicloPreview').style.display='block';
+  document.getElementById('cicloGerarBtn').style.display='';
   setTimeout(()=>{
-    const el = document.getElementById('cicloPreview');
-    if(el) el.scrollIntoView({behavior:'smooth', block:'nearest'});
-  }, 50);
+    const el=document.getElementById('cicloPreview');
+    if(el) el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  },50);
 }
 
 function confirmarCiclo(){
   if(_cicloPlano.length===0) return;
   let criados=0;
+  const semsAfetadas=new Set();
   _cicloPlano.forEach(p => {
     if(!blocos[p.dk]) blocos[p.dk]=[];
     const jaTem = blocos[p.dk].some(b=>b.matId===p.m.id&&b.topico===p.top.nome);
@@ -6153,10 +7049,13 @@ function confirmarCiclo(){
       p.top.agendado=true;
       if(p.top.status==='pendente') p.top.status='estudando';
       criados++;
+      semsAfetadas.add(p.sem);
     }
   });
-  save(); fecharModal('mCiclo'); renderSem(); renderMatTab(); verificarAtrasos();
-  toast(`⚡ ${criados} bloco(s) gerado(s) com sucesso!`, ()=>ir(0,null));
+  save(); fecharModal('mCiclo'); renderSem(); renderMatTab(); verificarAtrasos(); updateStats(); renderHome();
+  const semTxt = semsAfetadas.size>1 ? ` · ${semsAfetadas.size} semanas` : '';
+  const modoTxt = {sequencial:'⚡',reverso:'🔄',prioridade:'🎯',multisemana:'📅',revisoes:'🔁'}[_cicloModo]||'⚡';
+  toast(`${modoTxt} ${criados} bloco(s) gerado(s)${semTxt}!`, ()=>ir(0,null));
   _cicloPlano=[];
 }
 
@@ -6262,7 +7161,7 @@ function _renderHomeHoje(){
     const lbl = statusLabel[st];
     const top = b.topico ? topicos.find(t=>t.matId===b.matId&&t.nome===b.topico) : null;
     const lem = top ? (top.lembrete||'').trim() : '';
-    return `<div class="home-hoje-item" style="flex-direction:column;align-items:flex-start;gap:2px;">
+    return `<div class="home-hoje-item" style="flex-direction:column;align-items:flex-start;gap:2px;cursor:pointer" onclick="ir(1,document.getElementById('tab1'));semAtual=${semIdx};setTimeout(()=>{document.getElementById('wkLbl').textContent='Semana '+(${semIdx}+1);renderSem();},50)">
       <div style="display:flex;align-items:flex-start;gap:8px;width:100%;">
         <div class="home-hoje-dot" style="background:${m.cor};margin-top:4px;"></div>
         <div style="flex:1;min-width:0;">
@@ -6321,7 +7220,7 @@ function _renderHomeRevs(){
   el.innerHTML = pendentes.slice(0,max).map(r => {
     const m = mats.find(x=>x.id==r.matId)||{nome:'?',cor:'#888'};
     const atrasada = r.data < hjStr;
-    return `<div class="home-rev-item">
+    return `<div class="home-rev-item" style="cursor:pointer" onclick="ir(3,document.getElementById('tab3'));setTimeout(()=>abrirPainelRevisao('${r.id}'),200)">
       <div style="flex:1;min-width:0;">
         <div class="home-rev-mat">${m.nome}</div>
         <div class="home-rev-top">${r.topico}</div>
@@ -6590,7 +7489,7 @@ function importarBackup(input){
       // Re-renderizar tudo
       recalc(); renderHome(); renderSem(); renderRevs(); renderMatTab();
       updateStats(); updateDias(); updateRevBadge(); verificarAtrasos();
-      atualizarBarraCfg(); renderCalendario(); renderSimulados(); renderAnalises(); updateFCBadge();
+      atualizarBarraCfg(); renderCalendario(); renderSimulados(); renderAnalises(); updateFCBadge(); _renderHomePlaylists();
       fecharModal('mReset');
       toast('✅ Backup importado! Sincronizando com a nuvem...');
 
@@ -6641,6 +7540,8 @@ function salvarLembrete(topId, valor){
   const t = topicos.find(x=>x.id===topId); if(!t) return;
   t.lembrete = valor;
   save();
+  renderSem();
+  _refreshFloatPanel();
   _atualizarBadgeLembretes();
   toast('🔔 Lembrete salvo!');
 }
@@ -6805,7 +7706,7 @@ function editarNota(i){
   abrirModal('mSticky');
 }
 
-function salvarNota(){
+function salvarSticky(){
   const ttl = document.getElementById('stickyTtl').value.trim();
   const txt = document.getElementById('stickyTxt').value.trim();
   if(!ttl && !txt){ toast('Digite um título ou conteúdo.'); return; }
@@ -7230,18 +8131,36 @@ function _htmlMatNotasView(m){
   const nota = matNotas[m.id] || {txt:'', data:''};
   const txt = (nota.txt||'').trim();
   const salvo = nota.data ? `salvo em ${nota.data}` : '';
+
+  if(txt){
+    // COMPACTA: uma linha com preview + botão editar
+    const preview = txt.length>80 ? txt.substring(0,80)+'…' : txt;
+    return `<div class="mat-notas-sec" style="border-top:none;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--bg2);">
+        <span style="font-size:13px;flex-shrink:0">📝</span>
+        <span style="font-size:12px;color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic">${esc(preview)}</span>
+        <button class="mat-notas-save" style="flex-shrink:0" onclick="toggleMatNotasEdit(${m.id})">✏️ Editar</button>
+      </div>
+      <div id="matNotaEdit_${m.id}" style="display:none;padding:10px 12px;border-top:1px solid var(--border);background:var(--bg2);">
+        <textarea class="mat-notas-area" id="matNotaArea_${m.id}"
+          placeholder="Anotações, lembretes, estratégias para esta matéria..."
+          oninput="autoSaveMatNota(${m.id})"
+        >${nota.txt||''}</textarea>
+        <div class="mat-notas-footer">
+          <span class="mat-notas-hint">salva automaticamente</span>
+          <button class="mat-notas-save" onclick="salvarMatNota(${m.id})">Salvar</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // EXPANDIDA: vazia — mostra textarea direto
   return `<div class="mat-notas-sec" style="border-top:none;border-bottom:1px solid var(--border);margin-bottom:4px;">
     <div class="mat-notas-hdr">
       <span class="mat-notas-ttl">📝 Notas da matéria</span>
-      <div style="display:flex;align-items:center;gap:8px;">
-        ${salvo?`<span class="mat-notas-salvo">${salvo}</span>`:''}
-        <button class="mat-notas-save" onclick="toggleMatNotasEdit(${m.id})">✏️ Editar</button>
-      </div>
+      <button class="mat-notas-save" onclick="toggleMatNotasEdit(${m.id})">✏️ Editar</button>
     </div>
-    ${txt
-      ? `<div id="matNotaView_${m.id}" style="font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap;background:var(--card);border-radius:6px;padding:8px 10px;border-left:3px solid var(--blue)">${esc(txt)}</div>`
-      : `<div id="matNotaView_${m.id}" style="font-size:12px;color:var(--muted);font-style:italic;padding:4px 2px">Nenhuma anotação ainda. Clique em Editar para adicionar.</div>`
-    }
+    <div id="matNotaView_${m.id}" style="font-size:12px;color:var(--muted);font-style:italic;padding:4px 2px">Nenhuma anotação ainda. Clique em Editar para adicionar.</div>
     <div id="matNotaEdit_${m.id}" style="display:none;margin-top:6px;">
       <textarea class="mat-notas-area" id="matNotaArea_${m.id}"
         placeholder="Anotações, lembretes, estratégias para esta matéria..."
@@ -7256,13 +8175,14 @@ function _htmlMatNotasView(m){
 }
 
 function toggleMatNotasEdit(matId){
-  const view = document.getElementById('matNotaView_'+matId);
   const edit = document.getElementById('matNotaEdit_'+matId);
-  const area = document.getElementById('matNotaArea_'+matId);
   if(!edit) return;
   const isHidden = edit.style.display==='none';
   edit.style.display = isHidden ? 'block' : 'none';
-  if(isHidden && area) setTimeout(()=>area.focus(),50);
+  if(isHidden){
+    const area = document.getElementById('matNotaArea_'+matId);
+    if(area) setTimeout(()=>area.focus(),50);
+  }
 }
 
 let _matNotaTimers = {};
@@ -7428,6 +8348,7 @@ function lkDel(topId, idx){
     if(newPanel && wasOpen) newPanel.classList.add('op');
   }
   renderSem(); // sincroniza bloco de sessão
+  _refreshFloatPanel();
 }
 
 function blkLkAdd(btn, topId){
@@ -7449,11 +8370,39 @@ function blkLkAdd(btn, topId){
   if(urlEl) urlEl.value = '';
   if(lblEl) lblEl.value = '';
   renderSem();
+  _refreshFloatPanel();
   toast('🔗 Link adicionado!');
 }
 </script>
 
 <!-- ══ MODAL: GERENCIAR DADOS ══ -->
+<!-- ══ MODAL: TRIAGEM DE SESSÕES ATRASADAS ══ -->
+<div class="overlay" id="mAtrasados">
+  <div class="modal" style="max-width:580px;width:95vw;max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden;">
+
+    <div style="padding:16px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:10px;">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;"></div>
+      <h3 style="margin:0;font-size:16px;">Sessões atrasadas</h3>
+      <span id="mAtrBadge" style="margin-left:4px;font-size:12px;background:var(--red-bg);color:var(--red-text);padding:2px 10px;border-radius:20px;font-weight:700;"></span>
+      <button onclick="fecharModal('mAtrasados')" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);">✕</button>
+    </div>
+
+    <div style="padding:8px 14px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap;">
+      <span style="font-size:12px;color:var(--muted);">Ação em massa:</span>
+      <button onclick="reagendarTodasTriagem()" class="btn btn-sm" style="background:var(--blue);color:#fff;">📅 Reagendar todas</button>
+      <button onclick="marcarTodasFeitasTriagem()" class="btn btn-sm btn-green">✓ Marcar todas feitas</button>
+    </div>
+
+    <div id="mAtrList" style="flex:1;overflow-y:auto;"></div>
+
+    <div style="padding:10px 18px;border-top:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <span style="font-size:12px;color:var(--muted);">Ao reagendar, o bloco vai para o próximo dia disponível.</span>
+      <button onclick="fecharModal('mAtrasados')" class="btn-cancel">Fechar</button>
+    </div>
+
+  </div>
+</div>
+
 <div class="overlay" id="mReset">
   <div class="modal modal-reset">
     <div class="reset-hdr">
@@ -7630,6 +8579,8 @@ function blkLkAdd(btn, topId){
 </div>
 
 
+<div id="revPanelOverlay" onclick="fecharPainelRevisao()"></div>
+<div id="revPanel" style="overflow-y:auto;"></div>
 <div id="sidebarOverlay" onclick="fecharFloatPanel()"></div>
 <div id="floatPanel"></div>
 
@@ -7638,19 +8589,61 @@ function blkLkAdd(btn, topId){
 
     <!-- HEADER fixo -->
     <div style="padding:18px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0;">
-      <h3 style="margin-bottom:2px;">⚡ Gerar Ciclo Automático</h3>
-      <p style="font-size:12px;color:var(--muted);margin:0;">1 tópico por matéria · próximo não estudado e não planejado</p>
+      <h3 style="margin-bottom:6px;">⚡ Gerar Ciclo Automático</h3>
+      <!-- Seletor de modo -->
+      <div style="display:flex;gap:4px;flex-wrap:wrap;" id="cicloModoBar">
+        <button id="cicloModoBtn_sequencial" onclick="setCicloModo('sequencial')"
+          style="font-size:11px;padding:3px 10px;border-radius:20px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;font-weight:700;transition:all .15s;">
+          ⚡ Sequencial
+        </button>
+        <button id="cicloModoBtn_reverso" onclick="setCicloModo('reverso')"
+          style="font-size:11px;padding:3px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-weight:600;transition:all .15s;">
+          🔄 Reverso
+        </button>
+        <button id="cicloModoBtn_prioridade" onclick="setCicloModo('prioridade')"
+          style="font-size:11px;padding:3px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-weight:600;transition:all .15s;">
+          🎯 Por Prioridade
+        </button>
+        <button id="cicloModoBtn_multisemana" onclick="setCicloModo('multisemana')"
+          style="font-size:11px;padding:3px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-weight:600;transition:all .15s;">
+          📅 Multi-semana
+        </button>
+        <button id="cicloModoBtn_revisoes" onclick="setCicloModo('revisoes')"
+          style="font-size:11px;padding:3px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-weight:600;transition:all .15s;">
+          🔁 Com Revisões
+        </button>
+      </div>
+      <p id="cicloModoDesc" style="font-size:11px;color:var(--muted);margin:6px 0 0;">Próximo tópico não estudado de cada matéria, em ordem.</p>
     </div>
 
     <!-- CORPO com scroll -->
     <div style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px;">
 
-      <!-- Blocos por dia -->
-      <div>
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px;">Blocos por dia</div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <input type="number" id="cicloQtdDia" value="3" min="1" max="8" step="1" style="width:64px;">
-          <span style="font-size:13px;color:var(--muted);">sessões por dia (vagas livres)</span>
+      <!-- Linha: Blocos por dia + Semanas -->
+      <div style="display:flex;gap:20px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px;">Blocos por dia</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <input type="number" id="cicloQtdDia" value="3" min="1" max="8" step="1" style="width:56px;">
+            <span style="font-size:12px;color:var(--muted);">sessões/dia</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px;">Semanas</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <select id="cicloNSemanas" style="width:68px;" onchange="_resetPreviewCiclo()">
+              <option value="1">1 sem</option>
+              <option value="2">2 sem</option>
+              <option value="3">3 sem</option>
+              <option value="4">4 sem</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-end;padding-bottom:2px;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text);">
+            <input type="checkbox" id="cicloIntegrarRev" style="accent-color:var(--teal);width:13px;height:13px;" onchange="_resetPreviewCiclo()">
+            <span>🔁 Reservar slot p/ revisões</span>
+          </label>
         </div>
       </div>
 
@@ -7662,14 +8655,21 @@ function blkLkAdd(btn, topId){
 
       <!-- Matérias -->
       <div>
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;">Matérias do ciclo</div>
-        <div id="cicloMatList" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;max-height:220px;overflow-y:auto;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);">Matérias do ciclo</div>
+          <div id="cicloFreqLegenda" style="font-size:10px;color:var(--muted);display:flex;gap:8px;display:none;">
+            <span>🟢 Baixa = 1x/2sem</span>
+            <span>🟡 Média = 1x/sem</span>
+            <span>🔴 Alta = 2x/sem</span>
+          </div>
+        </div>
+        <div id="cicloMatList" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;max-height:240px;overflow-y:auto;"></div>
       </div>
 
       <!-- Preview -->
       <div id="cicloPreview" style="display:none;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;">Preview do ciclo</div>
-        <div id="cicloPreviewBody" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13px;max-height:200px;overflow-y:auto;"></div>
+        <div id="cicloPreviewBody" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13px;max-height:220px;overflow-y:auto;"></div>
       </div>
 
     </div>
@@ -7718,7 +8718,7 @@ function blkLkAdd(btn, topId){
     </div>
     <div class="mbtns">
       <button class="btn btn-cancel" onclick="fecharModal('mSticky')">Cancelar</button>
-      <button class="btn btn-green" onclick="salvarNota()">Salvar</button>
+      <button class="btn btn-green" onclick="salvarSticky()">Salvar</button>
     </div>
   </div>
 </div>
@@ -8559,6 +9559,7 @@ async function fbLoad(){
     localStorage.setItem('v12_ts_nuvem', ts);
     atualizarBarraCfg(); recalc(); updateDias();
     renderSem(); renderMatTab(); renderRevs(); updateStats(); renderHome(); renderAnalises();
+    renderCalendario(); verificarAtrasos(); loadNota(); updateFCBadge(); renderSimulados(); _renderHomePlaylists();
     _syncStatus('☁ Recebido da nuvem', '#157a42');
     _atualizarTsUI();
     toast('☁ Dados recebidos da nuvem!');
