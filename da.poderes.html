@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poderes da Administração — Esquematiza Aí</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ea-navy:#0f2240;--ea-blue:#1a56db;--ea-red:#c81e1e;
+  --ea-green:#057a55;--ea-purple:#5521b5;--ea-amber:#92400e;
+  --ea-amber-light:#fef3c7;--ea-red-light:#fff1f2;
+  --ea-blue-light:#eff6ff;--ea-green-light:#ecfdf5;
+  --ea-purple-light:#f5f3ff;--sidebar-w:270px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#f8fafc;color:#1e293b;min-height:100vh;}
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--ea-navy);overflow-y:auto;z-index:100;display:flex;flex-direction:column;}
+#sidebar-header{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,.1);}
+#sidebar-header .logo{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#64b5f6;margin-bottom:4px;}
+#sidebar-header h1{font-size:14px;font-weight:700;color:#fff;line-height:1.3;}
+#sidebar-header .caderno{font-size:11px;color:#94a3b8;margin-top:4px;}
+#sidebar nav{padding:12px 0;flex:1;}
+.nav-section{padding:8px 16px 4px;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 16px 8px 20px;cursor:pointer;transition:background .15s;border-left:3px solid transparent;color:#94a3b8;font-size:12.5px;font-weight:500;text-decoration:none;}
+.nav-item:hover{background:rgba(255,255,255,.05);color:#e2e8f0;}
+.nav-item.active{background:rgba(26,86,219,.2);border-left-color:var(--ea-blue);color:#93c5fd;}
+.nav-num{width:22px;height:22px;border-radius:5px;background:rgba(255,255,255,.1);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#64b5f6;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-item.active .nav-num{background:var(--ea-blue);color:#fff;}
+#sidebar-footer{padding:16px;border-top:1px solid rgba(255,255,255,.08);}
+#sidebar-footer p{font-size:10px;color:#475569;line-height:1.5;}
+#topbar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:52px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;padding:0 32px;z-index:99;gap:8px;}
+.bc-sep{color:#cbd5e1;font-size:12px;}
+.bc-item{font-size:12px;color:#64748b;}
+.bc-item.active{font-weight:600;color:#1e293b;}
+#main{margin-left:var(--sidebar-w);margin-top:52px;padding:32px 36px;max-width:1060px;}
+.page{display:none;}
+.page.active{display:block;}
+.page-header{margin-bottom:28px;}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ea-blue);margin-bottom:6px;}
+.page-title{font-size:26px;font-weight:800;color:#0f172a;line-height:1.2;text-transform:uppercase;letter-spacing:-.02em;}
+.page-subtitle{font-size:13px;color:#64748b;margin-top:6px;}
+.fonte-ref{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:#94a3b8;font-family:'JetBrains Mono',monospace;}
+.incidencia-bar{display:flex;align-items:center;gap:16px;padding:14px 20px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:24px;flex-wrap:wrap;}
+.inc-label{font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.06em;}
+.stars{color:#f59e0b;font-size:16px;letter-spacing:2px;}
+.badges{display:flex;gap:6px;flex-wrap:wrap;}
+.badge{font-size:10px;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:5px;font-family:'JetBrains Mono',monospace;}
+.badge-cebraspe{background:#fee2e2;color:#991b1b;}
+.badge-fgv{background:#ede9fe;color:#4c1d95;}
+.badge-fcc{background:#dbeafe;color:#1e40af;}
+.badge-vunesp{background:#d1fae5;color:#064e3b;}
+.concept-block{background:#fff;border:1px solid #e2e8f0;border-left:4px solid var(--ea-blue);border-radius:10px;padding:20px 24px;margin:16px 0;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.concept-block h4{font-size:12px;font-weight:700;color:var(--ea-blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.concept-block p,.concept-block li{font-size:13.5px;line-height:1.7;color:#374151;}
+.concept-block ul{padding-left:18px;margin-top:6px;}
+.concept-block ul li{margin-bottom:4px;}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+.cmp-card{border-radius:10px;padding:18px 20px;}
+.cmp-card h4{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.cmp-card ul{padding-left:16px;}
+.cmp-card li{font-size:13px;line-height:1.65;margin-bottom:3px;}
+.cmp-blue{background:var(--ea-blue-light);border:1px solid #bfdbfe;}
+.cmp-blue h4{color:#1e40af;}
+.cmp-green{background:var(--ea-green-light);border:1px solid #a7f3d0;}
+.cmp-green h4{color:#065f46;}
+.cmp-purple{background:var(--ea-purple-light);border:1px solid #ddd6fe;}
+.cmp-purple h4{color:#4c1d95;}
+.cmp-amber{background:var(--ea-amber-light);border:1px solid #fde68a;}
+.cmp-amber h4{color:#78350f;}
+.cmp-red{background:var(--ea-red-light);border:1px solid #fecaca;}
+.cmp-red h4{color:#991b1b;}
+.cmp-navy{background:#f0f4f8;border:1px solid #cbd5e1;}
+.cmp-navy h4{color:#0f2240;}
+.lei-box{background:var(--ea-navy);border:1px solid var(--ea-blue);border-radius:10px;padding:20px 24px;margin:16px 0;}
+.lei-box .lei-tag{font-size:10px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
+.lei-box p,.lei-box li{font-size:13px;line-height:1.7;color:#e2e8f0;font-style:italic;}
+.lei-box ul{padding-left:18px;margin-top:6px;}
+.lei-box ul li{margin-bottom:4px;}
+.trap-box{background:var(--ea-red-light);border:1px solid #fca5a5;border-radius:10px;padding:20px 24px;margin:16px 0;}
+.trap-box .trap-tag{font-size:10px;font-weight:700;color:var(--ea-red);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.trap-box .trap-tag::before{content:"⚠";font-size:14px;}
+.trap-item{font-size:13px;line-height:1.6;color:#374151;padding:8px 12px;border-radius:6px;margin-bottom:6px;background:#fff;border:1px solid #fecaca;}
+.trap-item strong{color:var(--ea-red);}
+.table-wrap{overflow-x:auto;margin:16px 0;border-radius:10px;border:1px solid #e2e8f0;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{background:#f1f5f9;}
+thead th{padding:10px 14px;text-align:left;font-weight:700;color:#374151;font-size:12px;text-transform:uppercase;letter-spacing:.05em;}
+tbody tr:nth-child(even){background:#f8fafc;}
+tbody td{padding:10px 14px;color:#374151;border-top:1px solid #e2e8f0;vertical-align:top;}
+tbody td:first-child{font-weight:600;color:#1e293b;}
+.q-ref{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-family:'JetBrains Mono',monospace;color:var(--ea-blue);background:var(--ea-blue-light);border:1px solid #bfdbfe;border-radius:6px;padding:4px 10px;margin:3px 3px 3px 0;text-decoration:none;}
+.q-ref::before{content:"↗";}
+.q-refs{margin:12px 0;}
+.alert{display:flex;gap:10px;padding:12px 16px;border-radius:8px;margin:12px 0;font-size:13px;line-height:1.6;}
+.alert-warn{background:#fef3c7;border:1px solid #fde68a;color:#78350f;}
+.alert-info{background:var(--ea-blue-light);border:1px solid #bfdbfe;color:#1e40af;}
+.alert-success{background:var(--ea-green-light);border:1px solid #a7f3d0;color:#065f46;}
+.alert-icon{font-size:16px;flex-shrink:0;}
+h2.sec{font-size:16px;font-weight:700;color:#0f172a;margin:24px 0 12px;padding-bottom:6px;border-bottom:2px solid #e2e8f0;}
+h3.subsec{font-size:14px;font-weight:700;color:#1e293b;margin:18px 0 10px;}
+p.body{font-size:13.5px;line-height:1.72;color:#374151;margin-bottom:10px;}
+.summary-list{margin:16px 0;}
+.sum-item{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:8px;margin-bottom:8px;background:#fff;border:1px solid #e2e8f0;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
+.sum-item:hover{border-color:var(--ea-blue);box-shadow:0 2px 8px rgba(26,86,219,.1);}
+.sum-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;flex-shrink:0;}
+.sum-content{flex:1;}
+.sum-content strong{font-size:13.5px;font-weight:700;color:#0f172a;}
+.sum-content p{font-size:11.5px;color:#64748b;margin-top:2px;}
+.sum-stars{color:#f59e0b;font-size:13px;letter-spacing:1px;flex-shrink:0;}
+.leg-panel{background:var(--ea-navy);border-radius:10px;padding:20px 24px;margin-top:24px;}
+.leg-panel h4{font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+.leg-item{font-size:12.5px;color:#e2e8f0;font-family:'JetBrains Mono',monospace;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.leg-item:last-child{border:none;}
+/* QUIZ */
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.quiz-score{font-size:13px;font-weight:600;color:#374151;}
+.quiz-score span{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;}
+#progress-bar-wrap{height:8px;background:#e2e8f0;border-radius:99px;margin-bottom:20px;overflow:hidden;}
+#progress-bar{height:100%;border-radius:99px;transition:width .3s,background .3s;width:0%;background:var(--ea-blue);}
+.quiz-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 24px;margin-bottom:14px;transition:border-color .2s;}
+.quiz-card .q-num{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;margin-bottom:6px;}
+.quiz-card .q-text{font-size:14px;color:#1e293b;line-height:1.65;margin-bottom:14px;}
+.quiz-btns{display:flex;gap:8px;}
+.btn-cv{padding:7px 18px;border-radius:7px;font-size:12.5px;font-weight:700;border:2px solid;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;}
+.btn-c{border-color:#057a55;color:#057a55;background:#fff;}
+.btn-c:hover{background:var(--ea-green-light);}
+.btn-e{border-color:var(--ea-red);color:var(--ea-red);background:#fff;}
+.btn-e:hover{background:var(--ea-red-light);}
+.feedback{display:none;margin-top:12px;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.5;}
+.feedback.correct{background:var(--ea-green-light);border:1px solid #a7f3d0;color:#065f46;}
+.feedback.wrong{background:var(--ea-red-light);border:1px solid #fca5a5;color:#991b1b;}
+.feedback .fb-ref{font-family:'JetBrains Mono',monospace;font-size:11px;color:#94a3b8;margin-top:4px;}
+.btn-reset{padding:8px 20px;border-radius:8px;font-size:12.5px;font-weight:700;background:var(--ea-navy);color:#fff;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .15s;}
+.btn-reset:hover{opacity:.85;}
+/* Mapa visual de poder */
+.power-map{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
+.power-card{border-radius:12px;padding:16px 18px;text-align:center;}
+.power-card .p-icon{font-size:28px;margin-bottom:8px;}
+.power-card h4{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.power-card p{font-size:11.5px;line-height:1.5;}
+.pc-blue{background:var(--ea-blue-light);border:1px solid #bfdbfe;}
+.pc-blue h4{color:#1e40af;}
+.pc-green{background:var(--ea-green-light);border:1px solid #a7f3d0;}
+.pc-green h4{color:#065f46;}
+.pc-purple{background:var(--ea-purple-light);border:1px solid #ddd6fe;}
+.pc-purple h4{color:#4c1d95;}
+.pc-amber{background:var(--ea-amber-light);border:1px solid #fde68a;}
+.pc-amber h4{color:#78350f;}
+.pc-red{background:var(--ea-red-light);border:1px solid #fecaca;}
+.pc-red h4{color:#991b1b;}
+.pc-navy{background:#f0f4f8;border:1px solid #cbd5e1;}
+.pc-navy h4{color:#0f2240;}
+@media(max-width:768px){#sidebar{transform:translateX(-100%);}#main{margin-left:0;}#topbar{left:0;}.cmp-grid,.power-map{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div id="sidebar-header">
+    <div class="logo">Esquematiza Aí · Caderno 04</div>
+    <h1>Poderes e Deveres da Administração</h1>
+    <div class="caderno">Direito Administrativo — v6</div>
+  </div>
+  <nav>
+    <div class="nav-section">Navegação</div>
+    <a class="nav-item active" onclick="showPage('sumario',this)">
+      <span class="nav-num">☰</span>Sumário Geral
+    </a>
+    <div class="nav-section">Subtópicos</div>
+    <a class="nav-item" onclick="showPage('p01',this)">
+      <span class="nav-num">01</span>Vinculado e Discricionário
+    </a>
+    <a class="nav-item" onclick="showPage('p02',this)">
+      <span class="nav-num">02</span>Poder Regulamentar
+    </a>
+    <a class="nav-item" onclick="showPage('p03',this)">
+      <span class="nav-num">03</span>Poder Hierárquico
+    </a>
+    <a class="nav-item" onclick="showPage('p04',this)">
+      <span class="nav-num">04</span>Poder Disciplinar
+    </a>
+    <a class="nav-item" onclick="showPage('p05',this)">
+      <span class="nav-num">05</span>Poder de Polícia
+    </a>
+    <a class="nav-item" onclick="showPage('p06',this)">
+      <span class="nav-num">06</span>Abuso de Poder
+    </a>
+    <a class="nav-item" onclick="showPage('p07',this)">
+      <span class="nav-num">07</span>Deveres da Administração
+    </a>
+    <div class="nav-section">Revisão</div>
+    <a class="nav-item" onclick="showPage('quiz',this)">
+      <span class="nav-num">✓</span>Revisão Rápida (20 itens)
+    </a>
+  </nav>
+  <div id="sidebar-footer">
+    <p>Fontes: Resumo v6 · Legislação 360 2025.1 · TecConcursos Caderno 03</p>
+  </div>
+</aside>
+
+<div id="topbar">
+  <span class="bc-item">Dir. Administrativo</span>
+  <span class="bc-sep">›</span>
+  <span class="bc-item active" id="breadcrumb">Sumário Geral</span>
+</div>
+
+<main id="main">
+
+<!-- ===== SUMÁRIO ===== -->
+<div id="sumario" class="page active">
+  <div class="page-header">
+    <div class="eyebrow">Caderno 04 · Direito Administrativo</div>
+    <div class="page-title">Poderes e Deveres da Administração Pública</div>
+    <div class="page-subtitle">Resumo v6 (Esquematiza Aí) · Legislação 360 (2025.1) · TecConcursos</div>
+  </div>
+  <div class="incidencia-bar">
+    <span class="inc-label">Incidência geral:</span>
+    <span class="stars">★★★★★</span>
+    <div class="badges">
+      <span class="badge badge-cebraspe">CEBRASPE</span>
+      <span class="badge badge-fgv">FGV</span>
+      <span class="badge badge-fcc">FCC</span>
+      <span class="badge badge-vunesp">VUNESP</span>
+    </div>
+    <span style="font-size:12px;color:#64748b;margin-left:auto;">459 questões cadastradas (TecConcursos) — 4º mais cobrado</span>
+  </div>
+
+  <div class="power-map">
+    <div class="power-card pc-blue" onclick="showPage('p01',document.querySelector('[onclick*=p01]'))">
+      <div class="p-icon">⚖️</div>
+      <h4>01 · Vinculado e Discricionário</h4>
+      <p>Liberdade vs. lei; motivo e objeto; arbitrariedade</p>
+    </div>
+    <div class="power-card pc-purple" onclick="showPage('p02',document.querySelector('[onclick*=p02]'))">
+      <div class="p-icon">📜</div>
+      <h4>02 · Regulamentar</h4>
+      <p>Decretos; atos gerais; decreto autônomo; Congresso susta</p>
+    </div>
+    <div class="power-card pc-green" onclick="showPage('p03',document.querySelector('[onclick*=p03]'))">
+      <div class="p-icon">🏛</div>
+      <h4>03 · Hierárquico</h4>
+      <p>Subordinação; delegação; avocação; fiscalização</p>
+    </div>
+    <div class="power-card pc-amber" onclick="showPage('p04',document.querySelector('[onclick*=p04]'))">
+      <div class="p-icon">⚡</div>
+      <h4>04 · Disciplinar</h4>
+      <p>Punir servidores e contratados; vínculo específico</p>
+    </div>
+    <div class="power-card pc-red" onclick="showPage('p05',document.querySelector('[onclick*=p05]'))">
+      <div class="p-icon">🚨</div>
+      <h4>05 · Poder de Polícia</h4>
+      <p>Limitar direitos; ciclo; atributos; delegabilidade (STF T. 532)</p>
+    </div>
+    <div class="power-card pc-navy" onclick="showPage('p06',document.querySelector('[onclick*=p06]'))">
+      <div class="p-icon">⛔</div>
+      <h4>06 · Abuso de Poder</h4>
+      <p>Excesso (competência) vs. desvio de finalidade</p>
+    </div>
+  </div>
+
+  <div class="summary-list">
+    <div class="sum-item" onclick="showPage('p01',document.querySelector('[onclick*=p01]'))">
+      <div class="sum-num" style="background:#dbeafe;color:#1e40af;">01</div>
+      <div class="sum-content"><strong>Poder Vinculado e Discricionário</strong><p>Margem de liberdade; elementos vinculados vs. discricionários; mérito administrativo</p></div>
+      <div class="sum-stars">★★★★★</div>
+    </div>
+    <div class="sum-item" onclick="showPage('p02',document.querySelector('[onclick*=p02]'))">
+      <div class="sum-num" style="background:#ede9fe;color:#4c1d95;">02</div>
+      <div class="sum-content"><strong>Poder Regulamentar / Normativo</strong><p>Decretos executivos; decreto autônomo; limites; controle do Congresso</p></div>
+      <div class="sum-stars">★★★★☆</div>
+    </div>
+    <div class="sum-item" onclick="showPage('p03',document.querySelector('[onclick*=p03]'))">
+      <div class="sum-num" style="background:#d1fae5;color:#065f46;">03</div>
+      <div class="sum-content"><strong>Poder Hierárquico</strong><p>Subordinação; delegação e avocação; limites; insubordinação</p></div>
+      <div class="sum-stars">★★★★☆</div>
+    </div>
+    <div class="sum-item" onclick="showPage('p04',document.querySelector('[onclick*=p04]'))">
+      <div class="sum-num" style="background:#fef3c7;color:#78350f;">04</div>
+      <div class="sum-content"><strong>Poder Disciplinar</strong><p>Servidores e contratados; vínculo específico; PAD; discricionariedade na dosimetria</p></div>
+      <div class="sum-stars">★★★★★</div>
+    </div>
+    <div class="sum-item" onclick="showPage('p05',document.querySelector('[onclick*=p05]'))">
+      <div class="sum-num" style="background:#fee2e2;color:#991b1b;">05</div>
+      <div class="sum-content"><strong>Poder de Polícia</strong><p>Conceito; polícia adm. vs. judiciária; atributos (DAC); ciclo de polícia; delegabilidade STF Tema 532</p></div>
+      <div class="sum-stars">★★★★★</div>
+    </div>
+    <div class="sum-item" onclick="showPage('p06',document.querySelector('[onclick*=p06]'))">
+      <div class="sum-num" style="background:#f0fdf4;color:#14532d;">06</div>
+      <div class="sum-content"><strong>Abuso de Poder</strong><p>Excesso de poder (competência); desvio de finalidade; convalidação</p></div>
+      <div class="sum-stars">★★★★☆</div>
+    </div>
+    <div class="sum-item" onclick="showPage('p07',document.querySelector('[onclick*=p07]'))">
+      <div class="sum-num" style="background:#f5f3ff;color:#4c1d95;">07</div>
+      <div class="sum-content"><strong>Deveres da Administração</strong><p>Poder-dever de agir; eficiência; probidade; prestar contas</p></div>
+      <div class="sum-stars">★★★☆☆</div>
+    </div>
+  </div>
+
+  <div class="leg-panel">
+    <h4>📋 Legislação-Chave deste Caderno</h4>
+    <div class="leg-item">CF/88 — Art. 84, IV e VI — Poder regulamentar e decreto autônomo do Presidente</div>
+    <div class="leg-item">CF/88 — Art. 49, V — Congresso Nacional susta atos que exorbitem o poder regulamentar</div>
+    <div class="leg-item">STF Tema 532 — Delegabilidade do poder de polícia a PJ de direito privado da Adm. Indireta</div>
+    <div class="leg-item">STF SV 38 — Município fixa horário de funcionamento comercial</div>
+    <div class="leg-item">STF RE 658.570/MG — Guarda municipal exerce poder de polícia de trânsito</div>
+    <div class="leg-item">STJ Súmula 19 — Horário bancário: competência da União</div>
+    <div class="leg-item">Lei 9.784/99 — Arts. 11-15 — Competência, delegação e avocação</div>
+  </div>
+</div>
+
+<!-- ===== P01 — VINCULADO E DISCRICIONÁRIO ===== -->
+<div id="p01" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Subtópico 01 · Esquemas 73–74</div>
+    <div class="page-title">Poder Vinculado e Discricionário</div>
+    <div class="fonte-ref">📖 Resumo v6 p. 46 · Doutrina</div>
+  </div>
+  <div class="incidencia-bar">
+    <span class="inc-label">Incidência:</span><span class="stars">★★★★★</span>
+    <div class="badges"><span class="badge badge-cebraspe">CEBRASPE</span><span class="badge badge-fgv">FGV</span><span class="badge badge-fcc">FCC</span><span class="badge badge-vunesp">VUNESP</span></div>
+  </div>
+
+  <div class="cmp-grid">
+    <div class="cmp-card cmp-blue">
+      <h4>⚖️ Poder Vinculado (Regrado)</h4>
+      <ul>
+        <li>A lei <strong>não deixa nenhuma margem de liberdade</strong></li>
+        <li>Todos os elementos e requisitos do ato são definidos pela lei</li>
+        <li>O agente pratica o ato <em>exatamente</em> como a lei determina</li>
+        <li>Descumprimento → ato <strong>nulo</strong></li>
+        <li>Ex.: concessão de licença para dirigir (preenchidos os requisitos)</li>
+      </ul>
+    </div>
+    <div class="cmp-card cmp-purple">
+      <h4>🧭 Poder Discricionário</h4>
+      <ul>
+        <li>A lei confere <strong>margem de liberdade</strong> ao agente</li>
+        <li>Escolha de <strong>conveniência e oportunidade</strong></li>
+        <li>Limitado pela própria lei e pelos princípios (proporcionalidade e razoabilidade)</li>
+        <li>Discricionariedade ≠ Arbitrariedade</li>
+        <li>Ex.: nomeação para cargo em comissão; autorização de porte de arma</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sec">Quando haverá discricionariedade? (Esquema 73)</h2>
+  <div class="cmp-grid">
+    <div class="cmp-card cmp-amber">
+      <h4>Hipóteses que geram discricionariedade</h4>
+      <ul>
+        <li>A lei <strong>prevê expressamente</strong> a possibilidade de escolha</li>
+        <li>A lei usa <strong>conceitos jurídicos indeterminados</strong> (ex.: "urgência", "notório saber")</li>
+        <li>O legislador não consegue descrever todas as situações do caso concreto</li>
+      </ul>
+    </div>
+    <div class="cmp-card cmp-navy">
+      <h4>Elementos do Ato Administrativo</h4>
+      <ul>
+        <li><strong>Sempre vinculados:</strong> Competência e Finalidade e Forma</li>
+        <li><strong>Podem ser discricionários:</strong> Motivo e Objeto</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert alert-warn">
+    <span class="alert-icon">⚠️</span>
+    <span><strong>Discricionariedade ≠ Arbitrariedade.</strong> O ato discricionário ainda deve respeitar a lei, os princípios da proporcionalidade e razoabilidade, e sempre visar ao interesse público. Ato arbitrário é ilegal e passível de anulação.</span>
+  </div>
+  <div class="alert alert-info">
+    <span class="alert-icon">📌</span>
+    <span>O <strong>mérito administrativo</strong> (conveniência e oportunidade) é insuscetível de controle judicial — salvo quando o ato viola os princípios da proporcionalidade, razoabilidade ou finalidade.</span>
+  </div>
+
+  <div class="trap-box">
+    <div class="trap-tag">Pegadinhas — Estilo CEBRASPE / FGV</div>
+    <div class="trap-item">❌ "<strong>Discricionariedade é sinônimo de arbitrariedade.</strong>" → <strong>ERRADO</strong>. A discricionariedade opera dentro da lei; a arbitrariedade é ilegal.</div>
+    <div class="trap-item">❌ "<strong>No poder discricionário, o Judiciário pode substituir a Administração e escolher a opção mais conveniente.</strong>" → <strong>ERRADO</strong>. O Judiciário controla a legalidade, não o mérito.</div>
+    <div class="trap-item">✅ "<strong>Com base no poder discricionário, um agente público pode revogar um ato válido.</strong>" → <strong>CERTO</strong>. A revogação (por razões de mérito) é exercício da discricionariedade.</div>
+    <div class="trap-item">❌ "<strong>No poder vinculado, há juízo de oportunidade e conveniência do ato.</strong>" → <strong>ERRADO</strong>. No poder vinculado não há margem de liberdade; oportunidade e conveniência são elementos do poder discricionário.</div>
+    <div class="trap-item">✅ "<strong>A discricionariedade está presente na expedição e no desfazimento do ato administrativo.</strong>" → <strong>CERTO</strong>. O agente pode tanto editar quanto revogar o ato com base na discricionariedade.</div>
+  </div>
+
+  <div class="q-refs">
+    <span class="q-ref">Q3615041 · CEV UECE · CBM CE · 2025</span>
+    <span class="q-ref">Q3646392 · Fronte · Pref Costa Rica · 2025</span>
+    <span class="q-ref">Q1837162 · CEBRASPE · SERIS AL · 2021</span>
+    <span class="q-ref">Q2740330 · VUNESP · PC SP · 2023</span>
+  </div>
+</div>
+
+<!-- ===== P02 — PODER REGULAMENTAR ===== -->
+<div id="p02" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Subtópico 02 · Esquema 75</div>
+    <div class="page-title">Poder Regulamentar (Normativo)</div>
+    <div class="fonte-ref">📖 Resumo v6 p. 47 · CF/88 Art. 84, IV e VI · Art. 49, V</div>
+  </div>
+  <div class="incidencia-bar">
+    <span class="inc-label">Incidência:</span><span class="stars">★★★★☆</span>
+    <div class="badges"><span class="badge badge-cebraspe">CEBRASPE</span><span class="badge badge-fgv">FGV</span><span class="badge badge-fcc">FCC</span></div>
+  </div>
+
+  <div class="concept-block">
+    <h4>Definição (Esquema 75)</h4>
+    <p>Prerrogativa conferida à Administração Pública para <strong>editar atos gerais e abstratos</strong> que complementam a lei e permitem sua fiel execução. <strong>Não pode inovar</strong> no ordenamento jurídico nem ultrapassar os comandos definidos pela lei.</p>
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">📌</span>
+    <span><strong>Poder Normativo × Poder Regulamentar:</strong> O poder normativo é gênero (toda capacidade normativa da Adm.). O poder regulamentar é espécie — privativo do Poder Executivo para editar decretos/regulamentos. Resoluções, portarias e instruções normativas são atos do poder normativo (não exclusivos do Executivo).</span>
+  </div>
+
+  <h2 class="sec">Decreto Executivo vs. Decreto Autônomo</h2>
+  <div class="cmp-grid">
+    <div class="cmp-card cmp-blue">
+      <h4>Decreto Executivo (Regulamentar)</h4>
+      <ul>
+        <li>Expedido para <strong>fiel execução da lei</strong></li>
+        <li>Detalha, explica e complementa</li>
+        <li><strong>Não pode inovar</strong> no ordenamento</li>
+        <li>É a regra geral do poder regulamentar</li>
+        <li>Fundamento: CF/88, art. 84, IV</li>
+      </ul>
+    </div>
+    <div class="cmp-card cmp-purple">
+      <h4>Decreto Autônomo</h4>
+      <ul>
+        <li>Exceção: <strong>inova</strong> no ordenamento sem lei prévia</li>
+        <li>Apenas para duas matérias:<br>① Organização e funcionamento da Adm. (sem aumento de despesa nem criação/extinção de órgãos)<br>② Extinção de cargos ou funções públicas <em>vagos</em></li>
+        <li>Fundamento: CF/88, art. 84, VI</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="lei-box">
+    <div class="lei-tag">📜 CF/88 — Art. 49, V — Controle pelo Congresso</div>
+    <p>É da competência exclusiva do Congresso Nacional <strong>sustar os atos normativos do Poder Executivo que exorbitem do poder regulamentar</strong> ou dos limites de delegação legislativa.</p>
+  </div>
+
+  <h2 class="sec">Instrumentos do Poder Regulamentar/Normativo</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Instrumento</th><th>Quem edita</th><th>Natureza</th></tr></thead>
+      <tbody>
+        <tr><td>Decretos</td><td>Chefe do Executivo (Presidente, Governador, Prefeito)</td><td>Regulamentar ou autônomo</td></tr>
+        <tr><td>Resoluções</td><td>Órgãos colegiados, tribunais, MP, CNJ</td><td>Normativa (poder normativo geral)</td></tr>
+        <tr><td>Portarias</td><td>Ministros, secretários, autoridades</td><td>Normativa</td></tr>
+        <tr><td>Instruções Normativas</td><td>Autoridades diversas</td><td>Normativa</td></tr>
+        <tr><td>Deliberações</td><td>Órgãos colegiados</td><td>Normativa</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="trap-box">
+    <div class="trap-tag">Pegadinhas — Estilo CEBRASPE</div>
+    <div class="trap-item">✅ "<strong>No exercício do poder regulamentar, o Poder Executivo pode editar regulamentos autônomos de organização administrativa, desde que não impliquem aumento de despesa nem criação ou extinção de órgãos públicos.</strong>" → <strong>CERTO</strong>.</div>
+    <div class="trap-item">❌ "<strong>É permitido ao Presidente da República editar regulamento sobre temática não prevista em lei, desde que verificada situação de relevância e urgência.</strong>" → <strong>ERRADO</strong>. Decretos autônomos só cabem nas hipóteses taxativas do art. 84, VI, CF/88. Relevância e urgência são requisitos de MP (lei em sentido formal).</div>
+    <div class="trap-item">❌ "<strong>O poder regulamentar permite à Administração modificar o conteúdo da lei.</strong>" → <strong>ERRADO</strong>. O poder regulamentar só complementa e detalha a lei, jamais a modifica.</div>
+    <div class="trap-item">✅ "<strong>O poder regulamentar decorre da função normativa, ainda que em caráter derivado, considerada a natureza complementar em relação às leis.</strong>" → <strong>CERTO</strong>.</div>
+  </div>
+
+  <div class="q-refs">
+    <span class="q-ref">Q3259766 · FGV · PC MG · 2025</span>
+    <span class="q-ref">Q3599459 · CEBRASPE · TJ PA · 2025</span>
+    <span class="q-ref">Q3168289 · FGV · TJ RR · 2024</span>
+    <span class="q-ref">Q1916474 · CEBRASPE · DPE RO · 2022</span>
+  </div>
+</div>
+
+<!-- ===== P03 — PODER HIERÁRQUICO ===== -->
+<div id="p03" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Subtópico 03 · Esquemas 76–77</div>
+    <div class="page-title">Poder Hierárquico</div>
+    <div class="fonte-ref">📖 Resumo v6 p. 48 · Lei 9.784/99, Arts. 11-15</div>
+  </div>
+  <div class="incidencia-bar">
+    <span class="inc-label">Incidência:</span><span class="stars">★★★★☆</span>
+    <div class="badges"><span class="badge badge-cebraspe">CEBRASPE</span><span class="badge badge-fgv">FGV</span><span class="badge badge-fcc">FCC</span><span class="badge badge-vunesp">VUNESP</span></div>
+  </div>
+
+  <div class="concept-block">
+    <h4>Definição (Esquema 76)</h4>
+    <p>Prerrogativa conferida à administração pública para <strong>organizar e estruturar as atividades administrativas</strong>, distribuir, ordenar e rever a atuação dos seus agentes, estabelecendo relação de <strong>subordinação e coordenação</strong>.</p>
+  </div>
+
+  <h2 class="sec">O que decorre do Poder Hierárquico</h2>
+  <div class="cmp-grid">
+    <div class="cmp-card cmp-blue">
+      <h4>Faculdades Implícitas</h4>
+      <ul>
+        <li><strong>Dar ordens</strong> aos subordinados (que devem cumpri-las, exceto se manifestamente ilegais)</li>
+        <li><strong>Fiscalizar e controlar</strong> órgãos inferiores</li>
+        <li><strong>Rever e anular</strong> atos ilegais praticados por subordinados</li>
+        <li><strong>Revogar</strong> atos inoportunos de subordinados</li>
+        <li>Editar atos normativos internos (instruções)</li>
+        <li>Resolver conflitos de atribuições entre subordinados</li>
+      </ul>
+    </div>
+    <div class="cmp-card cmp-green">
+      <h4>Delegação e Avocação</h4>
+      <ul>
+        <li><strong>Delegação:</strong> transfere temporariamente o exercício de competência a outro órgão/agente (pode ser para não-hierarquizados, por razões técnicas)</li>
+        <li><strong>Avocação:</strong> o superior chama para si o exercício de competência atribuída a subordinado — excepcional e temporária</li>
+        <li>Ambas derivam do poder hierárquico</li>
+        <li>Competências exclusivas <strong>não</strong> admitem delegação/avocação</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sec">Onde NÃO existe Hierarquia (Esquema 77)</h2>
+  <div class="trap-box">
+    <div class="trap-tag">Limites do Poder Hierárquico — NÃO existe entre:</div>
+    <div class="trap-item">❌ <strong>Administração Direta e Indireta</strong> — entre elas há controle finalístico (supervisão), não hierarquia</div>
+    <div class="trap-item">❌ <strong>Administração Pública e particulares</strong> — a relação é de sujeição geral (não hierarquia)</div>
+    <div class="trap-item">❌ <strong>Poderes Executivo, Legislativo e Judiciário</strong> — são independentes e harmônicos entre si</div>
+    <div class="trap-item">❌ <strong>Nas funções típicas do Judiciário e do Legislativo</strong> — apenas nas funções administrativas atípicas pode haver hierarquia interna</div>
+  </div>
+
+  <div class="alert alert-warn">
+    <span class="alert-icon">⚠️</span>
+    <span>A <strong>insubordinação</strong> (descumprir ordem legal do superior) ofende o poder hierárquico. A <strong>punição</strong> por insubordinação, porém, decorre do poder disciplinar (não do hierárquico).</span>
+  </div>
+
+  <div class="concept-block">
+    <h4>Delegação — Lei 9.784/99, Art. 14</h4>
+    <ul>
+      <li>O ato de delegação deve especificar: matérias e poderes transferidos, limites, duração, objetivos e recurso cabível</li>
+      <li>A delegação pode ser feita a órgão <strong>não hierarquicamente subordinado</strong>, por razões técnicas, sociais, econômicas, jurídicas ou territoriais</li>
+      <li>A competência é <strong>irrenunciável</strong> — salvo os casos de delegação e avocação legalmente admitidos</li>
+    </ul>
+  </div>
+
+  <div class="trap-box">
+    <div class="trap-tag">Pegadinhas — Estilo CEBRASPE</div>
+    <div class="trap-item">❌ "<strong>A ordem conferida ao agente pelo delegado configura exercício do poder de polícia.</strong>" → <strong>ERRADO</strong>. Dar ordens a subordinados é exercício do poder hierárquico.</div>
+    <div class="trap-item">❌ "<strong>Ilustra o exercício do poder hierárquico o fato de um agente de trânsito aplicar multa a um motorista.</strong>" → <strong>ERRADO</strong>. Multa de trânsito é poder de polícia (o motorista não é subordinado do agente).</div>
+    <div class="trap-item">✅ "<strong>No âmbito administrativo, a prática de insubordinação no serviço público configura ofensa ao poder hierárquico.</strong>" → <strong>CERTO</strong>.</div>
+    <div class="trap-item">❌ "<strong>O poder disciplinar é o que cabe à Administração para apurar infrações e aplicar penalidades.</strong>" → <strong>Cuidado: isso descreve o poder DISCIPLINAR, não o hierárquico.</strong></div>
+  </div>
+
+  <div class="q-refs">
+    <span class="q-ref">Q3291659 · SELECON · PM SE · 2025</span>
+    <span class="q-ref">Q2972433 · CEBRASPE · Cach. Itapemirim · 2024</span>
+    <span class="q-ref">Q2519237 · FGV · TJ BA · 2023</span>
+    <span class="q-ref">Q1656977 · CEBRASPE · DEPEN · 2021</span>
+  </div>
+</div>
+
+<!-- ===== P04 — PODER DISCIPLINAR ===== -->
+<div id="p04" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Subtópico 04 · Esquema 78</div>
+    <div class="page-title">Poder Disciplinar</div>
+    <div class="fonte-ref">📖 Resumo v6 p. 49 · Doutrina</div>
+  </div>
+  <div class="incidencia-bar">
+    <span class="inc-label">Incidência:</span><span class="stars">★★★★★</span>
+    <div class="badges"><span class="badge badge-cebraspe">CEBRASPE</span><span class="badge badge-fgv">FGV</span><span class="badge badge-fcc">FCC</span><span class="badge badge-vunesp">VUNESP</span></div>
+  </div>
+
+  <div class="concept-block">
+    <h4>Definição (Esquema 78)</h4>
+    <p>Prerrogativa conferida à administração pública para <strong>apurar e punir infrações funcionais</strong> cometidas por servidores públicos e por particulares que possuam algum <strong>vínculo específico</strong> com a Administração.</p>
+  </div>
+
+  <div class="cmp-grid">
+    <div class="cmp-card cmp-amber">
+      <h4>Quem se sujeita ao Poder Disciplinar</h4>
+      <ul>
+        <li>Servidores públicos (efetivos, comissionados, empregados públicos)</li>
+        <li>Estudantes de escolas públicas (vínculo de frequência)</li>
+        <li>Particulares com <strong>vínculo específico</strong> com a Adm.:<br>→ Contratados (empresas com contratos administrativos)<br>→ Concessionários e permissionários<br>→ Usuários de estabelecimentos públicos</li>
+      </ul>
+    </div>
+    <div class="cmp-card cmp-blue">
+      <h4>O que NÃO é Poder Disciplinar</h4>
+      <ul>
+        <li>Multa de trânsito a particular (→ poder de polícia)</li>
+        <li>Interdição de estabelecimento sem vínculo (→ poder de polícia)</li>
+        <li>Prisão em flagrante (→ polícia judiciária)</li>
+        <li>Sanção a quem não tem vínculo com a Adm. (→ poder de polícia)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sec">Natureza Jurídica — Vinculado ou Discricionário?</h2>
+  <div class="cmp-grid">
+    <div class="cmp-card cmp-green">
+      <h4>✅ Vinculado — dever de punir</h4>
+      <ul>
+        <li>Comprovada a infração funcional, a Administração <strong>tem o dever</strong> de punir</li>
+        <li>Não há discricionariedade no dever de instaurar PAD</li>
+      </ul>
+    </div>
+    <div class="cmp-card cmp-purple">
+      <h4>🧭 Discricionário — dosimetria da pena</h4>
+      <ul>
+        <li>A escolha entre as sanções aplicáveis (advertência, suspensão, demissão) é discricionária</li>
+        <li>A dosimetria deve observar proporcionalidade</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert alert-warn">
+    <span class="alert-icon">⚠️</span>
+    <span>Antes de qualquer sanção, é obrigatório garantir ao acusado o <strong>contraditório e a ampla defesa</strong>. A sanção aplicada sem PAD é nula.</span>
+  </div>
+  <div class="alert alert-info">
+    <span class="alert-icon">📌</span>
+    <span>O poder disciplinar <strong>relaciona-se com o poder hierárquico</strong> mas com ele não se confunde. A sanção decorre <em>diretamente</em> do poder disciplinar e <em>mediatamente</em> do hierárquico.</span>
+  </div>
+
+  <div class="trap-box">
+    <div class="trap-tag">Pegadinhas — Estilo CEBRASPE / FGV</div>
+    <div class="trap-item">✅ "<strong>O poder disciplinar não abrange as sanções impostas a particulares que não estejam sujeitos à disciplina interna da administração; nesse caso, as medidas punitivas encontram fundamento no poder de polícia.</strong>" → <strong>CERTO</strong>.</div>
+    <div class="trap-item">❌ "<strong>Hércules, policial penal, foi multado por avançar sinal vermelho. A multa decorre do poder disciplinar.</strong>" → <strong>ERRADO</strong>. Multa de trânsito a motorista (ainda que servidor) é poder de polícia, não disciplinar — pois a infração não é funcional.</div>
+    <div class="trap-item">❌ "<strong>O corpo de bombeiros interditou escola privada por falta de condições de evacuação. Isso decorre do poder disciplinar.</strong>" → <strong>ERRADO</strong>. Interdição de estabelecimento particular é poder de polícia.</div>
+    <div class="trap-item">✅ "<strong>Decorre do poder disciplinar a prerrogativa de punir infrações funcionais de servidores e de particulares com quem a Adm. tenha vínculo.</strong>" → <strong>CERTO</strong>.</div>
+    <div class="trap-item">❌ "<strong>A aplicação de sanção ao policial penal por insubordinação, sem processo administrativo, quando há verdade sabida.</strong>" → <strong>ERRADO</strong>. A jurisprudência atual exige PAD com contraditório e ampla defesa mesmo nos casos de verdade sabida.</div>
+  </div>
+
+  <div class="q-refs">
+    <span class="q-ref">Q3820191 · FGV · TJ RJ · 2026</span>
+    <span class="q-ref">Q3684470 · FCC · CBM AP · 2025</span>
+    <span class="q-ref">Q2853359 · FGV · PM RJ · 2024</span>
+    <span class="q-ref">Q2936961 · FGV · TJ SC · 2024</span>
+  </div>
+</div>
+
+<!-- ===== P05 — PODER DE POLÍCIA ===== -->
+<div id="p05" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Subtópico 05 · Esquemas 79–84</div>
+    <div class="page-title">Poder de Polícia</div>
+    <div class="fonte-ref">📖 Resumo v6 p. 50–53 · CTN Art. 78 · STF Tema 532</div>
+  </div>
+  <div class="incidencia-bar">
+    <span class="inc-label">Incidência:</span><span class="stars">★★★★★</span>
+    <div class="badges"><span class="badge badge-cebraspe">CEBRASPE</span><span class="badge badge-fgv">FGV</span><span class="badge badge-fcc">FCC</span><span class="badge badge-vunesp">VUNESP</span></div>
+  </div>
+
+  <div class="lei-box">
+    <div class="lei-tag">📜 CTN — Art. 78 — Conceito Legal</div>
+    <p>Considera-se poder de polícia a <strong>atividade da administração pública que, limitando ou disciplinando direito, interesse ou liberdade</strong>, regula a prática de ato ou abstenção de fato, em razão de interesse público concernente à segurança, à higiene, à ordem, aos costumes, à disciplina da produção e do mercado, ao exercício de atividades econômicas dependentes de concessão ou autorização do Poder Público, à tranquilidade pública ou ao respeito à propriedade e aos direitos individuais ou coletivos.</p>
+  </div>
+
+  <div class="concept-block">
+    <h4>Características Essenciais (Esquema 79)</h4>
+    <ul>
+      <li>Decorre da <strong>supremacia geral</strong> do Estado (não exige vínculo específico com o particular)</li>
+      <li>Alcança <strong>todos os particulares</strong> submetidos à autoridade estatal</li>
+      <li>As restrições devem sempre respeitar os limites previstos em <strong>lei</strong></li>
+      <li>Deve observar os princípios da <strong>proporcionalidade e razoabilidade</strong></li>
+      <li>Competente para exercê-lo: o ente federado ao qual a CF/88 atribui competência para <strong>legislar</strong> sobre a atividade</li>
+    </ul>
+  </div>
+
+  <h2 class="sec">Polícia Administrativa ✘ Polícia Judiciária (Esquema 80)</h2>
+  <div class="cmp-grid">
+    <div class="cmp-card cmp-blue">
+      <h4>Polícia Administrativa</h4>
+      <ul>
+        <li>Trata de <strong>bens, direitos e atividades</strong> restringidos em prol do interesse coletivo</li>
+        <li>Inicia e encerra-se no âmbito administrativo</li>
+        <li>Realizada por órgãos administrativos com competências fiscalizatórias</li>
+        <li>Atuação predominantemente <strong>preventiva</strong></li>
+        <li>Ex.: vigilância sanitária, trânsito, meio ambiente</li>
+      </ul>
+    </div>
+    <div class="cmp-card cmp-red">
+      <h4>Polícia Judiciária</h4>
+      <ul>
+        <li>Atua sobre <strong>pessoas envolvidas em ilícitos penais</strong></li>
+        <li>Prepara o processo jurisdicional penal</li>
+        <li>Realizada por órgãos especializados (Polícia Civil, Federal, Militar)</li>
+        <li>Atuação predominantemente <strong>repressiva</strong></li>
+        <li>Ex.: inquérito policial, prisão em flagrante</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sec">Atributos do Poder de Polícia — D.A.C. (Esquemas 81–83)</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Atributo</th><th>Conceito</th><th>Observação</th></tr></thead>
+      <tbody>
+        <tr><td>Discricionariedade</td><td>A Adm. escolhe momento, meios e sanções dentro das opções previstas em lei</td><td><strong>Nem sempre presente</strong> — ex.: licença (se atendidos os requisitos) é vinculada</td></tr>
+        <tr><td>Autoexecutoriedade</td><td>Prerrogativa de executar a decisão sem intervenção do Judiciário</td><td>Dividida em: <strong>Exigibilidade</strong> (meios indiretos, ex.: multa) e <strong>Executoriedade</strong> (meios diretos). Multas <strong>não</strong> são autoexecutórias (apenas exigíveis)</td></tr>
+        <tr><td>Coercibilidade</td><td>O ato é obrigatório independentemente da vontade do administrado</td><td>Não está presente nos atos negociais (ex.: autorização)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="sec">Ciclo (Fases) de Polícia — Esquema 84</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Fase</th><th>Descrição</th><th>Delegabilidade</th></tr></thead>
+      <tbody>
+        <tr><td>1. Ordem de Polícia</td><td>Edição de normas que condicionam ou restringem direitos (função legislativa)</td><td><strong>Absolutamente indelegável</strong> a PJ de direito privado</td></tr>
+        <tr><td>2. Consentimento de Polícia</td><td>Anuência do poder público para o particular exercer determinada atividade (ex.: licenças, autorizações)</td><td>Delegável nas condições do STF Tema 532</td></tr>
+        <tr><td>3. Fiscalização de Polícia</td><td>Fiscalizar o cumprimento das normas e dos requisitos do consentimento</td><td>Delegável nas condições do STF Tema 532</td></tr>
+        <tr><td>4. Sanção de Polícia</td><td>Aplicação de sanções às infrações cometidas</td><td>Delegável nas condições do STF Tema 532</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="lei-box">
+    <div class="lei-tag">📜 STF — Tema 532 — Delegabilidade do Poder de Polícia</div>
+    <p>É constitucional a delegação do poder de polícia, por meio de lei, a pessoas jurídicas de direito privado integrantes da Administração Pública indireta de capital social <strong>majoritariamente público</strong> que prestem <strong>exclusivamente serviço público de atuação própria do Estado</strong> e em <strong>regime não concorrencial</strong>.</p>
+  </div>
+
+  <div class="alert alert-warn">
+    <span class="alert-icon">⚠️</span>
+    <span><strong>Não é possível</strong> a delegação a entidades privadas que <em>não integram a Administração Indireta</em>, mesmo que prestem serviços públicos.</span>
+  </div>
+
+  <h3 class="subsec">Jurisprudência Essencial</h3>
+  <div class="concept-block">
+    <h4>STF SV 38 — Horário comercial municipal</h4>
+    <p>É competente o Município para fixar o horário de funcionamento de estabelecimento comercial. (Poder de polícia urbano)</p>
+  </div>
+  <div class="concept-block">
+    <h4>STJ Súmula 19 — Horário bancário</h4>
+    <p>A fixação do horário bancário, para atendimento ao público, é da competência da União. (Direito financeiro — competência federal)</p>
+  </div>
+  <div class="concept-block">
+    <h4>STF RE 658.570/MG — Guarda municipal</h4>
+    <p>É constitucional a atribuição às guardas municipais do exercício de poder de polícia de trânsito, inclusive para imposição de sanções administrativas legalmente previstas.</p>
+  </div>
+
+  <div class="trap-box">
+    <div class="trap-tag">Pegadinhas — Estilo CEBRASPE</div>
+    <div class="trap-item">❌ "<strong>O poder de polícia fragmenta-se em cinco etapas: ordem, consentimento, fiscalização, apuração e sanção.</strong>" → <strong>ERRADO</strong>. São 4 fases (ciclo de polícia): ordem, consentimento, fiscalização e sanção.</div>
+    <div class="trap-item">❌ "<strong>A ordem de polícia é a única fase que não pode ser delegada a pessoa jurídica de direito privado.</strong>" → <strong>ATENÇÃO</strong>: Segundo o STF Tema 532, as fases de consentimento, fiscalização e sanção <em>podem</em> ser delegadas a PJ de direito privado da Adm. Indireta, nas condições estabelecidas. A ordem de polícia é absolutamente indelegável.</div>
+    <div class="trap-item">✅ "<strong>O poder de polícia abrange não somente os atos da Adm. Pública, mas também os atos do Poder Legislativo, por meio de lei.</strong>" → <strong>CERTO</strong>. Em sentido amplo, o poder de polícia reparte-se entre Legislativo (que edita a lei) e Executivo (que regulamenta e aplica).</div>
+    <div class="trap-item">❌ "<strong>Com base no poder hierárquico, a Adm. pode aplicar sanções a quaisquer particulares que descumpram normas ambientais ou de trânsito.</strong>" → <strong>ERRADO</strong>. Particulares sem vínculo funcional se sujeitam ao poder de polícia, não ao hierárquico.</div>
+    <div class="trap-item">✅ "<strong>O poder de polícia tem origem em um vínculo geral entre os indivíduos e a Adm. Pública.</strong>" → <strong>CERTO</strong>. Supremacia geral — não exige vínculo específico.</div>
+  </div>
+
+  <div class="q-refs">
+    <span class="q-ref">Q3824889 · FGV · TJ RJ · 2026</span>
+    <span class="q-ref">Q3450846 · CEBRASPE · STM · 2025</span>
+    <span class="q-ref">Q3267525 · Consulplan · TJ RO · 2025</span>
+    <span class="q-ref">Q2703463 · FUNDEP · DPE MG · 2023</span>
+  </div>
+</div>
+
+<!-- ===== P06 — ABUSO DE PODER ===== -->
+<div id="p06" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Subtópico 06 · Esquema 85</div>
+    <div class="page-title">Abuso de Poder</div>
+    <div class="fonte-ref">📖 Resumo v6 p. 54 · Doutrina</div>
+  </div>
+  <div class="incidencia-bar">
+    <span class="inc-label">Incidência:</span><span class="stars">★★★★☆</span>
+    <div class="badges"><span class="badge badge-cebraspe">CEBRASPE</span><span class="badge badge-fgv">FGV</span><span class="badge badge-fcc">FCC</span></div>
+  </div>
+
+  <div class="concept-block">
+    <h4>Definição</h4>
+    <p>Haverá abuso de poder quando os poderes administrativos forem exercidos <strong>além dos limites necessários</strong> ao alcance do interesse público. O abuso pode ocorrer por condutas <strong>comissivas ou omissivas</strong>.</p>
+  </div>
+
+  <div class="cmp-grid">
+    <div class="cmp-card cmp-red">
+      <h4>⛔ Excesso de Poder</h4>
+      <ul>
+        <li>O agente atua <strong>fora dos limites de sua competência</strong></li>
+        <li>Pratica ato além do que lhe é atribuído</li>
+        <li><strong>Admite convalidação</strong> (se o defeito for de competência e a autoridade competente ratificar)</li>
+        <li>Exemplo: policial aplica pena além do permitido; servidor pratica ato de competência de outro órgão</li>
+      </ul>
+    </div>
+    <div class="cmp-card cmp-purple">
+      <h4>🎯 Desvio de Poder (Desvio de Finalidade)</h4>
+      <ul>
+        <li>O agente pratica o ato <strong>dentro de sua competência</strong>, mas com <strong>desvio de finalidade</strong></li>
+        <li>Usa a competência para atingir fim diverso do previsto em lei</li>
+        <li><strong>Não admite convalidação</strong></li>
+        <li>Exemplo: remover servidor por perseguição pessoal (usando a competência de remoção, mas com fim ilícito)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Comparativo</th><th>Excesso de Poder</th><th>Desvio de Finalidade</th></tr></thead>
+      <tbody>
+        <tr><td>Vício</td><td>Competência</td><td>Finalidade</td></tr>
+        <tr><td>Atua dentro da competência?</td><td>Não</td><td>Sim</td></tr>
+        <tr><td>Convalidação</td><td>Admite</td><td>Não admite</td></tr>
+        <tr><td>Resultado</td><td>Ato ilegal (nulo)</td><td>Ato ilegal (nulo)</td></tr>
+        <tr><td>Elemento do ato viciado</td><td>Competência</td><td>Finalidade</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="trap-box">
+    <div class="trap-tag">Pegadinhas — Estilo CEBRASPE / FGV</div>
+    <div class="trap-item">❌ "<strong>José abriu investigação administrativa contra João por ser seu desafeto pessoal. José agiu com excesso de poder.</strong>" → <strong>ERRADO</strong>. Agiu com <em>desvio de poder</em> (finalidade pessoal, não pública). A competência para investigar existe; o vício está na finalidade.</div>
+    <div class="trap-item">✅ "<strong>O agente público incorre em desvio de poder quando, mesmo dentro de sua esfera de competência, atua afastando-se do interesse público.</strong>" → <strong>CERTO</strong>.</div>
+  </div>
+
+  <div class="q-refs">
+    <span class="q-ref">Q3820191 · FGV · TJ RJ · 2026</span>
+    <span class="q-ref">Q841047 · AOCP · PC ES · 2019</span>
+  </div>
+</div>
+
+<!-- ===== P07 — DEVERES ===== -->
+<div id="p07" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Subtópico 07 · Esquema 86</div>
+    <div class="page-title">Deveres da Administração</div>
+    <div class="fonte-ref">📖 Resumo v6 p. 55 · Doutrina</div>
+  </div>
+  <div class="incidencia-bar">
+    <span class="inc-label">Incidência:</span><span class="stars">★★★☆☆</span>
+    <div class="badges"><span class="badge badge-cebraspe">CEBRASPE</span><span class="badge badge-fgv">FGV</span></div>
+  </div>
+
+  <div class="concept-block">
+    <h4>Os Poderes são Irrenunciáveis</h4>
+    <p>Os poderes administrativos são <strong>irrenunciáveis</strong> e devem ser, obrigatoriamente, exercidos. A omissão do agente em situações que exigem sua atuação caracteriza <strong>abuso de poder</strong>.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Dever</th><th>Conceito</th><th>Fundamento</th></tr></thead>
+      <tbody>
+        <tr><td>Poder-dever de Agir</td><td>O agente público tem o dever de agir quando exigido; a omissão configura abuso de poder</td><td>Doutrina — Indisponibilidade do interesse público</td></tr>
+        <tr><td>Dever de Eficiência</td><td>Necessidade de atuação administrativa com qualidade, produtividade e economicidade</td><td>CF/88, art. 37, caput (princípio da eficiência)</td></tr>
+        <tr><td>Dever de Probidade</td><td>Exigência de atuação segundo o princípio da moralidade; vedação ao enriquecimento ilícito</td><td>LIA — Lei 8.429/92; CF/88, art. 37, §4º</td></tr>
+        <tr><td>Dever de Prestar Contas</td><td>Alcança qualquer pessoa que utilize, arrecade, guarde, gerencie ou administre recursos públicos</td><td>CF/88, art. 70, parágrafo único</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-warn">
+    <span class="alert-icon">⚠️</span>
+    <span>O dever de prestar contas é <strong>indeclinável</strong> e alcança não apenas servidores públicos, mas todo aquele que lidar com recursos públicos — inclusive particulares (ex.: OSCs que recebem verbas públicas).</span>
+  </div>
+</div>
+
+<!-- ===== QUIZ ===== -->
+<div id="quiz" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Revisão Rápida · 20 Afirmativas CERTO/ERRADO</div>
+    <div class="page-title">Poderes da Administração — CEBRASPE Style</div>
+    <div class="fonte-ref">📖 Baseado no caderno TecConcursos — Caderno 03</div>
+  </div>
+  <div class="quiz-header">
+    <div class="quiz-score">Placar: <span id="score">0</span> / <span id="answered">0</span></div>
+    <button class="btn-reset" onclick="revReset()">↺ Reiniciar</button>
+  </div>
+  <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+  <div id="quiz-cards"></div>
+</div>
+
+</main>
+
+<script>
+const pages={sumario:'Sumário Geral',p01:'01 · Vinculado e Discricionário',p02:'02 · Poder Regulamentar',p03:'03 · Poder Hierárquico',p04:'04 · Poder Disciplinar',p05:'05 · Poder de Polícia',p06:'06 · Abuso de Poder',p07:'07 · Deveres',quiz:'Revisão Rápida'};
+
+const quizData=[
+  {n:1,text:"O poder em que o administrador público não tem liberalidade em sua decisão, devendo seguir exatamente o que a lei determina, denomina-se poder vinculado.",answer:true,exp:"CERTO. No poder vinculado (regrado), a lei define todos os elementos do ato sem deixar margem de escolha ao agente.",ref:"Q3615041 · CEV UECE · CBM CE · 2025"},
+  {n:2,text:"Discricionariedade é sinônimo de arbitrariedade, pois ambas conferem liberdade de ação ao agente público.",answer:false,exp:"ERRADO. Discricionariedade é liberdade dentro da lei; arbitrariedade é agir fora dos limites legais, sendo ilegal.",ref:"Q1107836 · IBFC · PM BA · 2020"},
+  {n:3,text:"Com base no poder discricionário, um agente público pode revogar um ato válido.",answer:true,exp:"CERTO. A revogação é o desfazimento de ato por razões de mérito (conveniência e oportunidade), exercício típico do poder discricionário.",ref:"Q1837162 · CEBRASPE · SERIS AL · 2021"},
+  {n:4,text:"A nomeação para cargo de provimento em comissão representa manifestação do exercício do poder discricionário.",answer:true,exp:"CERTO. A nomeação para CC é ato discricionário — a autoridade escolhe livremente a pessoa de sua confiança, dentro dos limites legais.",ref:"Q1916472 · CEBRASPE · DPE RO · 2022"},
+  {n:5,text:"No poder vinculado, há juízo de oportunidade e conveniência dos atos que vai praticar, dentro dos limites da lei.",answer:false,exp:"ERRADO. Oportunidade e conveniência são elementos do poder DISCRICIONÁRIO. No poder vinculado não há margem de liberdade.",ref:"Q2061191 · CRH PMRO · PM RO · 2018"},
+  {n:6,text:"O poder regulamentar decorre da função normativa, ainda que em caráter derivado, considerada a natureza complementar em relação às leis, a exemplo de resoluções, portarias e instruções normativas.",answer:true,exp:"CERTO. O poder regulamentar é espécie de poder normativo — tem caráter derivado (complementa a lei, não inova em regra).",ref:"Q3450845 · CEBRASPE · STM · 2025"},
+  {n:7,text:"No exercício do poder regulamentar, o Poder Executivo pode editar regulamentos autônomos de organização administrativa, desde que não impliquem aumento de despesa nem criação ou extinção de órgãos públicos.",answer:true,exp:"CERTO. Art. 84, VI, 'a', CF/88: decreto autônomo para organização da Adm. desde que sem aumento de despesa nem criação/extinção de órgãos.",ref:"Q596624 · CEBRASPE · STM · 2018"},
+  {n:8,text:"É permitido ao Presidente da República editar regulamento sobre temática não prevista em lei, desde que verificada situação de relevância e urgência.",answer:false,exp:"ERRADO. Relevância e urgência são requisitos de Medida Provisória (lei em sentido formal). Decretos autônomos só cabem nos casos taxativos do art. 84, VI, CF/88.",ref:"Q1916474 · CEBRASPE · DPE RO · 2022"},
+  {n:9,text:"A impugnação de decisão de um secretário municipal, submetida ao crivo da chefia, insere-se no âmbito do poder administrativo disciplinar.",answer:false,exp:"ERRADO. Recurso hierárquico dirigido ao superior imediato insere-se no poder HIERÁRQUICO, não no disciplinar.",ref:"Q2972433 · CEBRASPE · Cach. Itapemirim · 2024"},
+  {n:10,text:"No âmbito administrativo, a prática de insubordinação no serviço público configura ofensa ao poder hierárquico.",answer:true,exp:"CERTO. A insubordinação (descumprir ordem legal do superior) viola o poder hierárquico. A punição, porém, decorre do poder disciplinar.",ref:"Q1656977 · CEBRASPE · DEPEN · 2021"},
+  {n:11,text:"Ilustra o exercício do poder hierárquico o fato de um agente de trânsito aplicar multa a um motorista.",answer:false,exp:"ERRADO. O motorista não é subordinado do agente de trânsito — a relação é de sujeição geral. A multa de trânsito decorre do poder de POLÍCIA.",ref:"Q1837166 · CEBRASPE · SERIS AL · 2021"},
+  {n:12,text:"O poder disciplinar não abrange as sanções impostas a particulares que não estejam sujeitos à disciplina interna da administração; nesse caso, as medidas punitivas encontram fundamento no poder de polícia.",answer:true,exp:"CERTO. O poder disciplinar exige vínculo específico. Particulares sem vínculo se submetem ao poder de polícia.",ref:"Q1740454 · CEBRASPE · PC AL · 2021"},
+  {n:13,text:"A multa de trânsito imposta a policial penal que avançou sinal vermelho com viatura oficial decorre do poder disciplinar da Administração Pública.",answer:false,exp:"ERRADO. A multa de trânsito, mesmo aplicada a servidor público, decorre do poder de POLÍCIA (a infração é de trânsito, não funcional).",ref:"Q2062948 · AOCP · PP DF · 2022"},
+  {n:14,text:"A atividade do Estado que limita o exercício dos direitos individuais em benefício do interesse público é considerada poder de polícia.",answer:true,exp:"CERTO. Definição clássica: o poder de polícia limita/disciplina direitos, interesses e liberdades em razão do interesse público.",ref:"Q3492620 · CEBRASPE · PF · 2025"},
+  {n:15,text:"Segundo a jurisprudência do STF, o poder de polícia fragmenta-se em cinco etapas: ordem, consentimento, fiscalização, apuração e sanção, sendo somente a última impassível de delegação.",answer:false,exp:"ERRADO. São 4 fases (ciclo de polícia), não 5. E a fase ABSOLUTAMENTE indelegável é a primeira (ordem de polícia/função legislativa), não a última.",ref:"Q3450846 · CEBRASPE · STM · 2025"},
+  {n:16,text:"Conforme o STF (Tema 532), é constitucional a delegação do poder de polícia a pessoas jurídicas de direito privado integrantes da Adm. Indireta de capital social majoritariamente público que prestem exclusivamente serviço público de atuação própria do Estado e em regime não concorrencial.",answer:true,exp:"CERTO. Transcrição fiel da tese do STF Tema 532.",ref:"Q2642827 · FAUEL · GCM Sengés · 2023"},
+  {n:17,text:"Com base no poder hierárquico, a Administração pode aplicar sanções previstas na legislação a quaisquer particulares que descumpram normas regulamentares ambientais, sanitárias ou de trânsito.",answer:false,exp:"ERRADO. Particulares sem vínculo funcional submetem-se ao poder de POLÍCIA (supremacia geral), não ao hierárquico (que exige subordinação).",ref:"Q2395721 · CEBRASPE · TJ ES · 2023"},
+  {n:18,text:"O poder de polícia abrange não somente os atos da administração pública, mas também os atos do Poder Legislativo, por meio de lei.",answer:true,exp:"CERTO. Em sentido amplo, o poder de polícia reparte-se entre Legislativo (norma que condiciona o direito) e Executivo (que regulamenta e aplica).",ref:"Q3373983 · CEBRASPE · MPE CE · 2025"},
+  {n:19,text:"O agente público incorre em desvio de poder quando, mesmo dentro de sua esfera de competência, atua afastando-se do interesse público.",answer:true,exp:"CERTO. Desvio de poder = ato praticado dentro da competência, mas com finalidade desviada do interesse público.",ref:"Q841047 · AOCP · PC ES · 2019"},
+  {n:20,text:"O excesso de poder e o desvio de finalidade são espécies de abuso de poder. O excesso admite convalidação, enquanto o desvio de finalidade não admite.",answer:true,exp:"CERTO. Excesso de poder (vício de competência) pode ser convalidado pela autoridade competente. Desvio de finalidade (vício insanável) não admite convalidação.",ref:"Resumo v6 · Esquema 85 · p. 54"}
+];
+
+let state=quizData.map(()=>({answered:false,correct:null}));
+let scores={correct:0,total:0};
+
+function buildQuiz(){
+  const c=document.getElementById('quiz-cards');
+  c.innerHTML=quizData.map((q,i)=>`
+    <div class="quiz-card" id="qc${i}">
+      <div class="q-num">${String(q.n).padStart(2,'0')} / 20</div>
+      <div class="q-text">${q.text}</div>
+      <div class="quiz-btns">
+        <button class="btn-cv btn-c" onclick="revAns(${i},true)">✓ CERTO</button>
+        <button class="btn-cv btn-e" onclick="revAns(${i},false)">✗ ERRADO</button>
+      </div>
+      <div class="feedback" id="fb${i}"></div>
+    </div>`).join('');
+}
+
+function showPage(id,navEl){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(navEl)navEl.classList.add('active');
+  document.getElementById('breadcrumb').textContent=pages[id]||id;
+  window.scrollTo(0,0);
+}
+
+function revAns(i,choice){
+  if(state[i].answered)return;
+  state[i].answered=true;
+  state[i].correct=(choice===quizData[i].answer);
+  scores.total++;
+  if(state[i].correct)scores.correct++;
+  const fb=document.getElementById('fb'+i);
+  const card=document.getElementById('qc'+i);
+  const label=quizData[i].answer?'CERTO':'ERRADO';
+  fb.className='feedback '+(state[i].correct?'correct':'wrong');
+  fb.style.display='block';
+  fb.innerHTML=`<strong>${state[i].correct?'✓ Você acertou!':'✗ Você errou!'}</strong> Gabarito: <strong>${label}</strong><br>${quizData[i].exp}<div class="fb-ref">↗ ${quizData[i].ref}</div>`;
+  card.style.borderColor=state[i].correct?'#057a55':'#c81e1e';
+  card.querySelectorAll('.btn-cv').forEach(b=>{b.disabled=true;b.style.opacity='.5';});
+  updateProgress();
+}
+
+function updateProgress(){
+  const pct=(scores.total/quizData.length)*100;
+  const bar=document.getElementById('progress-bar');
+  const rate=scores.total>0?scores.correct/scores.total:0;
+  bar.style.width=pct+'%';
+  bar.style.background=rate>=.7?'#057a55':rate>=.5?'#d97706':'#c81e1e';
+  document.getElementById('score').textContent=scores.correct;
+  document.getElementById('answered').textContent=scores.total;
+}
+
+function revReset(){
+  state=quizData.map(()=>({answered:false,correct:null}));
+  scores={correct:0,total:0};
+  updateProgress();
+  buildQuiz();
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
