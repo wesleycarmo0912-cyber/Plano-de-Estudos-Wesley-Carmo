@@ -121,20 +121,31 @@ body{font-family:'Barlow',sans-serif;font-size:15px;line-height:1.5;background:v
 
 /* ── NOVO LAYOUT COM SIDEBAR ── */
 .app-layout{display:flex;min-height:100vh;}
-.app-sidebar{width:220px;background:var(--card);border-right:0.5px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:90;transition:transform .3s;}
-.app-main{flex:1;margin-left:220px;display:block;min-height:100vh;}
-.sidebar-logo{padding:18px 16px 14px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid var(--border);}
-.sidebar-logo-icon{width:34px;height:34px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;flex-shrink:0;}
-.sidebar-logo-text{font-size:15px;font-weight:700;color:var(--text);font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;}
+.app-sidebar{width:220px;background:#fff;border-right:none;box-shadow:2px 0 12px rgba(0,0,0,.06);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:90;transition:width .25s cubic-bezier(.4,0,.2,1);}
+.app-sidebar.collapsed{width:56px;}
+.app-main{flex:1;margin-left:220px;display:block;min-height:100vh;transition:margin-left .25s cubic-bezier(.4,0,.2,1);}
+.app-main.sidebar-collapsed{margin-left:56px;}
+.sidebar-logo{padding:18px 16px 14px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid var(--border);overflow:hidden;min-height:62px;}
+.sidebar-logo-icon{width:34px;height:34px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;flex-shrink:0;cursor:pointer;}
+.sidebar-logo-text{font-size:15px;font-weight:700;color:var(--text);font-family:'Barlow Condensed',sans-serif;letter-spacing:.5px;white-space:nowrap;overflow:hidden;transition:opacity .2s,width .25s;}
 .sidebar-logo-text span{color:var(--accent);}
 .sidebar-nav{padding:10px 8px;flex:1;overflow-y:auto;}
 .sidebar-nav::-webkit-scrollbar{width:0;}
-.snav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--muted);margin-bottom:2px;transition:background .1s;border:none;background:transparent;width:100%;text-align:left;font-family:'Barlow',sans-serif;}
-.snav-item:hover{background:var(--bg2);color:var(--text);}
-.snav-item.on{background:rgba(232,160,32,.12);color:#c05e00;font-weight:700;}
-.snav-item .snav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
-.snav-item .snav-cnt{margin-left:auto;font-size:10px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:8px;font-weight:700;}
+.snav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--muted);margin-bottom:2px;transition:background .1s;border:none;background:transparent;width:100%;text-align:left;font-family:'Barlow',sans-serif;overflow:hidden;white-space:nowrap;}
+.snav-item:hover{background:#f5f5f5;color:var(--text);}
+.snav-item.on{background:var(--accent);color:#fff;font-weight:700;border-radius:10px;}
+.snav-item.on:hover{background:var(--accent);color:#fff;}
+.snav-item .snav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.snav-item .snav-lbl{transition:opacity .2s,width .25s;overflow:hidden;}
+.snav-item .snav-cnt{margin-left:auto;font-size:10px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:8px;font-weight:700;transition:opacity .2s;}
 .sidebar-bottom{padding:10px 8px;border-top:0.5px solid var(--border);}
+/* Estado colapsado */
+.app-sidebar.collapsed .snav-lbl,
+.app-sidebar.collapsed .snav-cnt,
+.app-sidebar.collapsed .sidebar-logo-text{opacity:0;width:0;pointer-events:none;}
+.app-sidebar.collapsed .snav-item{justify-content:center;padding:9px;}
+.app-sidebar.collapsed .sidebar-logo{justify-content:center;padding:14px 0;}
+.app-sidebar.collapsed .snav-item .snav-icon{width:auto;}
 .app-topbar{background:var(--card);border-bottom:0.5px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:80;}
 .app-topbar-greet{font-size:15px;font-weight:700;color:var(--text);}
 .app-topbar-sub{font-size:11px;color:var(--muted);margin-top:1px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
@@ -733,7 +744,7 @@ body.sidebar-open #pg0 .wk-box{margin-right:360px;transition:margin-right .3s cu
 .disc-assunto-title{display:flex;align-items:center;gap:6px;margin-bottom:3px;flex-wrap:wrap;}
 .disc-assunto-num{font-size:13px;font-weight:700;color:var(--muted);flex-shrink:0;}
 .disc-assunto-name{font-size:13px;color:var(--text);font-weight:500;}
-.disc-assunto-name.done{opacity:.5;text-decoration:line-through;}
+.disc-assunto-name.done{opacity:1;text-decoration:none;}
 .disc-badge-cyan{background:#cffafe;color:#0e7490;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;}
 [data-theme="dark"] .disc-badge-cyan{background:#164e63;color:#67e8f9;}
 .disc-assunto-stats{display:flex;gap:10px;font-size:11px;color:var(--muted);}
@@ -818,36 +829,37 @@ body.sidebar-open #pg0 .wk-box{margin-right:360px;transition:margin-right .3s cu
 .plan-gerar-btn{margin-left:auto;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;display:inline-flex;align-items:center;gap:6px;transition:background .15s;}
 .plan-gerar-btn:hover{background:#d08018;}
 /* Week nav */
-.plan-week-nav{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;}
-.plan-week-left{display:flex;align-items:center;gap:10px;}
-.plan-nav-btn{width:32px;height:32px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;flex-shrink:0;}
-.plan-nav-btn:hover{border-color:var(--accent);color:var(--accent);}
-.plan-week-range{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--text);letter-spacing:.3px;border-left:4px solid var(--accent);padding-left:10px;}
-.plan-week-num{font-size:12px;color:var(--muted);margin-top:1px;padding-left:14px;}
-.plan-day-dots{display:flex;gap:6px;align-items:center;margin-left:auto;}
+.plan-week-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;}
+.plan-week-left{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 16px;box-shadow:var(--shadow-card);}
+.plan-day-dots{display:flex;gap:6px;align-items:center;position:absolute;left:50%;transform:translateX(-50%);}
+.plan-nav-btn{width:32px;height:32px;border-radius:50%;background:var(--bg2);border:none;color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;flex-shrink:0;}
+.plan-nav-btn:hover{background:var(--border);color:var(--accent);}
+.plan-week-range{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--text);letter-spacing:.3px;border-left:3px solid var(--accent);padding-left:10px;}
+.plan-week-num{font-size:11px;font-weight:700;color:var(--accent);background:rgba(232,160,32,.12);border-radius:20px;padding:2px 10px;margin-top:4px;display:inline-block;margin-left:14px;}
+
 .plan-day-dot{display:flex;flex-direction:column;align-items:center;gap:3px;}
-.plan-day-dot-ltr{font-size:10px;font-weight:700;color:var(--muted);}
-.plan-day-dot-circ{width:6px;height:6px;border-radius:50%;background:var(--border2);}
-.plan-day-dot-circ.ativo{background:var(--accent);}
-.plan-day-dot-circ.hoje{background:var(--accent);box-shadow:0 0 0 2px rgba(232,160,32,.3);}
-.plan-day-dot-circ.folga{background:transparent;border:1px solid var(--border);}
+.plan-day-dot-ltr{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:.5px;}
+.plan-day-dot-circ{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.5;}
+.plan-day-dot-circ.ativo{background:var(--accent);opacity:1;}
+.plan-day-dot-circ.hoje{width:10px;height:10px;background:#c05e00;opacity:1;box-shadow:0 0 0 2px rgba(192,94,0,.2);}
+.plan-day-dot-circ.folga{background:transparent;border:1.5px solid var(--border);opacity:.5;}
 /* Kanban */
 .plan-kanban{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;overflow-x:auto;min-width:0;padding-bottom:8px;}
 @media(max-width:900px){.plan-kanban{grid-template-columns:repeat(4,minmax(160px,1fr));}}
 @media(max-width:600px){.plan-kanban{grid-template-columns:repeat(2,minmax(160px,1fr));}}
 /* Column */
-.plan-col{background:var(--card);border-radius:12px;border:1px solid var(--border);display:flex;flex-direction:column;min-height:320px;overflow:hidden;}
-.plan-col.hoje{border-color:var(--accent);border-width:2px;box-shadow:0 0 0 1px rgba(232,160,32,.15);}
+.plan-col{background:var(--card);border-radius:14px;border:1px solid var(--border);display:flex;flex-direction:column;min-height:320px;overflow:hidden;}
+.plan-col.hoje{border-color:var(--accent);border-width:2px;box-shadow:0 4px 16px rgba(232,160,32,.18);}
 .plan-col.folga{opacity:.6;}
-.plan-col-hdr{padding:12px 14px 8px;border-bottom:1px solid var(--border2);}
-.plan-col-date{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:var(--text);line-height:1;}
-.plan-col-date.hoje-date{background:var(--accent);color:#fff;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.plan-col-day{font-weight:700;font-size:13px;color:var(--text);margin-top:2px;display:flex;align-items:center;gap:5px;}
-.plan-col-hoje-badge{background:var(--accent);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:5px;text-transform:uppercase;letter-spacing:.4px;}
-.plan-col-meta{font-size:11px;color:var(--muted);margin-top:1px;}
-.plan-col-prog{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;font-size:11px;color:var(--muted);}
-.plan-col-prog-bar{height:3px;background:var(--border2);border-radius:2px;margin:0 14px 0;overflow:hidden;flex-shrink:0;}
-.plan-col-prog-fill{height:100%;border-radius:2px;background:var(--accent);transition:width .4s;}
+.plan-col-hdr{padding:14px 16px 10px;border-bottom:1px solid var(--border2);}
+.plan-col-date{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;color:var(--text);line-height:1;}
+.plan-col-date.hoje-date{background:var(--accent);color:#fff;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(232,160,32,.4);}
+.plan-col-day{font-weight:700;font-size:14px;color:var(--text);margin-top:4px;display:flex;align-items:center;gap:6px;}
+.plan-col-hoje-badge{background:var(--accent);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;}
+.plan-col-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.plan-col-prog{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;font-size:11px;color:var(--muted);}
+.plan-col-prog-bar{height:5px;background:var(--border2);border-radius:3px;margin:0 16px;overflow:hidden;flex-shrink:0;}
+.plan-col-prog-fill{height:100%;border-radius:3px;transition:width .4s;}
 .plan-col-body{flex:1;padding:8px 8px 4px;display:flex;flex-direction:column;gap:7px;}
 .plan-col-folga-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px;opacity:.5;}
 .plan-col-folga-icon{font-size:28px;}
@@ -2147,23 +2159,23 @@ footer{
 <div class="app-layout">
 <aside class="app-sidebar" id="appSidebar">
   <div class="sidebar-logo">
-    <div class="sidebar-logo-icon">CP</div>
+    <div class="sidebar-logo-icon" onclick="toggleSidebarCollapse()" title="Recolher/Expandir">CP</div>
     <div class="sidebar-logo-text">Crono<span>Policial</span></div>
   </div>
   <nav class="sidebar-nav">
-    <button class="snav-item on" id="tab0" onclick="ir(0,this)"><span class="snav-icon">🏠</span> Dashboard</button>
-    <button class="snav-item" id="tab1" onclick="ir(1,this)"><span class="snav-icon">📅</span> Cronograma</button>
-    <button class="snav-item" id="tab2" onclick="ir(2,this)"><span class="snav-icon">📚</span> Matérias <span class="snav-cnt" id="cntMat">0</span></button>
-    <button class="snav-item" id="tab3" onclick="ir(3,this)"><span class="snav-icon">🔁</span> Revisões <span class="snav-cnt" id="cntRev" style="display:none">0</span></button>
-    <button class="snav-item" id="tab4" onclick="ir(4,this)"><span class="snav-icon">📊</span> Análises</button>
-    <button class="snav-item" id="tab5" onclick="ir(5,this)"><span class="snav-icon">📆</span> Calendário</button>
-    <button class="snav-item" id="tab6" onclick="ir(6,this)"><span class="snav-icon">🎯</span> Simulados</button>
-    <button class="snav-item" id="tab7" onclick="ir(7,this)"><span class="snav-icon">📖</span> Resumos <span class="snav-cnt" id="cntFC" style="background:var(--purple);display:none">0</span></button>
+    <button class="snav-item on" id="tab0" onclick="ir(0,this)"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="snav-lbl"> Dashboard</span></button>
+    <button class="snav-item" id="tab1" onclick="ir(1,this)"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span class="snav-lbl"> Cronograma</span></button>
+    <button class="snav-item" id="tab2" onclick="ir(2,this)"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span class="snav-lbl"> Matérias</span> <span class="snav-cnt" id="cntMat">0</span></button>
+    <button class="snav-item" id="tab3" onclick="ir(3,this)"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span><span class="snav-lbl"> Revisões</span> <span class="snav-cnt" id="cntRev" style="display:none">0</span></button>
+    <button class="snav-item" id="tab4" onclick="ir(4,this)"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="snav-lbl"> Análises</span></button>
+    <button class="snav-item" id="tab5" onclick="ir(5,this)"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/></svg></span><span class="snav-lbl"> Calendário</span></button>
+    <button class="snav-item" id="tab6" onclick="ir(6,this)"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span><span class="snav-lbl"> Simulados</span></button>
+    <button class="snav-item" id="tab7" onclick="ir(7,this)"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span><span class="snav-lbl"> Resumos</span> <span class="snav-cnt" id="cntFC" style="background:var(--purple);display:none">0</span></button>
   </nav>
   <div class="sidebar-bottom">
-    <button class="snav-item" id="btnTema" onclick="toggleTema()"><span class="snav-icon">☀️</span> Tema</button>
-    <button class="snav-item" onclick="abrirDrawer()"><span class="snav-icon">❓</span> Ajuda</button>
-    <button class="snav-item" onclick="abrirReset()"><span class="snav-icon">⚙️</span> Dados</button>
+    <button class="snav-item" id="btnTema" onclick="toggleTema()"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span><span class="snav-lbl"> Tema</span></button>
+    <button class="snav-item" onclick="abrirDrawer()"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span class="snav-lbl"> Ajuda</span></button>
+    <button class="snav-item" onclick="abrirReset()"><span class="snav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 0 1 20 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2"/></svg></span><span class="snav-lbl"> Dados</span></button>
     <div id="userAvatar" style="padding:6px 10px;display:flex;align-items:center;gap:8px;"></div>
   </div>
 </aside>
@@ -2615,6 +2627,7 @@ footer{
       <div class="mc" data-method="intensiva" onclick="selMet('intensiva',this)"><div class="mc-ico">⚡</div><div class="mc-nm">Intensiva</div><div class="mc-desc">Revisões diárias<br>perto da prova</div></div>
       <div class="mc" data-method="erros" onclick="selMet('erros',this)"><div class="mc-ico">❌</div><div class="mc-nm">Por Erros</div><div class="mc-desc">Reagenda ao errar<br>nas questões</div></div>
       <div class="mc" data-method="manual" onclick="selMet('manual',this)"><div class="mc-ico">✏️</div><div class="mc-nm">Manual</div><div class="mc-desc">Escolho a data</div></div>
+      <div class="mc" data-method="tercio" id="mcTercio" onclick="selMet('tercio',this)" style="display:none"><div class="mc-ico">🔢</div><div class="mc-nm">Por Terço</div><div class="mc-desc">Revisão por bloco<br>da matéria</div></div>
     </div>
     <div id="mFinIntensivaDias" style="display:none;margin-top:8px;display:none">
       <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);display:block;margin-bottom:6px">Repetir por quantos dias?</label>
@@ -4530,13 +4543,13 @@ function renderSem(){
     h+=`<div class="plan-col${hj?' hoje':''}${!at?' folga':''}">`;
     h+=`<div class="plan-col-hdr">`;
     if(hj){ h+=`<div class="plan-col-date hoje-date">${d.getDate()}</div>`; }
-    else { h+=`<div class="plan-col-date" style="${!at?'opacity:.45':''}">${d.getDate()}</div>`; }
+    else { h+=`<div class="plan-col-date" style="${!at?'opacity:.45':''}">${d.getDate()}<div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.3px">${['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][d.getMonth()]}</div></div>`; }
     h+=`<div class="plan-col-day">${DIA_FULL[d.getDay()]}${hj?'<span class="plan-col-hoje-badge">HOJE</span>':''}</div>`;
     h+=`<div class="plan-col-meta">${at?`${bsAtivos.length} tarefa${bsAtivos.length!==1?'s':''} \u00b7 ${totalHoras}h`:'Dia de folga'}</div>`;
     if(totalRev>0) h+=`<div class="plan-rev-badge${temAtrasado?' atrasado':''}" onclick="ir(3,document.getElementById('tab3'))">📌 ${totalRev} rev${totalRev!==1?'s':''}</div>`;
     h+=`</div>`;
-    h+=`<div style="padding:4px 14px 2px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted)"><span>Progresso</span><span>${progPct}%</span></div>`;
-    h+=`<div style="height:3px;margin:0 14px 6px;background:var(--border2);border-radius:2px;overflow:hidden"><div style="height:100%;width:${progPct}%;background:var(--accent);border-radius:2px;transition:width .4s"></div></div>`;
+    h+=`<div style="padding:5px 16px 2px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted)"><span>Progresso</span><span style="font-weight:700;color:${progPct>=100?'var(--green)':progPct>0?'var(--accent)':'var(--muted)'}">${progPct}%</span></div>`;
+    h+=`<div style="height:5px;margin:0 16px 8px;background:var(--border2);border-radius:3px;overflow:hidden"><div style="height:100%;width:${progPct}%;background:${progPct>=100?'var(--green)':temAtrasado?'var(--red)':'var(--accent)'};border-radius:3px;transition:width .4s"></div></div>`;
     h+=`<div class="plan-col-body">`;
 
     if(at){
@@ -4775,7 +4788,7 @@ function _atualizarFinDatas(metodo){
 }
 
 function abrirFin(dk,idx){
-  _revTopId=null; _revTopSel=null; _revTopPrev=null; // limpar contexto de tópico
+  _revTopId=null; _revTopSel=null; _revTopPrev=null;
   blocoAtual={dk,idx};
   const b=blocos[dk][idx], m=mats.find(x=>x.id===b.matId)||mats[0];
   const _mfd=document.getElementById('mFinDesc'); if(_mfd) _mfd.textContent=`"${b.topico||m.nome}" — como revisar?`;
@@ -4784,6 +4797,9 @@ function abrirFin(dk,idx){
   const selCard=document.querySelector(`#mFin .mc[data-method="${dm}"]`);
   if(selCard) selCard.classList.add('sel');
   document.getElementById('mFinData').style.display=dm==='manual'?'block':'none';
+  // Mostrar/ocultar card do Terço conforme a matéria
+  const mcTercio=document.getElementById('mcTercio');
+  if(mcTercio) mcTercio.style.display=m.tercioAtivo?'':'none';
   _atualizarFinDatas(dm);
   abrirModal('mFin');
 }
@@ -4866,14 +4882,15 @@ function abrirModalRevTop(id, selEl, prev){
   _revTopId=id; _revTopSel=selEl||null; _revTopPrev=prev||null;
   const t=topicos.find(x=>x.id===id); if(!t) return;
   const m=mats.find(x=>x.id===t.matId)||{nome:''};
-  // Reutiliza o modal mFin mas adapta o título/desc
   (document.getElementById('mFinDesc')||{}).textContent=`"${t.nome}" — ${m.nome}`;
-  // Pré-selecionar método padrão
   const dflt=getCfg().met||'espacada';
   metSel=dflt;
   document.querySelectorAll('#mFin .mc').forEach(el=>{
     el.classList.toggle('sel', el.getAttribute('onclick').includes("'"+dflt+"'"));
   });
+  // Mostrar/ocultar card do Terço conforme a matéria
+  const mcTercio=document.getElementById('mcTercio');
+  if(mcTercio) mcTercio.style.display=m.tercioAtivo?'':'none';
   _atualizarFinDatas(dflt);
   abrirModal('mFin');
 }
@@ -5126,13 +5143,24 @@ function _buildSidebarBody(bid){
       </div>
     </div>`);
 
-  // Footer
-  const footer=`<div style="border-top:1px solid var(--border);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-radius:0 0 16px 16px;">
-    <button onclick="fecharFloatPanel()" style="padding:9px 18px;border:1.5px solid var(--border);border-radius:9px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif">Cancelar</button>
-    <button onclick="fpSalvarSessao('${bid}')" style="padding:9px 22px;border:none;border-radius:9px;background:${matCor};color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;display:flex;align-items:center;gap:6px">💾 Salvar Registro</button>
+  // Footer com Concluir integrado
+  const footer=`<div style="border-top:1px solid var(--border);flex-shrink:0;border-radius:0 0 16px 16px;overflow:hidden;">
+    <div style="padding:12px 18px;border-bottom:1px solid var(--border2);">
+      ${!bFin&&!isTransf?`<button class="bpanel-fin-full" onclick="abrirFin('${dk}',${bi})" style="margin-bottom:7px">✓ Finalizar & Agendar Revisão</button>`:''}
+      ${bFin?`<div style="display:flex;align-items:center;gap:6px;background:rgba(21,122,66,.08);border:1.5px solid rgba(21,122,66,.25);border-radius:9px;padding:10px 13px;font-size:13px;font-weight:700;color:var(--green);margin-bottom:7px">📌 Revisão agendada</div>`:''}
+      <div style="display:flex;gap:7px;">
+        ${ok?`<button class="bpanel-sub-btn desmarcar" onclick="toggleFeito('${dk}',${bi})" style="flex:1">☑ Desmarcar</button>`:''}
+        ${!isTransf&&!bFin?`<button class="bpanel-sub-btn nao" onclick="abrirReagendar('${dk}',${bi})" style="flex:1">□ Não terminei</button>`:''}
+        ${bFin?`<button class="bpanel-sub-btn desfazer-fin" onclick="desfazerFin('${dk}',${bi})" style="flex:1">↩ Desfazer</button>`:''}
+      </div>
+    </div>
+    <div style="padding:12px 18px;display:flex;justify-content:space-between;align-items:center;">
+      <button onclick="fecharFloatPanel()" style="padding:9px 18px;border:1.5px solid var(--border);border-radius:9px;background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif">Cancelar</button>
+      <button onclick="fpSalvarSessao('${bid}')" style="padding:9px 22px;border:none;border-radius:9px;background:${matCor};color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;display:flex;align-items:center;gap:6px">💾 Salvar Registro</button>
+    </div>
   </div>`;
 
-  return `<div class="fp-sidebar-body" style="padding:0;gap:0;overflow-y:auto;flex:1;">${statusBar}${secMateriais}${secRegistros}${secObs}${secConcluir}</div>${footer}`;
+  return `<div class="fp-sidebar-body" style="padding:0;gap:0;overflow-y:auto;flex:1;">${statusBar}${secMateriais}${secRegistros}${secObs}</div>${footer}`;
 }
 
 
@@ -6102,11 +6130,21 @@ function htmlTop(t, num){
   const errQ=totQ-acQ;
   const pctQ=totQ>0?Math.round((acQ/totQ)*100):0;
 
-  // Próxima revisão badge
+  // Badge do ciclo — conta revisões concluídas
+  const revsConc=(revisoes||[]).filter(r=>r.matId===t.matId&&r.topico===t.nome&&r.status==='concluido').length;
+  const proxRev=(revisoes||[]).filter(r=>r.matId===t.matId&&r.topico===t.nome&&r.status==='pendente').sort((a,b)=>a.data.localeCompare(b.data))[0];
   const hoje=hj();
-  const proxRev=revisoes
-    .filter(r=>r.matId===t.matId&&r.topico===t.nome&&r.status==='pendente')
-    .sort((a,b)=>a.data.localeCompare(b.data))[0];
+
+  let cicloBadge='';
+  if(isDone){
+    if(revsConc===0) cicloBadge=`<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--blue-bg);color:var(--blue-text);font-family:'Space Mono',monospace;white-space:nowrap">1ª revisão</span>`;
+    else if(revsConc===1) cicloBadge=`<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--green-bg);color:var(--green-text);font-family:'Space Mono',monospace;white-space:nowrap">2ª revisão</span>`;
+    else cicloBadge=`<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--purple-bg);color:var(--purple-text);font-family:'Space Mono',monospace;white-space:nowrap">${revsConc+1}ª revisão</span>`;
+  } else if(t.status==='revisar'){
+    cicloBadge=`<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--red-bg);color:var(--red-text);font-family:'Space Mono',monospace;white-space:nowrap">Revisar</span>`;
+  }
+
+  // Próxima revisão
   let revBadge='';
   if(proxRev){
     const [y,mo,d]=proxRev.data.split('-').map(Number);
@@ -6115,13 +6153,20 @@ function htmlTop(t, num){
     revBadge=`<span class="disc-badge-cyan" style="${cls==='atrasado'?'background:#fee2e2;color:#b91c1c':cls==='hoje'?'background:#d1fae5;color:#065f46':''}">📅 ${d}/${mAbr[mo-1]}</span>`;
   }
 
+  // Checkbox visual customizado
+  const chkStyle=isDone
+    ?`width:16px;height:16px;border-radius:5px;background:var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0;cursor:pointer`
+    :`width:16px;height:16px;border-radius:5px;border:2px solid var(--border);background:var(--bg2);display:inline-flex;flex-shrink:0;cursor:pointer`;
+
   return `<div class="disc-assunto-row" id="discAssunto_${t.id}">
     <div class="disc-assunto-hdr" id="thdr_${t.id}">
-      <input type="checkbox" class="disc-assunto-chk top-chk" ${isDone?'checked':''} onchange="toggleEst('${t.id}',this.checked)" onclick="event.stopPropagation()">
+      <input type="checkbox" class="disc-assunto-chk top-chk" ${isDone?'checked':''} onchange="toggleEst('${t.id}',this.checked)" onclick="event.stopPropagation()" style="display:none">
+      <div onclick="event.stopPropagation();toggleEst('${t.id}',${!isDone})" style="${chkStyle}">${isDone?'✓':''}</div>
       <div class="disc-assunto-info">
         <div class="disc-assunto-title">
           <span class="disc-assunto-num">${num||''}.</span>
           <span class="disc-assunto-name${isDone?' done':''}">${t.nome}</span>
+          ${cicloBadge}
           ${links.length>0?`<span class="disc-badge-cyan">🔗 ${links.length}</span>`:''}
           ${hasResumo?'<span class="disc-badge-cyan">📝</span>':''}
           ${revBadge}
@@ -6136,7 +6181,6 @@ function htmlTop(t, num){
         </div>
       </div>
       <div class="disc-assunto-actions">
-        <span class="disc-assunto-status" style="${stClsDisc}">${stLabel}</span>
         <button class="disc-play-btn" onclick="event.stopPropagation();abrirAg('${t.id}')" title="Adicionar ao cronograma">▷</button>
         <button class="disc-cfg-btn" onclick="event.stopPropagation();abrirDiscDetail('${t.id}')" title="Configurações do tópico">⚙</button>
       </div>
@@ -7330,6 +7374,23 @@ function fecharDrawer(){
 }
 
 // ══ TEMA CLARO / ESCURO ══
+function toggleSidebarCollapse(){
+  const sb=document.getElementById('appSidebar');
+  const main=document.getElementById('appMain');
+  const collapsed=sb.classList.toggle('collapsed');
+  main.classList.toggle('sidebar-collapsed',collapsed);
+  localStorage.setItem('sidebarCollapsed', collapsed?'1':'0');
+}
+// Restaurar estado salvo
+(function(){
+  if(localStorage.getItem('sidebarCollapsed')==='1'){
+    const sb=document.getElementById('appSidebar');
+    const main=document.getElementById('appMain');
+    if(sb) sb.classList.add('collapsed');
+    if(main) main.classList.add('sidebar-collapsed');
+  }
+})();
+
 function toggleTema(){
   const isDark=document.documentElement.getAttribute('data-theme')==='dark';
   const novoTema=isDark?'light':'dark';
@@ -8215,6 +8276,7 @@ const _CICLO_MODOS = {
   prioridade: { desc: 'Distribuição por prioridade: Alta 2x/sem · Média 1x/sem · Baixa 1x/2sem.' },
   multisemana:{ desc: 'Planejamento para múltiplas semanas de uma vez.' },
   revisoes:   { desc: 'Reserva automaticamente 1 slot por dia com revisões pendentes.' },
+  inteligente:{ desc: 'Prioriza tópicos por peso no edital e menor aproveitamento. Configure as matérias e veja a previsão de conclusão em tempo real.' },
 };
 
 function setCicloModo(modo){
@@ -8423,13 +8485,102 @@ function abrirGerarCiclo(){
   if(fixoMatSel) fixoMatSel.innerHTML = mats.filter(m=>!m.inativa).map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');
   renderBlocosFixos();
   _resetPreviewCiclo();
+  _atualizarPreviewConclusao();
   abrirModal('mCiclo');
+}
+
+function cicloSelecionarTodas(sel){
+  mats.filter(m=>!m.inativa).forEach(m=>{
+    if(sel) _cicloMatsExcluidas.delete(m.id);
+    else _cicloMatsExcluidas.add(m.id);
+  });
+  // Re-render lista
+  const lista=document.getElementById('cicloMatList');
+  if(lista) lista.querySelectorAll('input[type=checkbox]').forEach(chk=>{
+    if(!chk.disabled) chk.checked=sel;
+  });
+  _atualizarPreviewConclusao();
+}
+
+function _atualizarPreviewConclusao(){
+  const qtdDia=parseInt(document.getElementById('cicloQtdDia')?.value)||3;
+  const diasSel=_cicloDiasSelecionados.size||5;
+  const matsAtivas=mats.filter(m=>!m.inativa&&!_cicloMatsExcluidas.has(m.id));
+  const totalTopicos=matsAtivas.reduce((s,m)=>{
+    const tops=topicos.filter(t=>t.matId===m.id&&t.status!=='estudado');
+    return s+tops.length;
+  },0);
+  const diasNecessarios=Math.ceil(totalTopicos/qtdDia);
+  const diasPorSemana=diasSel;
+  const semanas=Math.ceil(diasNecessarios/diasPorSemana);
+
+  // Calcular data de conclusão
+  const hoje=new Date(); hoje.setHours(0,0,0,0);
+  let diasContados=0, dataFim=new Date(hoje);
+  const diasSemana=[..._cicloDiasSelecionados];
+  while(diasContados<diasNecessarios){
+    dataFim.setDate(dataFim.getDate()+1);
+    if(diasSemana.includes(dataFim.getDay())) diasContados++;
+  }
+
+  // Atualizar UI
+  const box=document.getElementById('cicloPreviewConclusao');
+  if(!box) return;
+  box.style.display=totalTopicos>0?'block':'none';
+
+  const meses=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const dataStr=`${dataFim.getDate()} ${meses[dataFim.getMonth()]} ${dataFim.getFullYear()}`;
+  document.getElementById('cicloDataConclusao').textContent=dataStr;
+  document.getElementById('cicloMetTopicos').textContent=totalTopicos;
+  document.getElementById('cicloMetMats').textContent=matsAtivas.length;
+  document.getElementById('cicloMetDias').textContent=diasNecessarios;
+  document.getElementById('cicloMetSessoes').textContent=qtdDia;
+
+  // Badge dias antes/depois da prova
+  const dp=getCfg().dp;
+  const badge=document.getElementById('cicloBadgeProva');
+  const hint=document.getElementById('cicloHintProva');
+  const previewBox=document.getElementById('cicloPreviewConclusaoBox');
+  const matCount=document.getElementById('cicloMatCount');
+  if(matCount) matCount.textContent=`· ${matsAtivas.length} selecionada${matsAtivas.length!==1?'s':''}`;
+
+  if(dp){
+    const dataProva=new Date(dp+'T00:00:00');
+    const diffMs=dataProva-dataFim;
+    const diffDias=Math.round(diffMs/(1000*60*60*24));
+    if(diffDias>0){
+      badge.textContent=`✅ ${diffDias} dias antes da prova`;
+      badge.style.cssText='padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;background:#dcfce7;color:#15803d;';
+      previewBox.style.borderColor='#22c55e';
+      previewBox.style.background='rgba(34,197,94,.04)';
+      hint.textContent=`💡 Ótimo ritmo! Você terá ${diffDias} dias livres para revisões antes da prova em ${dataProva.getDate()}/${meses[dataProva.getMonth()]}/${dataProva.getFullYear()}.`;
+    } else if(diffDias===0){
+      badge.textContent=`⚠️ Exatamente na prova`;
+      badge.style.cssText='padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;background:#fef3c7;color:#92400e;';
+      previewBox.style.borderColor='#f59e0b';
+      previewBox.style.background='rgba(245,158,11,.04)';
+      hint.textContent=`⚠️ Você terminaria exatamente no dia da prova. Aumente o ritmo para ter margem de revisão.`;
+    } else {
+      badge.textContent=`🔴 ${Math.abs(diffDias)} dias após a prova`;
+      badge.style.cssText='padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;background:#fee2e2;color:#b91c1c;';
+      previewBox.style.borderColor='#ef4444';
+      previewBox.style.background='rgba(239,68,68,.04)';
+      hint.textContent=`🔴 Ritmo insuficiente. Você terminaria ${Math.abs(diffDias)} dias após a prova em ${dataProva.getDate()}/${meses[dataProva.getMonth()]}/${dataProva.getFullYear()}. Aumente as sessões por dia.`;
+    }
+  } else {
+    badge.textContent='📅 Sem data de prova';
+    badge.style.cssText='padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;background:var(--bg2);color:var(--muted);';
+    previewBox.style.borderColor='var(--border)';
+    previewBox.style.background='var(--bg2)';
+    hint.textContent='Configure a data da prova em ⚙️ Configurações para ver a comparação.';
+  }
 }
 
 function toggleCicloMat(id, checked){
   if(checked) _cicloMatsExcluidas.delete(id);
   else _cicloMatsExcluidas.add(id);
   _resetPreviewCiclo();
+  _atualizarPreviewConclusao();
 }
 
 function toggleCicloFreq(matId, freq){
@@ -8452,6 +8603,7 @@ function toggleCicloDia(dia, checked){
   if(checked) _cicloDiasSelecionados.add(dia);
   else _cicloDiasSelecionados.delete(dia);
   _resetPreviewCiclo();
+  _atualizarPreviewConclusao();
 }
 
 function previewCiclo(){
@@ -10315,6 +10467,10 @@ function blkLkAdd(btn, topId){
           style="font-size:11px;padding:3px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-weight:600;transition:all .15s;">
           🔁 Com Revisões
         </button>
+        <button id="cicloModoBtn_inteligente" onclick="setCicloModo('inteligente')"
+          style="font-size:11px;padding:3px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-weight:600;transition:all .15s;">
+          🧠 Inteligente
+        </button>
       </div>
       <p id="cicloModoDesc" style="font-size:11px;color:var(--muted);margin:6px 0 0;">Próximo tópico não estudado de cada matéria, em ordem.</p>
     </div>
@@ -10327,7 +10483,7 @@ function blkLkAdd(btn, topId){
         <div>
           <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px;">Blocos por dia</div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <input type="number" id="cicloQtdDia" value="3" min="1" max="8" step="1" style="width:56px;">
+            <input type="number" id="cicloQtdDia" value="3" min="1" max="8" step="1" style="width:56px;" oninput="_atualizarPreviewConclusao()">
             <span style="font-size:12px;color:var(--muted);">sessões/dia</span>
           </div>
         </div>
@@ -10405,14 +10561,40 @@ function blkLkAdd(btn, topId){
       <!-- Matérias -->
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);">Matérias do ciclo</div>
-          <div id="cicloFreqLegenda" style="font-size:10px;color:var(--muted);display:flex;gap:8px;display:none;">
-            <span>🟢 Baixa = 1x/2sem</span>
-            <span>🟡 Média = 1x/sem</span>
-            <span>🔴 Alta = 2x/sem</span>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);">Matérias do ciclo <span id="cicloMatCount" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--accent)"></span></div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div id="cicloFreqLegenda" style="font-size:10px;color:var(--muted);display:flex;gap:8px;display:none;">
+              <span>🟢 Baixa = 1x/2sem</span>
+              <span>🟡 Média = 1x/sem</span>
+              <span>🔴 Alta = 2x/sem</span>
+            </div>
+            <button onclick="cicloSelecionarTodas(true)" style="font-size:11px;font-weight:700;color:var(--accent);border:none;background:none;cursor:pointer;font-family:'Barlow',sans-serif;padding:2px 4px;">Todas</button>
+            <button onclick="cicloSelecionarTodas(false)" style="font-size:11px;font-weight:700;color:var(--muted);border:none;background:none;cursor:pointer;font-family:'Barlow',sans-serif;padding:2px 4px;">Nenhuma</button>
           </div>
         </div>
         <div id="cicloMatList" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;max-height:240px;overflow-y:auto;"></div>
+      </div>
+
+      <!-- Preview de conclusão em tempo real -->
+      <div id="cicloPreviewConclusao" style="display:none">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px;">Previsão de conclusão</div>
+        <div id="cicloPreviewConclusaoBox" style="border-radius:12px;padding:14px 16px;border:2px solid var(--border);">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;">
+            <div>
+              <div id="cicloDataConclusao" style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--text);line-height:1;">—</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px;">📅 Data prevista de conclusão</div>
+            </div>
+            <div id="cicloBadgeProva" style="padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;flex-shrink:0;background:var(--bg2);color:var(--muted);">—</div>
+          </div>
+          <div style="height:1px;background:var(--border2);margin:8px 0;"></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+            <div style="text-align:center"><div id="cicloMetTopicos" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--text)">0</div><div style="font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Tópicos</div></div>
+            <div style="text-align:center"><div id="cicloMetMats" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--text)">0</div><div style="font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Matérias</div></div>
+            <div style="text-align:center"><div id="cicloMetDias" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--text)">0</div><div style="font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Dias úteis</div></div>
+            <div style="text-align:center"><div id="cicloMetSessoes" style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--text)">0</div><div style="font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:2px">Sessões/dia</div></div>
+          </div>
+          <div id="cicloHintProva" style="font-size:11px;color:var(--muted);margin-top:10px;line-height:1.4;padding-top:10px;border-top:1px solid var(--border2);"></div>
+        </div>
       </div>
 
       <!-- Preview -->
