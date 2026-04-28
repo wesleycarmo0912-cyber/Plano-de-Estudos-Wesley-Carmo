@@ -3029,10 +3029,10 @@ footer{
       <div style="position:relative;flex-shrink:0;">
         <button class="rtb-btn" title="Estilo de parágrafo" onmousedown="event.preventDefault()" onclick="rToggleEstilo()" style="gap:3px;padding:0 8px;min-width:44px;">Aa<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div id="rEstiloDrop" style="display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--card);border:1.5px solid var(--border);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.15);z-index:9999;min-width:160px;padding:5px;">
-          <div onclick="rFmtBloco('p');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:13px;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Normal</div>
-          <div onclick="rFmtBloco('h1');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:18px;font-weight:800;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Título 1</div>
-          <div onclick="rFmtBloco('h2');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:15px;font-weight:700;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Título 2</div>
-          <div onclick="rFmtBloco('h3');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:13px;font-weight:700;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Título 3</div>
+          <div onmousedown="event.preventDefault()" onclick="_rSaveSelection();rFmtBloco('p');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:13px;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Normal</div>
+          <div onmousedown="event.preventDefault()" onclick="_rSaveSelection();rFmtBloco('h1');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:18px;font-weight:800;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Título 1</div>
+          <div onmousedown="event.preventDefault()" onclick="_rSaveSelection();rFmtBloco('h2');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:15px;font-weight:700;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Título 2</div>
+          <div onmousedown="event.preventDefault()" onclick="_rSaveSelection();rFmtBloco('h3');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:13px;font-weight:700;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Título 3</div>
         </div>
       </div>
 
@@ -7627,9 +7627,10 @@ function rApplyColorDirect(tipo){
 function rBuildColorGrid(tipo){
   const id = tipo==='font' ? 'rFontColorGrid' : 'rHighColorGrid';
   const grid = document.getElementById(id); if(!grid) return;
+  const ativa = tipo==='font' ? _rColorActive.font : _rColorActive.highlight;
   grid.innerHTML = _RPALETTE.map(c=>`
-    <div class="rcolor-swatch${c==='#ffffff'?' swatch-white':''}"
-         style="background:${c}"
+    <div class="rcolor-swatch${c==='#ffffff'?' swatch-white':''}${c===ativa?' swatch-active':''}"
+         style="background:${c};${c===ativa?'border-color:#333;transform:scale(1.2);z-index:2;position:relative;':''}"
          title="${c}"
          onmousedown="event.preventDefault()"
          onclick="rApplyColor('${c}','${tipo}')"></div>
@@ -7683,7 +7684,7 @@ function rApplyColor(cor, tipo){
   _rRestoreSelection();
   if(tipo==='font'){
     if(cor){ document.execCommand('foreColor', false, cor); _rColorActive.font = cor; }
-    else document.execCommand('removeFormat', false, null);
+    else document.execCommand('foreColor', false, 'inherit');
     const ind = document.getElementById('rFontColorInd');
     if(ind) ind.style.background = cor || 'transparent';
   } else {
@@ -7698,9 +7699,8 @@ function rApplyColor(cor, tipo){
   document.getElementById('rEditor')&&document.getElementById('rEditor').focus();
 }
 
-// Fechar paletas ao clicar fora
+// Fechar paletas ao clicar fora (mas NÃO ao clicar dentro da própria paleta)
 document.addEventListener('mousedown', function(e){
-  ['rFontColorPalette','rHighColorPalette','rFontColorWrap','rHighColorWrap'].forEach(id=>{});
   const wraps = [
     {palette:'rFontColorPalette', wrap:'rFontColorWrap'},
     {palette:'rHighColorPalette', wrap:'rHighColorWrap'}
@@ -7708,7 +7708,10 @@ document.addEventListener('mousedown', function(e){
   wraps.forEach(({palette,wrap})=>{
     const p = document.getElementById(palette);
     const w = document.getElementById(wrap);
-    if(p && w && !w.contains(e.target)) p.classList.remove('open');
+    // Fechar apenas se o clique for FORA do wrap E FORA da própria paleta
+    if(p && w && !w.contains(e.target) && !p.contains(e.target)){
+      p.classList.remove('open');
+    }
   });
 });
 // ══════════════════════════════════════════════════════════════════════
@@ -7717,8 +7720,9 @@ function rCmd(cmd){ document.execCommand(cmd, false, null); document.getElementB
 
 function rFmtBloco(tag){
   const ed = document.getElementById('rEditor'); if(!ed) return;
-  ed.focus();
+  _rRestoreSelection();
   document.execCommand('formatBlock', false, tag);
+  ed.focus();
 }
 
 function rInsertBox(tipo){
