@@ -3028,7 +3028,7 @@ footer{
       <!-- 3: Estilo de parágrafo -->
       <div style="position:relative;flex-shrink:0;">
         <button class="rtb-btn" title="Estilo de parágrafo" onmousedown="event.preventDefault()" onclick="rToggleEstilo()" style="gap:3px;padding:0 8px;min-width:44px;">Aa<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div id="rEstiloDrop" style="display:none;position:absolute;top:calc(100% + 4px);left:0;background:var(--card);border:1.5px solid var(--border);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.15);z-index:9999;min-width:160px;padding:5px;">
+        <div id="rEstiloDrop" style="display:none;position:fixed;background:var(--card);border:1.5px solid var(--border);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.15);z-index:99999;min-width:160px;padding:5px;">
           <div onmousedown="event.preventDefault()" onclick="_rSaveSelection();rFmtBloco('p');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:13px;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Normal</div>
           <div onmousedown="event.preventDefault()" onclick="_rSaveSelection();rFmtBloco('h1');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:18px;font-weight:800;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Título 1</div>
           <div onmousedown="event.preventDefault()" onclick="_rSaveSelection();rFmtBloco('h2');rToggleEstilo()" style="padding:7px 12px;cursor:pointer;font-size:15px;font-weight:700;border-radius:7px;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">Título 2</div>
@@ -7561,7 +7561,16 @@ function limparResumo(){
 }
 function rToggleEstilo(){
   const drop = document.getElementById('rEstiloDrop');
-  if(drop) drop.style.display = drop.style.display==='none'?'block':'none';
+  const btn  = document.querySelector('[onclick="rToggleEstilo()"]');
+  if(!drop) return;
+  const isOpen = drop.style.display !== 'none';
+  if(isOpen){ drop.style.display='none'; return; }
+  if(btn){
+    const r = btn.getBoundingClientRect();
+    drop.style.top  = (r.bottom + 4) + 'px';
+    drop.style.left = r.left + 'px';
+  }
+  drop.style.display = 'block';
 }
 document.addEventListener('click', e=>{
   if(!e.target.closest('#rEstiloDrop') && !e.target.closest('[onclick*="rToggleEstilo"]')){
